@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מכון מניטו | ספריית אונליין</title>
+    <meta name="description" content="הספרייה המקוונת של מכון מניטו - ספרי הרב יהודא לאון אשכנזי זצ״ל.">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&family=Frank+Ruhl+Libre:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="logo">
+                <span class="logo-text">מכון מניטו</span>
+                <span class="logo-subtext">ספרים מקוונים</span>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="active">ספרייה</a>
+                <a href="#">אודות</a>
+                <a href="#">צור קשר</a>
+            </div>
+            <div class="user-actions" style="display: flex; gap: 10px; align-items: center;">
+                <div class="user-greeting" style="margin-left: 10px;">שלום אור ממן</div>
+                <button id="navThemeToggle" class="btn btn-secondary btn-sm" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer; border: 1px solid var(--border); background: var(--secondary-bg); color: var(--text-main);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <span id="navThemeText">מצב לילה</span>
+                </button>
+                <button id="navHomeBtn" class="btn btn-primary btn-sm" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer; border: none; background: var(--accent); color: var(--primary-bg);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <span>ראשי</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <header class="hero">
+            <div class="hero-content">
+                <div class="badge">אוסף כתבים</div>
+                <h1 class="hero-title">תורת הרב יהודא לאון אשכנזי</h1>
+                <p class="hero-subtitle">גלה את משנתו העמוקה של מניטו דרך האוסף המקיף של ספריו, הרצאותיו ומאמריו המקוונים. עיצוב חדשני המנגיש את החכמה לדור הבא.</p>
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="סנן ספרים לפי כותרת..." aria-label="סינון ספרים">
+                    <button class="search-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </button>
+                </div>
+                <button id="openDeepSearchBtn" class="btn btn-primary" style="margin-top: 1.5rem; display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(212, 175, 55, 0.2); border: 1px solid var(--accent); color: var(--accent); box-shadow: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                    מערכת חיפוש חכמה בתוכן הספרים
+                </button>
+            </div>
+            <div class="hero-graphics">
+                <div class="abstract-shape shape-1"></div>
+                <div class="abstract-shape shape-2"></div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="library-section" id="librarySection">
+            <div class="section-header">
+                <h2>ספרים מובילים</h2>
+                <div class="filter-tabs">
+                    <button class="tab active" data-filter="all">הכל</button>
+                    <button class="tab" data-filter="history">היסטוריה</button>
+                    <button class="tab" data-filter="philosophy">פילוסופיה</button>
+                    <button class="tab" data-filter="lessons">שיעורים</button>
+                </div>
+            </div>
+
+            <div class="books-grid" id="booksGrid">
+                <!-- Book Items injected via JS -->
+            </div>
+        </main>
+        
+        <footer>
+            <div class="footer-content">
+                <p>© 2026 מכון מניטו. כל הזכויות שמורות.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Reader Mode -->
+    <div class="reader-container" id="readerMode" style="display: none;">
+        <div class="reader-header" style="padding: 1rem 2rem;">
+            <button class="btn btn-primary btn-sm" id="backToLibrary" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; border: none; cursor: pointer; background: var(--accent); color: var(--primary-bg);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                חזור לספרייה (ראשי)
+            </button>
+            <div class="reader-title-area">
+                <span class="reader-book-title" id="readerBookTitle" style="font-weight:bold;">שם הספר</span>
+                <span class="reader-chapter-title" id="readerChapterTitle">פרק...</span>
+            </div>
+            <div class="reader-actions" style="display: flex; gap: 10px;">
+                <button class="btn btn-secondary btn-sm" id="downloadPdfBtn" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    הורד PDF
+                </button>
+                <button class="btn btn-secondary btn-sm" id="toggleTheme" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer; background: var(--secondary-bg); color: var(--text-main); border: 1px solid var(--border);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <span id="readerThemeText">מצב לילה</span>
+                </button>
+            </div>
+        </div>
+        <div class="reader-layout">
+            <aside class="chapters-sidebar">
+                <h3>פרקי הספר</h3>
+                <ul class="chapters-list" id="chaptersList">
+                    <!-- Chapters injected via JS -->
+                </ul>
+            </aside>
+            <article class="reader-content-area">
+                <div class="text-content" id="textContent">
+                    <!-- Text injected via JS -->
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <!-- Book Detail Modal -->
+    <div class="modal-overlay" id="bookModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <div class="modal-body" id="modalBody">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Deep Search Modal -->
+    <div class="modal-overlay" id="deepSearchModal">
+        <div class="modal-content" style="max-width: 1000px; height: 85vh; display: flex; flex-direction: column;">
+            <button class="close-modal" id="closeDeepSearch">&times;</button>
+            <div style="padding: 2rem 3rem; background: var(--primary-bg); border-bottom: 1px solid var(--border);">
+                <h2 style="font-family: var(--font-serif); color: var(--accent); margin-bottom: 1rem; font-size: 2rem;">חיפוש חכם בתוך הטקסטים</h2>
+                <div class="search-container" style="max-width: 100%;">
+                    <input type="text" id="deepSearchInput" placeholder="חפש מילה, משפט או ביטוי בתוך כל ספרי מניטו..." style="font-size: 1.1rem; padding: 1.2rem 2rem;">
+                    <button class="search-btn" id="executeDeepSearch" style="width: auto; padding: 0 1.5rem; border-radius: 30px; left: 8px;">חפש</button>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">טיפ: החיפוש סורק את כל הפרקים שהורדו עד כה לאתר המקומי.</p>
+            </div>
+            <div class="deep-search-results" id="deepSearchResults" style="flex: 1; overflow-y: auto; padding: 2rem 3rem; background: var(--secondary-bg);">
+                <div style="text-align: center; color: var(--text-muted); margin-top: 3rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.2; margin-bottom: 1rem;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <h3>הזן טקסט כדי להתחיל בחיפוש עמוק</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    
+
+</body>
+</html>
