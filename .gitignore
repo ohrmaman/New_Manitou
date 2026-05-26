@@ -16,3 +16,11 @@ venv/
 
 # Large scraped data
 data/pdfs/
+data/audio/
+
+# Dependency directories
+node_modules/
+
+# Local/temp files
+temp.js
+uploads/

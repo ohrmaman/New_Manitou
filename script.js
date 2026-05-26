@@ -1,245 +1,4 @@
-const books = [
-    {
-        id: 1,
-        title: "ספרים מקוונים",
-        category: "other",
-        categoryLabel: "כללי",
-        description: "אוסף מאמרים וכתבים מקוונים.",
-        link: "https://manitou.org.il/joomlatools-files/docman-images/mamarim1%20%281%29.jpg",
-        imgUrl: "https://manitou.org.il/joomlatools-files/docman-images/mamarim1%20%281%29.jpg",
-        design: "cover-design-1"
-    },
-    {
-        id: 2,
-        title: "מספד למשיח",
-        category: "lessons",
-        categoryLabel: "שיעורים",
-        description: "שיעורים מאת הרב יהודא לאון אשכנזי (מניטו) זצ\"ל.",
-        link: "https://manitou.org.il/arcive/sfarim/masped-1",
-        imgUrl: "https://manitou.org.il/joomlatools-files/docman-images/masped2.jpg",
-        design: "cover-design-2"
-    },
-    {
-        id: 3,
-        title: "סוד מדרש התולדות 1",
-        category: "history",
-        categoryLabel: "היסטוריה ומדרש",
-        description: "חלק ראשון מתוך הסדרה המעמיקה על מדרשי חז\"ל.",
-        link: "https://manitou.org.il/arcive/sfarim/sodtoladot1",
-        imgUrl: "https://manitou.org.il/joomlatools-files/docman-images/sodtoladot1.jpg",
-        design: "cover-design-3"
-    },
-    {
-        id: 4,
-        title: "סוד מדרש התולדות 2",
-        category: "history",
-        categoryLabel: "היסטוריה ומדרש",
-        description: "חלק שני מתוך הסדרה המעמיקה על מדרשי חז\"ל.",
-        link: "https://manitou.org.il/arcive/sfarim/sodtoladot2",
-        imgUrl: "https://manitou.org.il/joomlatools-files/docman-images/sodtoladotb.jpg",
-        design: "cover-design-1"
-    },
-    {
-        id: 5,
-        title: "סוד מדרש התולדות 3",
-        category: "history",
-        categoryLabel: "היסטוריה ומדרש",
-        description: "חלק שלישי מתוך הסדרה המעמיקה על מדרשי חז\"ל.",
-        link: "https://manitou.org.il/arcive/sfarim/sodtoladot3",
-        imgUrl: "https://manitou.org.il/joomlatools-files/docman-images/sodtoladot3.jpg",
-        design: "cover-design-2"
-    },
-    {
-        id: 6,
-        title: "סוד מדרש התולדות 4",
-        category: "history",
-        categoryLabel: "היסטוריה ומדרש",
-        description: "חלק רביעי מתוך הסדרה המעמיקה על מדרשי חז\"ל.",
-        link: "https://manitou.org.il/arcive/sfarim/sodtoladot4",
-        imgUrl: "https://manitou.org.il/joomlatools-files/docman-images/sodtoladot4.jpg",
-        design: "cover-design-3"
-    },
-    {
-        id: 7,
-        title: "סוד מדרש התולדות 5",
-        category: "history",
-        categoryLabel: "היסטוריה ומדרש",
-        description: "חלק חמישי מתוך הסדרה המעמיקה על מדרשי חז\"ל.",
-        link: "https://manitou.org.il/arcive/sfarim/sodtoladot5",
-        imgUrl: "https://manitou.org.il/joomlatools-files/docman-images/sodtoladot5.jpg",
-        design: "cover-design-1"
-    },
-    {
-        id: 8,
-        title: "סוד מדרש התולדות 6",
-        category: "history",
-        categoryLabel: "היסטוריה ומדרש",
-        description: "חלק שישי מתוך הסדרה המעמיקה על מדרשי חז\"ל.",
-        link: "https://manitou.org.il/arcive/sfarim/sodtoladot6",
-        imgUrl: "https://manitou.org.il/joomlatools-files/docman-images/sodtoladot6.jpg",
-        design: "cover-design-2"
-    },
-    {
-        id: 9,
-        title: "סוד מדרש התולדות 7",
-        category: "history",
-        categoryLabel: "היסטוריה ומדרש",
-        description: "חלק שביעי מתוך הסדרה המעמיקה על מדרשי חז\"ל.",
-        link: "https://manitou.org.il/arcive/sfarim/sodtoladot7",
-        imgUrl: "https://manitou.org.il/joomlatools-files/docman-images/sodtoladot7.jpg",
-        design: "cover-design-3"
-    },
-    {
-        id: 10,
-        title: "סוד מדרש התולדות 8",
-        category: "history",
-        categoryLabel: "היסטוריה ומדרש",
-        description: "חלק שמיני מתוך הסדרה המעמיקה על מדרשי חז\"ל.",
-        link: "https://manitou.org.il/arcive/sfarim/leshemshamaim-sod8",
-        imgUrl: "https://manitou.org.il/joomlatools-files/docman-images/sodtoladot8.jpg",
-        design: "cover-design-1"
-    },
-    {
-        id: 11,
-        title: "סוד מדרש התולדות 9",
-        category: "history",
-        categoryLabel: "היסטוריה ומדרש",
-        description: "חלק תשיעי מתוך הסדרה המעמיקה על מדרשי חז\"ל.",
-        link: "https://manitou.org.il/arcive/sfarim/sodtoladot9",
-        imgUrl: "https://manitou.org.il/joomlatools-files/docman-images/sodtoladot9.jpg",
-        design: "cover-design-2"
-    },
-    {
-        id: 12,
-        title: "שערי דמעה 1",
-        category: "philosophy",
-        categoryLabel: "פילוסופיה",
-        description: "ספר מעמיק מאת הרב מניטו.",
-        link: "https://manitou.org.il/arcive/sfarim/sheareidima1",
-        imgUrl: "https://manitou.org.il/joomlatools-files/docman-images/dima1.jpg",
-        design: "cover-design-3"
-    },
-    {
-        id: 13,
-        title: "שערי דמעה 2",
-        category: "philosophy",
-        categoryLabel: "פילוסופיה",
-        description: "חלק שני בסדרת שערי דמעה.",
-        link: "https://manitou.org.il/arcive/sfarim/sheareidima2",
-        imgUrl: "https://manitou.org.il/joomlatools-files/docman-images/dima2.jpg",
-        design: "cover-design-1"
-    },
-    {
-        id: 14,
-        title: "שערי דמעה 3",
-        category: "philosophy",
-        categoryLabel: "פילוסופיה",
-        description: "חלק שלישי בסדרת שערי דמעה.",
-        link: "https://manitou.org.il/arcive/sfarim/sheareidima-c",
-        imgUrl: "",
-        design: "cover-design-2"
-    },
-    {
-        id: 15,
-        title: "סוד לשון הקודש 1",
-        category: "philosophy",
-        categoryLabel: "שפה וקבלה",
-        description: "גילוי סודות השפה העברית.",
-        link: "https://manitou.org.il/arcive/sfarim/sodleshonkodesh1",
-        imgUrl: "https://manitou.org.il/joomlatools-files/docman-images/sodlashon1.jpg",
-        design: "cover-design-3"
-    },
-    {
-        id: 16,
-        title: "סוד לשון הקודש 2",
-        category: "philosophy",
-        categoryLabel: "שפה וקבלה",
-        description: "חלק שני - גילוי סודות השפה העברית.",
-        link: "https://manitou.org.il/arcive/sfarim/sodleshonkodesh2",
-        imgUrl: "https://manitou.org.il/joomlatools-files/docman-images/sodlashon2.jpg",
-        design: "cover-design-1"
-    },
-    {
-        id: 17,
-        title: "סוד העברי 1",
-        category: "history",
-        categoryLabel: "זהות והיסטוריה",
-        description: "משמעותה של העבריות לאורך הדורות.",
-        link: "https://manitou.org.il/arcive/sfarim/sodivri1",
-        imgUrl: "https://manitou.org.il/joomlatools-files/docman-images/sodivri1.jpg",
-        design: "cover-design-2"
-    },
-    {
-        id: 18,
-        title: "סוד העברי 2",
-        category: "history",
-        categoryLabel: "זהות והיסטוריה",
-        description: "חלק שני - משמעותה של העבריות.",
-        link: "https://manitou.org.il/arcive/sfarim/sodivri2",
-        imgUrl: "https://manitou.org.il/joomlatools-files/docman-images/sodivri2.jpg",
-        design: "cover-design-3"
-    },
-    {
-        id: 19,
-        title: "כי מציון (FR)",
-        category: "lessons",
-        categoryLabel: "שיעורים (צרפתית)",
-        description: "ספר בשפה הצרפתית המבוסס על משנתו של מניטו.",
-        link: "https://manitou.org.il/arcive/sfarim/kimitzionfr",
-        imgUrl: "https://manitou.org.il/joomlatools-files/docman-images/kitvayad4.jpg",
-        design: "cover-design-1"
-    },
-    {
-        id: 20,
-        title: "הדיבור והכתב",
-        category: "philosophy",
-        categoryLabel: "פילוסופיה",
-        description: "עיון ביחס שבין התורה שבעל פה לתורה שבכתב.",
-        link: "https://manitou.org.il/arcive/sfarim/diburktav",
-        imgUrl: "https://manitou.org.il/joomlatools-files/docman-images/diburktavtmuna.jpg",
-        design: "cover-design-2"
-    },
-    {
-        id: 21,
-        title: "Un Hébreu d’origine juive Hommage à Manitou - עברי ממקור יהודי",
-        category: "other",
-        categoryLabel: "ספרות",
-        description: "ספר מחווה למניטו בשפה הצרפתית והעברית.",
-        link: "https://manitou.org.il/arcive/sfarim/kojinsky",
-        imgUrl: "https://manitou.org.il/joomlatools-files/docman-images/kojinsky.JPG",
-        design: "cover-design-3"
-    },
-    {
-        id: 22,
-        title: "מעיינות (FR)",
-        category: "lessons",
-        categoryLabel: "שיעורים (צרפתית)",
-        description: "שיעורים על פרשת השבוע בצרפתית.",
-        link: "https://manitou.org.il/arcive/sfarim/mayanot-1",
-        imgUrl: "https://manitou.org.il/joomlatools-files/docman-images/kitvayad4.jpg",
-        design: "cover-design-1"
-    },
-    {
-        id: 23,
-        title: "מניטו על המועדים",
-        category: "lessons",
-        categoryLabel: "שיעורים",
-        description: "משנתו של הרב מניטו על חגי ומועדי ישראל.",
-        link: "https://manitou.org.il/arcive/sfarim/moaadim-sefer",
-        imgUrl: "",
-        design: "cover-design-2"
-    },
-    {
-        id: 24,
-        title: "קול המועד",
-        category: "lessons",
-        categoryLabel: "שיעורים",
-        description: "שיחות על המועדים.",
-        link: "https://manitou.org.il/arcive/sfarim/kolhamoed",
-        imgUrl: "",
-        design: "cover-design-3"
-    }
-];
+let books = [];
 
 function initApp() {
     const booksGrid = document.getElementById('booksGrid');
@@ -248,6 +7,25 @@ function initApp() {
     const modal = document.getElementById('bookModal');
     const closeModal = document.getElementById('closeModal');
     const modalBody = document.getElementById('modalBody');
+    const continueReadingBtn = document.getElementById('continueReadingBtn');
+
+    // Check for last read book
+    const lastReadBookId = localStorage.getItem('lastReadBookId');
+    const lastReadChapterId = localStorage.getItem('lastReadChapterId');
+    
+    // Profile Data
+    let favoriteBooks = JSON.parse(localStorage.getItem('favoriteBooks')) || [];
+    let savedHighlights = JSON.parse(localStorage.getItem('savedHighlights')) || [];
+    
+    if (lastReadBookId && continueReadingBtn) {
+        continueReadingBtn.style.display = 'inline-flex';
+        continueReadingBtn.addEventListener('click', () => {
+            const book = books.find(b => b.id == lastReadBookId);
+            if (book) {
+                openReader(book, lastReadChapterId);
+            }
+        });
+    }
 
     // Render Books
     function renderBooks(booksToRender) {
@@ -280,8 +58,17 @@ function initApp() {
                     <p>מכון מניטו</p>
                 </div>
             `;
+            
+            const isFav = favoriteBooks.includes(book.id);
+            const favIconClass = isFav ? 'fav-active' : '';
+            const heartSvg = isFav ? 
+                `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>` : 
+                `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>`;
 
             bookEl.innerHTML = `
+                <button class="fav-btn ${favIconClass}" data-id="${book.id}">
+                    ${heartSvg}
+                </button>
                 <div class="book-cover ${book.design}" ${bgStyle}>
                     <div class="book-spine-effect"></div>
                     ${overlayContent}
@@ -294,7 +81,16 @@ function initApp() {
                 </div>
             `;
 
-            bookEl.addEventListener('click', () => openModal(book));
+            bookEl.addEventListener('click', (e) => {
+                const favBtn = e.target.closest('.fav-btn');
+                if (favBtn) {
+                    if (typeof toggleFavorite === 'function') {
+                        toggleFavorite(book.id, favBtn);
+                    }
+                    return;
+                }
+                openModal(book);
+            });
             booksGrid.appendChild(bookEl);
         });
     }
@@ -378,8 +174,27 @@ function initApp() {
         document.body.style.overflow = 'hidden';
         
         readerBookTitle.textContent = book.title;
-        chaptersList.innerHTML = '<li style="text-align:center; padding: 1rem;">טוען נתונים...</li>';
-        textContent.innerHTML = '<p style="text-align:center;">שואב את התוכן, אנא המתן...</p>';
+        chaptersList.innerHTML = '<li style="text-align:center; padding: 1rem;"><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text short"></div></li>';
+        textContent.innerHTML = `
+            <div class="skeleton skeleton-title"></div>
+            <div class="skeleton skeleton-text"></div>
+            <div class="skeleton skeleton-text"></div>
+            <div class="skeleton skeleton-text short"></div>
+            <br>
+            <div class="skeleton skeleton-text"></div>
+            <div class="skeleton skeleton-text"></div>
+            <div class="skeleton skeleton-text"></div>
+        `;
+        
+        // Setup Progress Bar Scroll Listener
+        const readerContentArea = document.querySelector('.reader-content-area');
+        const progressBar = document.getElementById('readerProgressBar');
+        readerContentArea.addEventListener('scroll', () => {
+            const scrollTop = readerContentArea.scrollTop;
+            const scrollHeight = readerContentArea.scrollHeight - readerContentArea.clientHeight;
+            const scrollPercentage = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+            progressBar.style.width = scrollPercentage + '%';
+        });
         
         try {
             const response = await fetch(`data/book_${book.id}.json`);
@@ -400,7 +215,7 @@ function initApp() {
                     el.classList.remove('active');
                     if(el.textContent === targetChap.title) el.classList.add('active');
                 });
-                loadChapter(targetChap);
+                loadChapter(targetChap, book);
             } else {
                 chaptersList.innerHTML = '';
                 textContent.innerHTML = '<p style="text-align:center;">לא נמצאו פרקים לספר זה.</p>';
@@ -430,15 +245,33 @@ function initApp() {
             li.addEventListener('click', () => {
                 document.querySelectorAll('.chapters-list li').forEach(el => el.classList.remove('active'));
                 li.classList.add('active');
-                loadChapter(chapter);
+                // Find the book by matching title from header to pass to loadChapter
+                const currentBookTitle = document.getElementById('readerBookTitle').textContent;
+                const currentBook = books.find(b => b.title === currentBookTitle);
+                loadChapter(chapter, currentBook);
             });
             
             chaptersList.appendChild(li);
         });
     }
 
-    function loadChapter(chapter) {
+    function loadChapter(chapter, book) {
         readerChapterTitle.textContent = chapter.title;
+        
+        // Save to local storage for "Continue Reading"
+        if (book) {
+            localStorage.setItem('lastReadBookId', book.id);
+            localStorage.setItem('lastReadChapterId', chapter.id);
+            if(continueReadingBtn) {
+                continueReadingBtn.style.display = 'inline-flex';
+                // Remove old event listeners if any, by cloning the button (simple way)
+                const newBtn = continueReadingBtn.cloneNode(true);
+                continueReadingBtn.parentNode.replaceChild(newBtn, continueReadingBtn);
+                newBtn.addEventListener('click', () => {
+                    openReader(book, chapter.id);
+                });
+            }
+        }
         
         // Clean up the text content (remove Joomla Komento comments, broken logos, etc.)
         const tempDiv = document.createElement('div');
@@ -487,6 +320,37 @@ function initApp() {
             }
         });
 
+        // --- Glossary Tooltips ---
+        const glossary = {
+            "תולדות": "מושג מרכזי המבטא את ההיסטוריה כתהליך התפתחותי של האנושות ושל עם ישראל אל עבר ייעודו.",
+            "עברי": "מי שנמצא בעבר האחר, נושא המוסר המוחלט, המגשר בין הקודש לחול ובין העמים.",
+            "זהות": "מי שאני באמת, ולא רק איך שהסביבה מגדירה אותי. אצל מניטו הזהות היהודית איננה רק דת אלא מהות לאומית-אוניברסלית."
+        };
+        
+        function processNode(node) {
+            if (node.nodeType === Node.TEXT_NODE) {
+                let text = node.textContent;
+                let replaced = false;
+                for (const [term, definition] of Object.entries(glossary)) {
+                    // Match whole word with basic Hebrew punctuation handling
+                    const regex = new RegExp(`(^|\\s|[.,;!?])(${term})(?=\\s|[.,;!?]|$)`, 'g');
+                    if (regex.test(text)) {
+                        text = text.replace(regex, `$1<span class="glossary-term">$2<span class="glossary-tooltip">${definition}</span></span>`);
+                        replaced = true;
+                    }
+                }
+                if (replaced) {
+                    const span = document.createElement('span');
+                    span.innerHTML = text;
+                    node.replaceWith(...span.childNodes);
+                }
+            } else if (node.nodeType === Node.ELEMENT_NODE && !['SCRIPT', 'STYLE'].includes(node.tagName)) {
+                // Must clone array because we are modifying childNodes during iteration
+                Array.from(node.childNodes).forEach(processNode);
+            }
+        }
+        Array.from(tempDiv.childNodes).forEach(processNode);
+
         textContent.innerHTML = tempDiv.innerHTML;
         textContent.parentElement.scrollTop = 0;
         
@@ -522,6 +386,79 @@ function initApp() {
         updateThemeBtnText();
     });
 
+    // --- Text Settings Logic ---
+    const toggleTextSettingsBtn = document.getElementById('toggleTextSettingsBtn');
+    const textSettingsDropdown = document.getElementById('textSettingsDropdown');
+    const decreaseFontBtn = document.getElementById('decreaseFontBtn');
+    const increaseFontBtn = document.getElementById('increaseFontBtn');
+    const fontSizeDisplay = document.getElementById('fontSizeDisplay');
+    const fontBtns = document.querySelectorAll('.font-btn');
+
+    let currentFontSize = parseFloat(localStorage.getItem('readerFontSize')) || 1.15;
+    let currentFontFamily = localStorage.getItem('readerFontFamily') || 'serif';
+    
+    function applyTextSettings() {
+        if(textContent) {
+            textContent.style.fontSize = currentFontSize + 'rem';
+            textContent.style.fontFamily = currentFontFamily === 'sans' ? 'var(--font-sans)' : 'var(--font-serif)';
+            
+            // Update display
+            const percent = Math.round((currentFontSize / 1.15) * 100);
+            if(fontSizeDisplay) fontSizeDisplay.textContent = percent + '%';
+            
+            // Update font buttons
+            fontBtns.forEach(btn => {
+                if (btn.dataset.font === currentFontFamily) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            localStorage.setItem('readerFontSize', currentFontSize);
+            localStorage.setItem('readerFontFamily', currentFontFamily);
+        }
+    }
+    
+    if (toggleTextSettingsBtn && textSettingsDropdown) {
+        toggleTextSettingsBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isVisible = textSettingsDropdown.style.display === 'block';
+            textSettingsDropdown.style.display = isVisible ? 'none' : 'block';
+        });
+        
+        // Close when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!toggleTextSettingsBtn.contains(e.target) && !textSettingsDropdown.contains(e.target)) {
+                textSettingsDropdown.style.display = 'none';
+            }
+        });
+        
+        decreaseFontBtn.addEventListener('click', () => {
+            if (currentFontSize > 0.8) {
+                currentFontSize -= 0.1;
+                applyTextSettings();
+            }
+        });
+        
+        increaseFontBtn.addEventListener('click', () => {
+            if (currentFontSize < 2.5) {
+                currentFontSize += 0.1;
+                applyTextSettings();
+            }
+        });
+        
+        fontBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentFontFamily = btn.dataset.font;
+                applyTextSettings();
+            });
+        });
+        
+        // Initial application
+        applyTextSettings();
+    }
+
     // Filtering
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
@@ -536,9 +473,213 @@ function initApp() {
     // Searching
     searchInput.addEventListener('input', (e) => {
         const searchTerm = e.target.value.toLowerCase();
-        const activeTab = document.querySelector('.tab.active').dataset.filter;
+        const activeTabEl = document.querySelector('.tabs-container .tab.active');
+        const activeTab = activeTabEl ? activeTabEl.dataset.filter : 'all';
         filterBooks(activeTab, searchTerm);
     });
+
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            searchInput.blur();
+            const searchTerm = searchInput.value.toLowerCase();
+            const activeTabEl = document.querySelector('.tabs-container .tab.active');
+            const activeTab = activeTabEl ? activeTabEl.dataset.filter : 'all';
+            filterBooks(activeTab, searchTerm);
+        }
+    });
+
+    // --- Advanced Search Section Logic ---
+    const scrollToAdvSearchBtn = document.getElementById('scrollToAdvSearch');
+    const advSearchSection = document.getElementById('advancedSearchSection');
+    const advSearchInput = document.getElementById('advSearchInput');
+    const advSearchBtn = document.getElementById('advSearchBtn');
+    const advSearchResults = document.getElementById('advSearchResults');
+    const advSearchCategory = document.getElementById('advSearchCategory');
+    const advSearchToolbarButtons = document.querySelectorAll('#advSearchToolbar .toolbar-btn');
+    
+    let currentSearchMode = 'and'; // 'and', 'or', 'exact'
+
+    if (scrollToAdvSearchBtn && advSearchSection) {
+        scrollToAdvSearchBtn.addEventListener('click', () => {
+            advSearchSection.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => advSearchInput.focus(), 500);
+        });
+    }
+
+    // Handle Toolbar Mode Selection
+    if (advSearchToolbarButtons) {
+        advSearchToolbarButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                advSearchToolbarButtons.forEach(b => {
+                    b.classList.remove('active');
+                    b.style.background = 'var(--secondary-bg)';
+                    b.style.color = 'var(--text-muted)';
+                    b.style.border = '2px solid var(--border)';
+                });
+                btn.classList.add('active');
+                btn.style.background = 'var(--accent)';
+                btn.style.color = 'var(--primary-bg)';
+                btn.style.border = '2px solid var(--accent)';
+                currentSearchMode = btn.dataset.mode;
+            });
+        });
+    }
+
+    if (advSearchInput) {
+        advSearchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') advSearchBtn.click();
+        });
+    }
+
+    if(advSearchBtn) {
+        advSearchBtn.addEventListener('click', async () => {
+            let rawQuery = advSearchInput.value.trim().toLowerCase();
+            if (!rawQuery) return;
+            
+            const categoryFilter = advSearchCategory ? advSearchCategory.value : 'all';
+            
+            advSearchResults.innerHTML = '<div style="text-align:center; padding: 2rem;"><p>סורק את הספרים במאגר...</p></div>';
+            
+            let allResults = [];
+            
+            // If user typed quotes manually, force exact mode, otherwise use toolbar mode
+            const isManualExact = rawQuery.startsWith('"') && rawQuery.endsWith('"');
+            const searchMode = isManualExact ? 'exact' : currentSearchMode;
+            
+            let searchWords = [];
+            if (searchMode === 'exact') {
+                searchWords = isManualExact ? [rawQuery.slice(1, -1).trim()] : [rawQuery];
+            } else {
+                searchWords = rawQuery.split(/\s+/).filter(w => w.length > 0);
+            }
+            
+            if (searchWords.length === 0) {
+                advSearchResults.innerHTML = '<div style="text-align:center; padding: 2rem;"><p>נא להזין מילת חיפוש חוקית.</p></div>';
+                return;
+            }
+            
+            // Iterate all books to fetch their data
+            for (const b of books) {
+                if (categoryFilter !== 'all' && b.category !== categoryFilter) continue;
+                
+                try {
+                    const res = await fetch(`data/book_${b.id}.json`);
+                    if (res.ok) {
+                        const chapters = await res.json();
+                        chapters.forEach(chap => {
+                            if (!chap.text) return;
+                            
+                            const tempDiv = document.createElement('div');
+                            tempDiv.innerHTML = chap.text;
+                            const plainText = tempDiv.textContent || tempDiv.innerText || "";
+                            const lowerText = plainText.toLowerCase();
+                            
+                            // Check match based on mode
+                            let isMatch = false;
+                            if (searchMode === 'exact') {
+                                isMatch = lowerText.includes(searchWords[0]);
+                            } else if (searchMode === 'and') {
+                                isMatch = searchWords.every(word => lowerText.includes(word));
+                            } else if (searchMode === 'or') {
+                                isMatch = searchWords.some(word => lowerText.includes(word));
+                            }
+                            
+                            if (!isMatch) return;
+                            
+                            // Calculate score for sorting (optional feature, we'll just count total occurrences)
+                            let matchScore = 0;
+                            searchWords.forEach(word => {
+                                const occurrences = (lowerText.match(new RegExp(word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi')) || []).length;
+                                matchScore += occurrences;
+                            });
+                            
+                            // Find first occurrence to center snippet
+                            let firstFoundWord = searchWords.find(word => lowerText.includes(word));
+                            let index = lowerText.indexOf(firstFoundWord);
+                            
+                            // In Exact mode we can return up to 3 snippets. In AND/OR we return 1 long snippet.
+                            let occurrences = 0;
+                            while (index !== -1 && occurrences < (searchMode === 'exact' ? 3 : 1)) {
+                                const start = Math.max(0, index - 80);
+                                const end = Math.min(plainText.length, index + 200); 
+                                
+                                let snippet = plainText.substring(start, end);
+                                if (start > 0) snippet = '...' + snippet;
+                                if (end < plainText.length) snippet = snippet + '...';
+                                
+                                searchWords.forEach(word => {
+                                    try {
+                                        const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                                        const regex = new RegExp(`(${escapedWord})`, 'gi');
+                                        snippet = snippet.replace(regex, '%%MARK%%$1%%ENDMARK%%');
+                                    } catch(e) {}
+                                });
+                                
+                                snippet = snippet.replace(/%%MARK%%/g, '<mark style="background: var(--accent); color: var(--primary-bg); padding: 0 4px; border-radius: 3px;">');
+                                snippet = snippet.replace(/%%ENDMARK%%/g, '</mark>');
+                                
+                                allResults.push({
+                                    book: b,
+                                    chapter: chap,
+                                    snippet: snippet,
+                                    score: matchScore
+                                });
+                                
+                                index = lowerText.indexOf(firstFoundWord, index + firstFoundWord.length);
+                                occurrences++;
+                            }
+                        });
+                    }
+                } catch (e) {
+                    // Skip if not downloaded
+                }
+            }
+            
+            // Sort OR results by score
+            if (searchMode === 'or') {
+                allResults.sort((a, b) => b.score - a.score);
+            }
+            
+            // Render results
+            if (allResults.length === 0) {
+                advSearchResults.innerHTML = `
+                    <div style="text-align: center; color: var(--text-muted); margin-top: 3rem;">
+                        <h3>לא נמצאו תוצאות עבור החיפוש</h3>
+                        <p>נסה לשנות את סוג החיפוש (למשל מ-AND ל-OR) או לחפש מילים אחרות.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            advSearchResults.innerHTML = `
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--text-main); font-family: var(--font-serif);">נמצאו ${allResults.length} תוצאות</h3>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    ${allResults.map(res => `
+                        <div class="search-result-item" style="padding: 1.5rem; background: var(--primary-bg); border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span style="font-weight: bold; color: var(--accent); font-family: var(--font-serif); font-size: 1.2rem;">${res.book.title}</span>
+                                <span style="color: var(--text-muted); font-size: 0.9rem;">${res.chapter.title} ${res.score ? `(ציון התאמה: ${res.score})` : ''}</span>
+                            </div>
+                            <p style="color: var(--text-main); line-height: 1.6; font-size: 1rem;">${res.snippet}</p>
+                            <button class="btn btn-sm" onclick="openModal(books.find(b=>b.id===${res.book.id}))" style="margin-top: 1rem; border: 1px solid var(--accent); color: var(--accent); background: transparent; padding: 0.3rem 1rem; border-radius: 20px; cursor: pointer;">פתח ספר זה</button>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        });
+    }
+
+    const searchBtn = searchInput.nextElementSibling;
+    if (searchBtn && searchBtn.classList.contains('search-btn')) {
+        searchBtn.addEventListener('click', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            const activeTabEl = document.querySelector('.tabs-container .tab.active');
+            const activeTab = activeTabEl ? activeTabEl.dataset.filter : 'all';
+            filterBooks(activeTab, searchTerm);
+        });
+    }
 
     function filterBooks(filter, searchTerm) {
         let filteredBooks = books;
@@ -607,15 +748,27 @@ function initApp() {
 
     if(executeDeepSearch) {
         executeDeepSearch.addEventListener('click', async () => {
-            const query = deepSearchInput.value.trim().toLowerCase();
-            if (!query) return;
+            let rawQuery = deepSearchInput.value.trim().toLowerCase();
+            if (!rawQuery) return;
             
-            deepSearchResults.innerHTML = '<div style="text-align:center; padding: 2rem;"><p>סורק את כל הספרים במאגר...</p></div>';
+            const categoryFilter = document.getElementById('deepSearchCategory') ? document.getElementById('deepSearchCategory').value : 'all';
+            
+            deepSearchResults.innerHTML = '<div style="text-align:center; padding: 2rem;"><p>סורק את הספרים במאגר...</p></div>';
             
             let allResults = [];
             
+            const isExactMatch = rawQuery.startsWith('"') && rawQuery.endsWith('"');
+            const searchWords = isExactMatch ? [rawQuery.slice(1, -1).trim()] : rawQuery.split(/\s+/).filter(w => w.length > 0);
+            
+            if (searchWords.length === 0) {
+                deepSearchResults.innerHTML = '<div style="text-align:center; padding: 2rem;"><p>נא להזין מילת חיפוש חוקית.</p></div>';
+                return;
+            }
+            
             // Iterate all books to fetch their data
             for (const b of books) {
+                if (categoryFilter !== 'all' && b.category !== categoryFilter) continue;
+                
                 try {
                     const res = await fetch(`data/book_${b.id}.json`);
                     if (res.ok) {
@@ -629,21 +782,39 @@ function initApp() {
                             const plainText = tempDiv.textContent || tempDiv.innerText || "";
                             
                             const lowerText = plainText.toLowerCase();
-                            let index = lowerText.indexOf(query);
                             
-                            // Find all occurrences in this chapter
+                            // Check if ALL search words exist in this chapter
+                            const allExist = searchWords.every(word => lowerText.includes(word));
+                            if (!allExist) return;
+                            
+                            // For exact match, we can find multiple occurrences.
+                            // For AND search, we'll just find the first occurrence of the FIRST word to center the snippet.
+                            let index = lowerText.indexOf(searchWords[0]);
                             let occurrences = 0;
-                            while (index !== -1 && occurrences < 3) { // limit to 3 snippets per chapter
-                                const start = Math.max(0, index - 60);
-                                const end = Math.min(plainText.length, index + query.length + 60);
+                            
+                            while (index !== -1 && occurrences < (isExactMatch ? 3 : 1)) {
+                                const start = Math.max(0, index - 80);
+                                const end = Math.min(plainText.length, index + 200); // give a bit more room for AND searches
                                 
                                 let snippet = plainText.substring(start, end);
                                 if (start > 0) snippet = '...' + snippet;
                                 if (end < plainText.length) snippet = snippet + '...';
                                 
-                                // Highlight the query using Regex for case-insensitive exact replacement
-                                const regex = new RegExp(`(${query})`, 'gi');
-                                snippet = snippet.replace(regex, '<mark style="background: var(--accent); color: var(--primary-bg); padding: 0 4px; border-radius: 3px;">$1</mark>');
+                                // Highlight all search words
+                                searchWords.forEach(word => {
+                                    try {
+                                        // Escape special regex characters in query
+                                        const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                                        const regex = new RegExp(`(${escapedWord})`, 'gi');
+                                        // Use a temporary token to avoid replacing already added HTML tags
+                                        snippet = snippet.replace(regex, '%%MARK%%$1%%ENDMARK%%');
+                                    } catch(e) {
+                                        console.warn("Regex highlighting failed", e);
+                                    }
+                                });
+                                
+                                snippet = snippet.replace(/%%MARK%%/g, '<mark style="background: var(--accent); color: var(--primary-bg); padding: 0 4px; border-radius: 3px;">');
+                                snippet = snippet.replace(/%%ENDMARK%%/g, '</mark>');
                                 
                                 allResults.push({
                                     book: b,
@@ -651,7 +822,7 @@ function initApp() {
                                     snippet: snippet
                                 });
                                 
-                                index = lowerText.indexOf(query, index + query.length);
+                                index = lowerText.indexOf(searchWords[0], index + searchWords[0].length);
                                 occurrences++;
                             }
                         });
@@ -665,8 +836,8 @@ function initApp() {
             if (allResults.length === 0) {
                 deepSearchResults.innerHTML = `
                     <div style="text-align: center; color: var(--text-muted); margin-top: 3rem;">
-                        <h3>לא נמצאו תוצאות עבור "${query}"</h3>
-                        <p>נסה לחפש מילה אחרת, או ודא שהספרים הרלוונטיים כבר נסרקו למערכת.</p>
+                        <h3>לא נמצאו תוצאות עבור "${rawQuery}"</h3>
+                        <p>נסה לחפש מילים אחרות, לשנות קטגוריה, או ודא שהספרים הרלוונטיים כבר נסרקו למערכת.</p>
                     </div>
                 `;
                 return;
@@ -761,10 +932,358 @@ function initApp() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
+
+    // --- Audio Playback & Highlighting (Mockup) ---
+    const playAudioBtn = document.getElementById('playAudioBtn');
+    let synth = window.speechSynthesis;
+    let isPlaying = false;
+    let utterance = null;
+    let originalHtml = "";
+    
+    if (playAudioBtn) {
+        playAudioBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                synth.cancel();
+                isPlaying = false;
+                playAudioBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg><span>הקרא טקסט (ניסיון)</span>';
+                if (originalHtml) {
+                    textContent.innerHTML = originalHtml;
+                }
+                return;
+            }
+
+            // Start playing
+            isPlaying = true;
+            playAudioBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg><span>עצור הקראה</span>';
+            
+            originalHtml = textContent.innerHTML;
+            const text = textContent.innerText.trim();
+            
+            // Build char to word index mapping
+            const words = text.split(/(\s+)/); // Keep spaces to accurately measure lengths
+            let charToWord = {};
+            let cleanWords = [];
+            let currentWordIndex = 0;
+            let currentCharIndex = 0;
+            
+            for(let i = 0; i < words.length; i++) {
+                let part = words[i];
+                if (part.trim().length > 0) {
+                    cleanWords.push(part);
+                    for(let j = 0; j < part.length; j++) {
+                        charToWord[currentCharIndex + j] = currentWordIndex;
+                    }
+                    currentCharIndex += part.length;
+                    currentWordIndex++;
+                } else {
+                    currentCharIndex += part.length; // Just spaces
+                }
+            }
+
+            // Replace HTML with spans
+            let spansHtml = '<div style="line-height: 2; font-size: 1.1rem;">';
+            cleanWords.forEach((w, idx) => {
+                spansHtml += `<span class="audio-word" id="aw-${idx}">${w}</span> `;
+            });
+            spansHtml += '</div>';
+            textContent.innerHTML = spansHtml;
+
+            // Setup speech
+            utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'he-IL';
+            utterance.rate = 0.9;
+            
+            // Try to find a Hebrew voice
+            const voices = synth.getVoices();
+            const heVoice = voices.find(v => v.lang === 'he-IL');
+            if (heVoice) utterance.voice = heVoice;
+
+            let lastWordIdx = -1;
+
+            utterance.onboundary = (event) => {
+                if (event.name !== 'word') return;
+                
+                const charIndex = event.charIndex;
+                const wordIdx = charToWord[charIndex];
+                
+                if (wordIdx !== undefined && wordIdx !== lastWordIdx) {
+                    // Remove highlight from previous
+                    if (lastWordIdx !== -1) {
+                        const prevEl = document.getElementById(`aw-${lastWordIdx}`);
+                        if (prevEl) prevEl.classList.remove('word-highlight');
+                    }
+                    
+                    // Add highlight to current
+                    const currEl = document.getElementById(`aw-${wordIdx}`);
+                    if (currEl) {
+                        currEl.classList.add('word-highlight');
+                        // Scroll into view smoothly
+                        currEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    
+                    lastWordIdx = wordIdx;
+                }
+            };
+
+            utterance.onend = () => {
+                isPlaying = false;
+                playAudioBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg><span>הקרא טקסט (ניסיון)</span>';
+                textContent.innerHTML = originalHtml; // Restore original HTML
+            };
+
+            synth.speak(utterance);
+        });
+        
+        // Handle voices changed (sometimes needed for Chrome)
+        speechSynthesis.onvoiceschanged = () => {
+            if(isPlaying) return; // Don't interrupt
+        };
+    }
+
+    // --- Selection Context Menu & Highlighting ---
+    const textContextMenu = document.getElementById('textContextMenu');
+    const highlightBtn = document.getElementById('highlightBtn');
+    const shareQuoteBtn = document.getElementById('shareQuoteBtn');
+    const toastNotification = document.getElementById('toastNotification');
+    let currentSelectionRange = null;
+
+    if (textContent && textContextMenu) {
+        // We use mouseup/touchend to check selection when user finishes selecting
+        textContent.addEventListener('mouseup', (e) => {
+            setTimeout(handleSelection, 10);
+        });
+        textContent.addEventListener('touchend', (e) => {
+            setTimeout(handleSelection, 10);
+        });
+
+        function handleSelection() {
+            const selection = window.getSelection();
+            if (selection && selection.toString().trim().length > 0) {
+                const range = selection.getRangeAt(0);
+                
+                // Ensure selection is inside textContent
+                if (textContent.contains(range.commonAncestorContainer)) {
+                    currentSelectionRange = range.cloneRange();
+                    
+                    const rect = range.getBoundingClientRect();
+                    
+                    // Position menu centered above selection
+                    textContextMenu.style.display = 'flex';
+                    const menuWidth = textContextMenu.offsetWidth;
+                    const menuHeight = textContextMenu.offsetHeight;
+                    
+                    // Small offset to avoid covering the text
+                    textContextMenu.style.left = (rect.left + (rect.width / 2) - (menuWidth / 2)) + 'px';
+                    textContextMenu.style.top = (rect.top - menuHeight - 15) + 'px';
+                }
+            } else {
+                textContextMenu.style.display = 'none';
+                currentSelectionRange = null;
+            }
+        }
+
+        // Hide menu on mousedown outside
+        document.addEventListener('mousedown', (e) => {
+            if (textContextMenu && !textContextMenu.contains(e.target) && !textContent.contains(e.target)) {
+                textContextMenu.style.display = 'none';
+            }
+        });
+
+        if (highlightBtn) {
+            highlightBtn.addEventListener('click', () => {
+                if (currentSelectionRange) {
+                    try {
+                        const span = document.createElement('span');
+                        span.className = 'highlighted-text';
+                        currentSelectionRange.surroundContents(span);
+                        
+                        // Save highlight
+                        const selectedText = currentSelectionRange.toString().trim();
+                        const bookTitle = document.getElementById('readerBookTitle').textContent;
+                        savedHighlights.push({
+                            text: selectedText,
+                            bookTitle: bookTitle,
+                            date: new Date().toLocaleDateString('he-IL')
+                        });
+                        localStorage.setItem('savedHighlights', JSON.stringify(savedHighlights));
+                        
+                    } catch(e) {
+                        // surroundContents fails if selection crosses node boundaries in complex ways
+                        // In a real app we'd use a more robust range highlighting library
+                        console.warn("Complex selection highlighting not fully supported natively");
+                    }
+                    
+                    textContextMenu.style.display = 'none';
+                    window.getSelection().removeAllRanges();
+                    
+                    showToast('הטקסט סומן ונשמר לאזור האישי');
+                }
+            });
+        }
+
+        if (shareQuoteBtn) {
+            shareQuoteBtn.addEventListener('click', () => {
+                if (currentSelectionRange) {
+                    const selectedText = currentSelectionRange.toString().trim();
+                    const bookTitle = document.getElementById('readerBookTitle').textContent;
+                    
+                    const textToShare = `"${selectedText}"\n\n- מתוך הספר '${bookTitle}' | הרב אשכנזי (מניטו)\nhttps://manitou.org.il`;
+                    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(textToShare)}`;
+                    
+                    window.open(whatsappUrl, '_blank');
+                    
+                    textContextMenu.style.display = 'none';
+                    window.getSelection().removeAllRanges();
+                }
+            });
+        }
+    }
+
+    function showToast(message) {
+        if (toastNotification) {
+            toastNotification.textContent = message;
+            toastNotification.style.display = 'block';
+            setTimeout(() => {
+                toastNotification.style.display = 'none';
+            }, 3000);
+        }
+    }
+
+    // --- Profile Logic ---
+    const openProfileBtn = document.getElementById('openProfileBtn');
+    const profileModal = document.getElementById('profileModal');
+    const closeProfileModalBtn = document.getElementById('closeProfileModal');
+    const profileTabs = document.querySelectorAll('.profile-tab');
+    const profileTabContents = document.querySelectorAll('.profile-tab-content');
+    const favoritesGrid = document.getElementById('favoritesGrid');
+    const highlightsList = document.getElementById('highlightsList');
+
+    window.toggleFavorite = function(bookId, btnEl) {
+        const index = favoriteBooks.indexOf(bookId);
+        if (index > -1) {
+            favoriteBooks.splice(index, 1);
+            btnEl.classList.remove('fav-active');
+            btnEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>`;
+            showToast('הוסר מהמועדפים');
+        } else {
+            favoriteBooks.push(bookId);
+            btnEl.classList.add('fav-active');
+            btnEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>`;
+            showToast('נוסף למועדפים');
+        }
+        localStorage.setItem('favoriteBooks', JSON.stringify(favoriteBooks));
+    };
+
+    if (openProfileBtn && profileModal) {
+        openProfileBtn.addEventListener('click', () => {
+            profileModal.classList.add('active');
+            renderProfileData();
+        });
+
+        if (closeProfileModalBtn) {
+            closeProfileModalBtn.addEventListener('click', () => {
+                profileModal.classList.remove('active');
+            });
+        }
+
+        profileTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                profileTabs.forEach(t => {
+                    t.classList.remove('active');
+                    t.style.color = 'var(--text-muted)';
+                    t.style.borderBottom = 'none';
+                });
+                tab.classList.add('active');
+                tab.style.color = 'var(--accent)';
+                tab.style.borderBottom = '2px solid var(--accent)';
+
+                profileTabContents.forEach(content => content.style.display = 'none');
+                const target = document.getElementById(tab.dataset.target);
+                if (target) target.style.display = 'block';
+            });
+        });
+    }
+
+    function renderProfileData() {
+        if (!favoritesGrid || !highlightsList) return;
+        
+        // Render Favorites
+        favoritesGrid.innerHTML = '';
+        const favs = books.filter(b => favoriteBooks.includes(b.id));
+        if (favs.length === 0) {
+            favoritesGrid.style.display = 'block';
+            favoritesGrid.innerHTML = '<p style="color: var(--text-muted);">טרם הוספת ספרים למועדפים.</p>';
+        } else {
+            favoritesGrid.style.display = 'grid';
+            favs.forEach(book => {
+                const bgStyle = book.imgUrl ? `style="background-image: url('${book.imgUrl}'); background-size: cover; background-position: center; border-radius: 8px;"` : "";
+                const overlayContent = book.imgUrl ? '' : `
+                    <div class="book-title-overlay" style="border-radius: 8px;">
+                        <h3>${book.title}</h3>
+                        <div class="gold-line"></div>
+                    </div>
+                `;
+                const el = document.createElement('div');
+                el.style.cursor = 'pointer';
+                el.innerHTML = `
+                    <div class="book-cover ${book.design}" ${bgStyle} style="height: 250px;">
+                        ${overlayContent}
+                    </div>
+                    <h4 style="margin-top: 1rem; color: var(--text-main); font-size: 1.1rem; text-align: center;">${book.title}</h4>
+                `;
+                el.addEventListener('click', () => {
+                    profileModal.classList.remove('active');
+                    openModal(book);
+                });
+                favoritesGrid.appendChild(el);
+            });
+        }
+
+        // Render Highlights
+        highlightsList.innerHTML = '';
+        if (savedHighlights.length === 0) {
+            highlightsList.innerHTML = '<p style="color: var(--text-muted);">טרם שמרת ציטוטים מודגשים.</p>';
+        } else {
+            // Reverse so newest is first
+            [...savedHighlights].reverse().forEach(hl => {
+                const el = document.createElement('div');
+                el.style.background = 'var(--primary-bg)';
+                el.style.padding = '1.5rem';
+                el.style.borderRadius = '12px';
+                el.style.border = '1px solid var(--border)';
+                el.innerHTML = `
+                    <p style="font-size: 1.2rem; color: var(--text-main); line-height: 1.6; font-family: var(--font-serif); margin-bottom: 1rem; border-right: 4px solid var(--accent); padding-right: 1rem;">
+                        "${hl.text}"
+                    </p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; color: var(--text-muted);">
+                        <span>מתוך: <strong style="color: var(--accent);">${hl.bookTitle}</strong></span>
+                        <span>${hl.date}</span>
+                    </div>
+                `;
+                highlightsList.appendChild(el);
+            });
+        }
+    }
+
+}
+
+// Initialize when DOM is ready
+async function startApp() {
+    try {
+        const response = await fetch('data/catalog.json');
+        if (response.ok) {
+            books = await response.json();
+        } else {
+            console.error('Failed to load catalog');
+        }
+    } catch (e) {
+        console.error('Error loading catalog:', e);
+    }
+    initApp();
 }
 
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initApp);
+    document.addEventListener('DOMContentLoaded', startApp);
 } else {
-    initApp();
+    startApp();
 }

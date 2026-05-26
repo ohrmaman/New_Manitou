@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ממשק ניהול - מכון מניטו</title>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e293b;
+            --secondary: #334155;
+            --accent: #d4af37;
+            --bg: #0f172a;
+            --text: #f8fafc;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --sidebar-width: 250px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Heebo', sans-serif; }
+        body { background: var(--bg); color: var(--text); display: flex; height: 100vh; overflow: hidden; }
+        
+        /* Sidebar */
+        .sidebar { width: var(--sidebar-width); background: var(--primary); border-left: 1px solid var(--secondary); display: flex; flex-direction: column; }
+        .sidebar-header { padding: 2rem 1rem; border-bottom: 1px solid var(--secondary); text-align: center; }
+        .sidebar-header h2 { color: var(--accent); }
+        .nav-links { list-style: none; padding: 1rem 0; flex: 1; }
+        .nav-links li { padding: 0; margin-bottom: 0.5rem; }
+        .nav-links a { display: block; padding: 1rem 1.5rem; color: var(--text); text-decoration: none; transition: 0.2s; font-size: 1.1rem; }
+        .nav-links a:hover, .nav-links a.active { background: rgba(212, 175, 55, 0.1); color: var(--accent); border-right: 4px solid var(--accent); }
+        .sidebar-footer { padding: 1rem; border-top: 1px solid var(--secondary); text-align: center; }
+        
+        /* Main Content */
+        .main-content { flex: 1; overflow-y: auto; padding: 2rem 3rem; position: relative; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid var(--secondary); padding-bottom: 1rem; }
+        
+        /* Components */
+        .card { background: var(--primary); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid var(--secondary); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: bold; color: #cbd5e1; }
+        input, select, textarea { width: 100%; padding: 0.8rem; border-radius: 6px; border: 1px solid var(--secondary); background: var(--bg); color: var(--text); outline: none; font-size: 1rem; transition: border 0.3s; }
+        input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+        
+        .btn { padding: 0.8rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-primary { background: var(--accent); color: #000; }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-secondary { background: var(--secondary); color: var(--text); }
+        .btn-secondary:hover { background: #475569; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-danger:hover { opacity: 0.9; }
+        .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.9rem; }
+        
+        /* Tables & Lists */
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        .data-table th, .data-table td { padding: 1rem; text-align: right; border-bottom: 1px solid var(--secondary); }
+        .data-table th { color: var(--accent); font-weight: bold; }
+        .data-table tr:hover { background: rgba(255,255,255,0.02); }
+        
+        .chapter-list { list-style: none; }
+        .chapter-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--bg); border: 1px solid var(--secondary); border-radius: 6px; margin-bottom: 0.5rem; }
+        
+        /* Views */
+        .view { display: none; animation: fadeIn 0.3s; }
+        .view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        /* Editor */
+        #editorContent { min-height: 400px; resize: vertical; font-family: inherit; line-height: 1.6; }
+        
+        /* Loader */
+        #loader { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 1000; flex-direction: column; }
+        .spinner { border: 4px solid var(--secondary); border-top: 4px solid var(--accent); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<div id="loader">
+    <div class="spinner"></div>
+    <p style="margin-top: 1rem; font-size: 1.2rem; color: var(--accent);">אנא המתן...</p>
+</div>
+
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <h2>ניהול ספריה</h2>
+    </div>
+    <ul class="nav-links">
+        <li><a href="#" onclick="showView('booksView')" class="active" id="nav-books">📚 כל הספרים</a></li>
+        <li><a href="#" onclick="showView('addBookView')" id="nav-add">➕ ספר חדש</a></li>
+    </ul>
+    <div class="sidebar-footer">
+        <a href="/" style="color: #94a3b8; text-decoration: none;">&larr; חזרה לאתר הראשי</a>
+    </div>
+</aside>
+
+<main class="main-content">
+    
+    <!-- VIEW 1: All Books -->
+    <div id="booksView" class="view active">
+        <div class="page-header">
+            <h1>מאגר הספרים והשיעורים</h1>
+            <button class="btn btn-primary" onclick="showView('addBookView')">הוסף ספר חדש</button>
+        </div>
+        <div class="card">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>מזהה</th>
+                        <th>כותרת הספר</th>
+                        <th>קטגוריה</th>
+                        <th>פעולות</th>
+                    </tr>
+                </thead>
+                <tbody id="booksTableBody">
+                    <!-- Injected -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- VIEW 2: Add Book -->
+    <div id="addBookView" class="view">
+        <div class="page-header">
+            <h1>יצירת ספר חדש</h1>
+            <button class="btn btn-secondary" onclick="showView('booksView')">חזור לרשימה</button>
+        </div>
+        <div class="card">
+            <form id="addBookForm">
+                <div class="form-group">
+                    <label>כותרת הספר:</label>
+                    <input type="text" id="addTitle" required placeholder="לדוגמה: שערי דמעה 4">
+                </div>
+                <div class="form-group">
+                    <label>תיאור קצר:</label>
+                    <input type="text" id="addDesc" required placeholder="תקציר הספר...">
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>קטגוריה:</label>
+                        <select id="addCat" required>
+                            <option value="history">היסטוריה ומדרש</option>
+                            <option value="philosophy">פילוסופיה</option>
+                            <option value="lessons">שיעורים</option>
+                            <option value="other">אחר</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>לינק לתמונה (אופציונלי):</label>
+                        <input type="url" id="addImg" placeholder="https://...">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">שמור והמשך לניהול פרקים</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- VIEW 3: Book Manager (Chapters) -->
+    <div id="bookManagerView" class="view">
+        <div class="page-header">
+            <div>
+                <h1 id="bmTitle">ניהול ספר</h1>
+                <p style="color: #94a3b8; margin-top: 0.5rem;">עריכת פרטים ופרקים</p>
+            </div>
+            <button class="btn btn-secondary" onclick="showView('booksView')">חזור לרשימה</button>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+            <!-- Left: Book Details -->
+            <div class="card">
+                <h2 style="margin-bottom: 1rem; color: var(--accent);">פרטי הספר</h2>
+                <form id="editBookForm">
+                    <input type="hidden" id="editBookId">
+                    <div class="form-group">
+                        <label>כותרת:</label>
+                        <input type="text" id="editTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label>תיאור:</label>
+                        <textarea id="editDesc" rows="3" required></textarea>
+                    </div>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="saveBookDetails()">שמור פרטים</button>
+                </form>
+                
+                <hr style="border-color: var(--secondary); margin: 2rem 0;">
+                
+                <h3 style="margin-bottom: 1rem; color: var(--accent);">ייבוא אוטומטי מ-PDF</h3>
+                <p style="font-size: 0.9rem; margin-bottom: 1rem;">העלה קובץ PDF והמערכת תחלץ ממנו את הטקסט ותצרף אותו כפרק חדש לספר זה.</p>
+                <input type="file" id="pdfFile" accept="application/pdf" style="margin-bottom: 1rem;">
+                <button type="button" class="btn btn-primary btn-sm" onclick="uploadPDF()">העלה ועבד PDF</button>
+            </div>
+            
+            <!-- Right: Chapters List -->
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2 style="color: var(--accent);">פרקי הספר</h2>
+                    <button class="btn btn-primary btn-sm" onclick="openChapterEditor()">➕ הוסף פרק חדש</button>
+                </div>
+                <ul class="chapter-list" id="chaptersList">
+                    <!-- Injected -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW 4: Chapter Editor -->
+    <div id="chapterEditorView" class="view">
+        <div class="page-header">
+            <h1 id="editorHeader">עריכת פרק</h1>
+            <button class="btn btn-secondary" onclick="showView('bookManagerView')">ביטול / חזור</button>
+        </div>
+        <div class="card">
+            <input type="hidden" id="editorChapterIndex">
+            <div class="form-group">
+                <label>כותרת הפרק:</label>
+                <input type="text" id="editorTitle" placeholder="לדוגמה: פרק א' - ההתחלה" required style="font-size: 1.2rem; font-weight: bold;">
+            </div>
+            <div class="form-group">
+                <label>תוכן הפרק (תומך בתגיות HTML בסיסיות כמו &lt;b&gt;, &lt;br&gt;):</label>
+                <textarea id="editorContent" placeholder="הקלד או הדבק את תוכן הפרק כאן..."></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="saveChapter()">שמור פרק</button>
+        </div>
+    </div>
+
+</main>
+
+<script>
+    let currentBooks = [];
+    let activeBook = null;
+    let activeChapters = [];
+
+    // Navigation
+    function showView(viewId) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById(viewId).classList.add('active');
+        
+        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+        if(viewId === 'booksView') document.getElementById('nav-books').classList.add('active');
+        if(viewId === 'addBookView') document.getElementById('nav-add').classList.add('active');
+        
+        if(viewId === 'booksView') loadBooks();
+    }
+
+    function showLoader() { document.getElementById('loader').style.display = 'flex'; }
+    function hideLoader() { document.getElementById('loader').style.display = 'none'; }
+
+    // API Calls
+    async function loadBooks() {
+        showLoader();
+        try {
+            const res = await fetch('/api/books');
+            currentBooks = await res.json();
+            
+            const tbody = document.getElementById('booksTableBody');
+            tbody.innerHTML = '';
+            
+            [...currentBooks].reverse().forEach(book => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="color: #94a3b8;">#${book.id}</td>
+                        <td style="font-weight: bold;">${book.title}</td>
+                        <td>${book.categoryLabel || book.category}</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" onclick="manageBook(${book.id})">ניהול פרקים</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteBook(${book.id})" style="margin-right: 5px;">מחק</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        } catch(e) {
+            console.error(e);
+            alert('שגיאה בטעינת ספרים');
+        }
+        hideLoader();
+    }
+
+    document.getElementById('addBookForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        showLoader();
+        
+        const catSelect = document.getElementById('addCat');
+        const newBook = {
+            title: document.getElementById('addTitle').value,
+            description: document.getElementById('addDesc').value,
+            category: catSelect.value,
+            categoryLabel: catSelect.options[catSelect.selectedIndex].text,
+            imgUrl: document.getElementById('addImg').value
+        };
+
+        try {
+            const res = await fetch('/api/books', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newBook)
+            });
+            if (res.ok) {
+                const data = await res.json();
+                document.getElementById('addBookForm').reset();
+                manageBook(data.book.id); // Go straight to manager
+            } else {
+                alert('שגיאה ביצירה');
+            }
+        } catch(err) {
+            alert('שגיאת תקשורת');
+        }
+        hideLoader();
+    });
+
+    async function deleteBook(id) {
+        if (!confirm('האם אתה בטוח שברצונך למחוק ספר זה לחלוטין?')) return;
+        showLoader();
+        const res = await fetch('/api/books/' + id, { method: 'DELETE' });
+        if (res.ok) loadBooks();
+        else alert('שגיאה במחיקה');
+        hideLoader();
+    }
+
+    // --- Book Manager ---
+    async function manageBook(id) {
+        showLoader();
+        
+        // Ensure we have latest books
+        if(currentBooks.length === 0) {
+            const r = await fetch('/api/books');
+            currentBooks = await r.json();
+        }
+        
+        activeBook = currentBooks.find(b => b.id === id);
+        if(!activeBook) return hideLoader();
+        
+        // Populate Details
+        document.getElementById('bmTitle').innerText = `ניהול: ${activeBook.title}`;
+        document.getElementById('editBookId').value = activeBook.id;
+        document.getElementById('editTitle').value = activeBook.title;
+        document.getElementById('editDesc').value = activeBook.description;
+        
+        // Fetch chapters
+        try {
+            const res = await fetch(`/api/books/${id}/chapters`);
+            activeChapters = await res.json();
+            renderChaptersList();
+            showView('bookManagerView');
+        } catch(e) {
+            alert('שגיאה בטעינת פרקים');
+        }
+        hideLoader();
+    }
+
+    async function saveBookDetails() {
+        if(!activeBook) return;
+        showLoader();
+        const updated = {
+            title: document.getElementById('editTitle').value,
+            description: document.getElementById('editDesc').value
+        };
+        const res = await fetch(`/api/books/${activeBook.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updated)
+        });
+        if(res.ok) {
+            document.getElementById('bmTitle').innerText = `ניהול: ${updated.title}`;
+            alert('פרטי הספר עודכנו!');
+        } else {
+            alert('שגיאה בעדכון');
+        }
+        hideLoader();
+    }
+
+    function renderChaptersList() {
+        const list = document.getElementById('chaptersList');
+        list.innerHTML = '';
+        if (activeChapters.length === 0) {
+            list.innerHTML = '<li style="color: #94a3b8; text-align: center; padding: 2rem;">אין עדיין פרקים לספר זה. הוסף פרק או העלה PDF.</li>';
+            return;
+        }
+        
+        activeChapters.forEach((chap, index) => {
+            list.innerHTML += `
+                <li class="chapter-item">
+                    <div style="font-weight: bold; color: var(--text);">
+                        <span style="color: var(--accent); margin-left: 10px;">${index + 1}.</span> 
+                        ${chap.title}
+                    </div>
+                    <div>
+                        <button class="btn btn-secondary btn-sm" onclick="openChapterEditor(${index})">ערוך</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteChapter(${index})" style="margin-right: 5px;">מחק</button>
+                    </div>
+                </li>
+            `;
+        });
+    }
+
+    // --- Chapter Editor ---
+    function openChapterEditor(index = -1) {
+        const isNew = index === -1;
+        document.getElementById('editorHeader').innerText = isNew ? 'יצירת פרק חדש' : `עריכת פרק: ${activeChapters[index].title}`;
+        document.getElementById('editorChapterIndex').value = index;
+        document.getElementById('editorTitle').value = isNew ? '' : activeChapters[index].title;
+        
+        // Convert HTML line breaks to newline for easier editing if needed, but textareas handle raw text best.
+        let text = isNew ? '' : activeChapters[index].text;
+        // Basic naive conversion for editing: <br> -> \n
+        text = text.replace(/<br\s*\/?>/gi, '\n');
+        
+        document.getElementById('editorContent').value = text;
+        showView('chapterEditorView');
+    }
+
+    async function saveChapter() {
+        if(!activeBook) return;
+        showLoader();
+        
+        const index = parseInt(document.getElementById('editorChapterIndex').value);
+        const title = document.getElementById('editorTitle').value;
+        let text = document.getElementById('editorContent').value;
+        
+        // Basic naive conversion back to HTML: \n -> <br>
+        text = text.replace(/\n/g, '<br>');
+        
+        if(index === -1) {
+            // New chapter
+            activeChapters.push({ title, text });
+        } else {
+            // Update existing
+            activeChapters[index] = { title, text };
+        }
+        
+        // Save to backend
+        const res = await fetch(`/api/books/${activeBook.id}/chapters`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(activeChapters)
+        });
+        
+        if(res.ok) {
+            renderChaptersList();
+            showView('bookManagerView');
+        } else {
+            alert('שגיאה בשמירת הפרק');
+        }
+        hideLoader();
+    }
+    
+    async function deleteChapter(index) {
+        if(!confirm('למחוק פרק זה? פעולה זו לא ניתנת לביטול.')) return;
+        showLoader();
+        activeChapters.splice(index, 1);
+        
+        const res = await fetch(`/api/books/${activeBook.id}/chapters`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(activeChapters)
+        });
+        
+        if(res.ok) renderChaptersList();
+        else alert('שגיאה במחיקת הפרק');
+        hideLoader();
+    }
+
+    // --- PDF Upload ---
+    async function uploadPDF() {
+        if(!activeBook) return;
+        
+        const fileInput = document.getElementById('pdfFile');
+        if (!fileInput.files.length) {
+            alert('נא לבחור קובץ PDF תחילה!');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('pdf', fileInput.files[0]);
+
+        showLoader();
+        try {
+            const res = await fetch('/api/upload-pdf/' + activeBook.id, {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (res.ok) {
+                alert('הקובץ עובד בהצלחה! הפרק נוסף לספר.');
+                fileInput.value = '';
+                // Reload chapters
+                manageBook(activeBook.id);
+            } else {
+                alert('שגיאה בעיבוד ה-PDF.');
+            }
+        } catch(err) {
+            alert('שגיאת תקשורת בעיבוד הקובץ.');
+        }
+        hideLoader();
+    }
+
+    // Init
+    loadBooks();
+</script>
+
+</body>
+</html>

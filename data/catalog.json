@@ -1,0 +1,242 @@
+[
+  {
+    "id": 1,
+    "title": "ספרים מקוונים",
+    "category": "other",
+    "categoryLabel": "כללי",
+    "description": "אוסף מאמרים וכתבים מקוונים.",
+    "link": "https://manitou.org.il/joomlatools-files/docman-images/mamarim1%20%281%29.jpg",
+    "imgUrl": "https://manitou.org.il/joomlatools-files/docman-images/mamarim1%20%281%29.jpg",
+    "design": "cover-design-1"
+  },
+  {
+    "id": 2,
+    "title": "מספד למשיח",
+    "category": "lessons",
+    "categoryLabel": "שיעורים",
+    "description": "שיעורים מאת הרב יהודא לאון אשכנזי (מניטו) זצ\"ל.",
+    "link": "https://manitou.org.il/arcive/sfarim/masped-1",
+    "imgUrl": "https://manitou.org.il/joomlatools-files/docman-images/masped2.jpg",
+    "design": "cover-design-2"
+  },
+  {
+    "id": 3,
+    "title": "סוד מדרש התולדות 1",
+    "category": "history",
+    "categoryLabel": "היסטוריה ומדרש",
+    "description": "חלק ראשון מתוך הסדרה המעמיקה על מדרשי חז\"ל.",
+    "link": "https://manitou.org.il/arcive/sfarim/sodtoladot1",
+    "imgUrl": "https://manitou.org.il/joomlatools-files/docman-images/sodtoladot1.jpg",
+    "design": "cover-design-3"
+  },
+  {
+    "id": 4,
+    "title": "סוד מדרש התולדות 2",
+    "category": "history",
+    "categoryLabel": "היסטוריה ומדרש",
+    "description": "חלק שני מתוך הסדרה המעמיקה על מדרשי חז\"ל.",
+    "link": "https://manitou.org.il/arcive/sfarim/sodtoladot2",
+    "imgUrl": "https://manitou.org.il/joomlatools-files/docman-images/sodtoladotb.jpg",
+    "design": "cover-design-1"
+  },
+  {
+    "id": 5,
+    "title": "סוד מדרש התולדות 3",
+    "category": "history",
+    "categoryLabel": "היסטוריה ומדרש",
+    "description": "חלק שלישי מתוך הסדרה המעמיקה על מדרשי חז\"ל.",
+    "link": "https://manitou.org.il/arcive/sfarim/sodtoladot3",
+    "imgUrl": "https://manitou.org.il/joomlatools-files/docman-images/sodtoladot3.jpg",
+    "design": "cover-design-2"
+  },
+  {
+    "id": 6,
+    "title": "סוד מדרש התולדות 4",
+    "category": "history",
+    "categoryLabel": "היסטוריה ומדרש",
+    "description": "חלק רביעי מתוך הסדרה המעמיקה על מדרשי חז\"ל.",
+    "link": "https://manitou.org.il/arcive/sfarim/sodtoladot4",
+    "imgUrl": "https://manitou.org.il/joomlatools-files/docman-images/sodtoladot4.jpg",
+    "design": "cover-design-3"
+  },
+  {
+    "id": 7,
+    "title": "סוד מדרש התולדות 5",
+    "category": "history",
+    "categoryLabel": "היסטוריה ומדרש",
+    "description": "חלק חמישי מתוך הסדרה המעמיקה על מדרשי חז\"ל.",
+    "link": "https://manitou.org.il/arcive/sfarim/sodtoladot5",
+    "imgUrl": "https://manitou.org.il/joomlatools-files/docman-images/sodtoladot5.jpg",
+    "design": "cover-design-1"
+  },
+  {
+    "id": 8,
+    "title": "סוד מדרש התולדות 6",
+    "category": "history",
+    "categoryLabel": "היסטוריה ומדרש",
+    "description": "חלק שישי מתוך הסדרה המעמיקה על מדרשי חז\"ל.",
+    "link": "https://manitou.org.il/arcive/sfarim/sodtoladot6",
+    "imgUrl": "https://manitou.org.il/joomlatools-files/docman-images/sodtoladot6.jpg",
+    "design": "cover-design-2"
+  },
+  {
+    "id": 9,
+    "title": "סוד מדרש התולדות 7",
+    "category": "history",
+    "categoryLabel": "היסטוריה ומדרש",
+    "description": "חלק שביעי מתוך הסדרה המעמיקה על מדרשי חז\"ל.",
+    "link": "https://manitou.org.il/arcive/sfarim/sodtoladot7",
+    "imgUrl": "https://manitou.org.il/joomlatools-files/docman-images/sodtoladot7.jpg",
+    "design": "cover-design-3"
+  },
+  {
+    "id": 10,
+    "title": "סוד מדרש התולדות 8",
+    "category": "history",
+    "categoryLabel": "היסטוריה ומדרש",
+    "description": "חלק שמיני מתוך הסדרה המעמיקה על מדרשי חז\"ל.",
+    "link": "https://manitou.org.il/arcive/sfarim/leshemshamaim-sod8",
+    "imgUrl": "https://manitou.org.il/joomlatools-files/docman-images/sodtoladot8.jpg",
+    "design": "cover-design-1"
+  },
+  {
+    "id": 11,
+    "title": "סוד מדרש התולדות 9",
+    "category": "history",
+    "categoryLabel": "היסטוריה ומדרש",
+    "description": "חלק תשיעי מתוך הסדרה המעמיקה על מדרשי חז\"ל.",
+    "link": "https://manitou.org.il/arcive/sfarim/sodtoladot9",
+    "imgUrl": "https://manitou.org.il/joomlatools-files/docman-images/sodtoladot9.jpg",
+    "design": "cover-design-2"
+  },
+  {
+    "id": 12,
+    "title": "שערי דמעה 1",
+    "category": "philosophy",
+    "categoryLabel": "פילוסופיה",
+    "description": "ספר מעמיק מאת הרב מניטו.",
+    "link": "https://manitou.org.il/arcive/sfarim/sheareidima1",
+    "imgUrl": "https://manitou.org.il/joomlatools-files/docman-images/dima1.jpg",
+    "design": "cover-design-3"
+  },
+  {
+    "id": 13,
+    "title": "שערי דמעה 2",
+    "category": "philosophy",
+    "categoryLabel": "פילוסופיה",
+    "description": "חלק שני בסדרת שערי דמעה.",
+    "link": "https://manitou.org.il/arcive/sfarim/sheareidima2",
+    "imgUrl": "https://manitou.org.il/joomlatools-files/docman-images/dima2.jpg",
+    "design": "cover-design-1"
+  },
+  {
+    "id": 14,
+    "title": "שערי דמעה 3",
+    "category": "philosophy",
+    "categoryLabel": "פילוסופיה",
+    "description": "חלק שלישי בסדרת שערי דמעה.",
+    "link": "https://manitou.org.il/arcive/sfarim/sheareidima-c",
+    "imgUrl": "",
+    "design": "cover-design-2"
+  },
+  {
+    "id": 15,
+    "title": "סוד לשון הקודש 1",
+    "category": "philosophy",
+    "categoryLabel": "שפה וקבלה",
+    "description": "גילוי סודות השפה העברית.",
+    "link": "https://manitou.org.il/arcive/sfarim/sodleshonkodesh1",
+    "imgUrl": "https://manitou.org.il/joomlatools-files/docman-images/sodlashon1.jpg",
+    "design": "cover-design-3"
+  },
+  {
+    "id": 16,
+    "title": "סוד לשון הקודש 2",
+    "category": "philosophy",
+    "categoryLabel": "שפה וקבלה",
+    "description": "חלק שני - גילוי סודות השפה העברית.",
+    "link": "https://manitou.org.il/arcive/sfarim/sodleshonkodesh2",
+    "imgUrl": "https://manitou.org.il/joomlatools-files/docman-images/sodlashon2.jpg",
+    "design": "cover-design-1"
+  },
+  {
+    "id": 17,
+    "title": "סוד העברי 1",
+    "category": "history",
+    "categoryLabel": "זהות והיסטוריה",
+    "description": "משמעותה של העבריות לאורך הדורות.",
+    "link": "https://manitou.org.il/arcive/sfarim/sodivri1",
+    "imgUrl": "https://manitou.org.il/joomlatools-files/docman-images/sodivri1.jpg",
+    "design": "cover-design-2"
+  },
+  {
+    "id": 18,
+    "title": "סוד העברי 2",
+    "category": "history",
+    "categoryLabel": "זהות והיסטוריה",
+    "description": "חלק שני - משמעותה של העבריות.",
+    "link": "https://manitou.org.il/arcive/sfarim/sodivri2",
+    "imgUrl": "https://manitou.org.il/joomlatools-files/docman-images/sodivri2.jpg",
+    "design": "cover-design-3"
+  },
+  {
+    "id": 19,
+    "title": "כי מציון (FR)",
+    "category": "lessons",
+    "categoryLabel": "שיעורים (צרפתית)",
+    "description": "ספר בשפה הצרפתית המבוסס על משנתו של מניטו.",
+    "link": "https://manitou.org.il/arcive/sfarim/kimitzionfr",
+    "imgUrl": "https://manitou.org.il/joomlatools-files/docman-images/kitvayad4.jpg",
+    "design": "cover-design-1"
+  },
+  {
+    "id": 20,
+    "title": "הדיבור והכתב",
+    "category": "philosophy",
+    "categoryLabel": "פילוסופיה",
+    "description": "עיון ביחס שבין התורה שבעל פה לתורה שבכתב.",
+    "link": "https://manitou.org.il/arcive/sfarim/diburktav",
+    "imgUrl": "https://manitou.org.il/joomlatools-files/docman-images/diburktavtmuna.jpg",
+    "design": "cover-design-2"
+  },
+  {
+    "id": 21,
+    "title": "Un Hébreu d’origine juive Hommage à Manitou - עברי ממקור יהודי",
+    "category": "other",
+    "categoryLabel": "ספרות",
+    "description": "ספר מחווה למניטו בשפה הצרפתית והעברית.",
+    "link": "https://manitou.org.il/arcive/sfarim/kojinsky",
+    "imgUrl": "https://manitou.org.il/joomlatools-files/docman-images/kojinsky.JPG",
+    "design": "cover-design-3"
+  },
+  {
+    "id": 22,
+    "title": "מעיינות (FR)",
+    "category": "lessons",
+    "categoryLabel": "שיעורים (צרפתית)",
+    "description": "שיעורים על פרשת השבוע בצרפתית.",
+    "link": "https://manitou.org.il/arcive/sfarim/mayanot-1",
+    "imgUrl": "https://manitou.org.il/joomlatools-files/docman-images/kitvayad4.jpg",
+    "design": "cover-design-1"
+  },
+  {
+    "id": 23,
+    "title": "מניטו על המועדים",
+    "category": "lessons",
+    "categoryLabel": "שיעורים",
+    "description": "משנתו של הרב מניטו על חגי ומועדי ישראל.",
+    "link": "https://manitou.org.il/arcive/sfarim/moaadim-sefer",
+    "imgUrl": "",
+    "design": "cover-design-2"
+  },
+  {
+    "id": 24,
+    "title": "קול המועד",
+    "category": "lessons",
+    "categoryLabel": "שיעורים",
+    "description": "שיחות על המועדים.",
+    "link": "https://manitou.org.il/arcive/sfarim/kolhamoed",
+    "imgUrl": "",
+    "design": "cover-design-3"
+  }
+]

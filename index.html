@@ -23,6 +23,14 @@
             </div>
             <div class="user-actions" style="display: flex; gap: 10px; align-items: center;">
                 <div class="user-greeting" style="margin-left: 10px;">שלום אור ממן</div>
+                <a href="/admin" class="btn btn-secondary btn-sm" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer; border: 1px solid var(--accent); background: rgba(212, 175, 55, 0.1); color: var(--accent); text-decoration: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+                    <span style="font-weight: bold;">ניהול</span>
+                </a>
+                <button id="openProfileBtn" class="btn btn-secondary btn-sm" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer; border: 1px solid var(--border); background: var(--secondary-bg); color: var(--text-main);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span style="font-weight: bold; color: var(--accent);">אזור אישי</span>
+                </button>
                 <button id="navThemeToggle" class="btn btn-secondary btn-sm" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer; border: 1px solid var(--border); background: var(--secondary-bg); color: var(--text-main);">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                     <span id="navThemeText">מצב לילה</span>
@@ -46,16 +54,63 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                     </button>
                 </div>
-                <button id="openDeepSearchBtn" class="btn btn-primary" style="margin-top: 1.5rem; display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(212, 175, 55, 0.2); border: 1px solid var(--accent); color: var(--accent); box-shadow: none;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                    מערכת חיפוש חכמה בתוכן הספרים
-                </button>
+                <div class="hero-actions" style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+                    <button id="scrollToAdvSearch" class="btn btn-primary" style="display: flex; align-items: center; gap: 8px; border-radius: 20px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        חיפוש חכם בטקסטים
+                    </button>
+                    <button id="resumeReadingBtn" class="btn btn-secondary" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: var(--text-main);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                        המשך קריאה
+                    </button>
+                </div>
             </div>
             <div class="hero-graphics">
                 <div class="abstract-shape shape-1"></div>
                 <div class="abstract-shape shape-2"></div>
             </div>
+            </div>
         </header>
+
+        <!-- Advanced Search Section -->
+        <section class="advanced-search-section" id="advancedSearchSection" style="padding: 4rem 2rem; background: var(--secondary-bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+            <div style="max-width: 1000px; margin: 0 auto;">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <h2 style="font-family: var(--font-serif); color: var(--accent); font-size: 2.5rem; margin-bottom: 0.5rem;">מנוע חיפוש מתקדם</h2>
+                    <p style="color: var(--text-muted); font-size: 1.1rem;">חפש מילים, משפטים או ביטויים בתוך כל הספרים והשיעורים של מניטו</p>
+                </div>
+                
+                <div style="background: var(--primary-bg); padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid var(--border);">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                        <select id="advSearchCategory" style="padding: 0 1rem; border-radius: 8px; border: 1px solid var(--border); background: var(--secondary-bg); color: var(--text-main); font-family: var(--font-sans); outline: none; flex: 1; min-width: 200px; font-size: 1.1rem;">
+                            <option value="all">כל הקטגוריות</option>
+                            <option value="history">היסטוריה ומדרש</option>
+                            <option value="philosophy">פילוסופיה</option>
+                            <option value="lessons">שיעורים</option>
+                        </select>
+                        <div class="search-container" style="flex: 3; margin: 0; min-width: 300px; max-width: 100%;">
+                            <input type="text" id="advSearchInput" placeholder="הקלד את מילות החיפוש כאן..." style="font-size: 1.1rem; padding: 1.2rem 2rem;">
+                            <button class="search-btn" id="advSearchBtn" style="width: auto; padding: 0 2rem; border-radius: 30px; left: 8px; background: var(--accent); color: var(--primary-bg);">חפש עכשיו</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Toolbar -->
+                    <div class="search-toolbar" id="advSearchToolbar" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                        <button class="toolbar-btn active" data-mode="and" style="padding: 0.6rem 1.5rem; border-radius: 20px; border: 2px solid var(--accent); background: var(--accent); color: var(--primary-bg); font-weight: bold; cursor: pointer; transition: all 0.3s ease; font-size: 1rem;">כל המילים (AND)</button>
+                        <button class="toolbar-btn" data-mode="or" style="padding: 0.6rem 1.5rem; border-radius: 20px; border: 2px solid var(--border); background: var(--secondary-bg); color: var(--text-muted); font-weight: bold; cursor: pointer; transition: all 0.3s ease; font-size: 1rem;">לפחות מילה אחת (OR)</button>
+                        <button class="toolbar-btn" data-mode="exact" style="padding: 0.6rem 1.5rem; border-radius: 20px; border: 2px solid var(--border); background: var(--secondary-bg); color: var(--text-muted); font-weight: bold; cursor: pointer; transition: all 0.3s ease; font-size: 1rem;">ביטוי מדויק (Exact)</button>
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div id="advSearchResults" style="margin-top: 3rem; min-height: 200px;">
+                    <div style="text-align: center; color: var(--text-muted); margin-top: 3rem;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.2; margin-bottom: 1rem;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <h3>הזן טקסט כדי להתחיל בחיפוש עמוק</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- Main Content -->
         <main class="library-section" id="librarySection">
@@ -83,6 +138,9 @@
 
     <!-- Reader Mode -->
     <div class="reader-container" id="readerMode" style="display: none;">
+        <div class="reader-progress-container" id="readerProgressContainer">
+            <div class="reader-progress-bar" id="readerProgressBar"></div>
+        </div>
         <div class="reader-header" style="padding: 1rem 2rem;">
             <button class="btn btn-primary btn-sm" id="backToLibrary" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; border: none; cursor: pointer; background: var(--accent); color: var(--primary-bg);">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
@@ -92,17 +150,43 @@
                 <span class="reader-book-title" id="readerBookTitle" style="font-weight:bold;">שם הספר</span>
                 <span class="reader-chapter-title" id="readerChapterTitle">פרק...</span>
             </div>
-            <div class="reader-actions" style="display: flex; gap: 10px;">
+            <div class="reader-actions" style="display: flex; gap: 10px; align-items: center; position: relative;">
+                <button class="btn btn-primary btn-sm" id="playAudioBtn" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer; background: var(--accent); color: var(--primary-bg); border: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    <span>הקרא טקסט (ניסיון)</span>
+                </button>
                 <button class="btn btn-secondary btn-sm" id="downloadPdfBtn" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                     הורד PDF
                 </button>
+                <button class="btn btn-secondary btn-sm" id="toggleTextSettingsBtn" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer; background: var(--secondary-bg); color: var(--text-main); border: 1px solid var(--border);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+                    <span>Aa</span>
+                </button>
+                <div class="text-settings-dropdown" id="textSettingsDropdown" style="display: none;">
+                    <div class="settings-group">
+                        <label>גודל גופן</label>
+                        <div class="font-size-controls">
+                            <button id="decreaseFontBtn">A-</button>
+                            <span id="fontSizeDisplay">100%</span>
+                            <button id="increaseFontBtn">A+</button>
+                        </div>
+                    </div>
+                    <div class="settings-group">
+                        <label>סגנון גופן</label>
+                        <div class="font-family-controls">
+                            <button class="font-btn active" data-font="serif" style="font-family: var(--font-serif);">פרנק ריהל (מסורתי)</button>
+                            <button class="font-btn" data-font="sans" style="font-family: var(--font-sans);">היבו (מודרני)</button>
+                        </div>
+                    </div>
+                </div>
                 <button class="btn btn-secondary btn-sm" id="toggleTheme" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer; background: var(--secondary-bg); color: var(--text-main); border: 1px solid var(--border);">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                     <span id="readerThemeText">מצב לילה</span>
                 </button>
             </div>
         </div>
+
         <div class="reader-layout">
             <aside class="chapters-sidebar">
                 <h3>פרקי הספר</h3>
@@ -116,6 +200,19 @@
                 </div>
             </article>
         </div>
+        </div>
+
+        <div id="textContextMenu" class="text-context-menu" style="display: none;">
+            <button id="highlightBtn" class="context-btn" title="מרקר ושמור">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                <span>מרקר</span>
+            </button>
+            <div style="width: 1px; height: 20px; background: var(--border); margin: 0 5px;"></div>
+            <button id="shareQuoteBtn" class="context-btn" title="שתף לוואטסאפ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                <span>שתף</span>
+            </button>
+        </div>
     </div>
 
     <!-- Book Detail Modal -->
@@ -128,26 +225,49 @@
         </div>
     </div>
 
-    <!-- Deep Search Modal -->
-    <div class="modal-overlay" id="deepSearchModal">
-        <div class="modal-content" style="max-width: 1000px; height: 85vh; display: flex; flex-direction: column;">
-            <button class="close-modal" id="closeDeepSearch">&times;</button>
+    <!-- Profile Modal -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal-content" style="max-width: 800px; height: 80vh; display: flex; flex-direction: column;">
+            <button class="close-modal" id="closeProfileModal">&times;</button>
             <div style="padding: 2rem 3rem; background: var(--primary-bg); border-bottom: 1px solid var(--border);">
-                <h2 style="font-family: var(--font-serif); color: var(--accent); margin-bottom: 1rem; font-size: 2rem;">חיפוש חכם בתוך הטקסטים</h2>
-                <div class="search-container" style="max-width: 100%;">
-                    <input type="text" id="deepSearchInput" placeholder="חפש מילה, משפט או ביטוי בתוך כל ספרי מניטו..." style="font-size: 1.1rem; padding: 1.2rem 2rem;">
-                    <button class="search-btn" id="executeDeepSearch" style="width: auto; padding: 0 1.5rem; border-radius: 30px; left: 8px;">חפש</button>
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="width: 60px; height: 60px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary-bg); font-size: 1.5rem; font-weight: bold;">
+                        א"מ
+                    </div>
+                    <div>
+                        <h2 style="font-family: var(--font-serif); color: var(--text-main); font-size: 2rem;">האזור האישי שלי</h2>
+                        <p style="color: var(--text-muted);">אור ממן</p>
+                    </div>
                 </div>
-                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">טיפ: החיפוש סורק את כל הפרקים שהורדו עד כה לאתר המקומי.</p>
+                <div class="profile-tabs" style="display: flex; gap: 2rem; border-bottom: 1px solid var(--border);">
+                    <button class="profile-tab active" data-target="favoritesTab" style="background: none; border: none; padding: 0.5rem 0; color: var(--accent); font-weight: bold; border-bottom: 2px solid var(--accent); cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem; transition: var(--transition);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                        ספרים מועדפים
+                    </button>
+                    <button class="profile-tab" data-target="highlightsTab" style="background: none; border: none; padding: 0.5rem 0; color: var(--text-muted); cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem; transition: var(--transition);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                        ההדגשות שלי
+                    </button>
+                </div>
             </div>
-            <div class="deep-search-results" id="deepSearchResults" style="flex: 1; overflow-y: auto; padding: 2rem 3rem; background: var(--secondary-bg);">
-                <div style="text-align: center; color: var(--text-muted); margin-top: 3rem;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.2; margin-bottom: 1rem;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    <h3>הזן טקסט כדי להתחיל בחיפוש עמוק</h3>
+            
+            <div style="flex: 1; overflow-y: auto; padding: 2rem 3rem; background: var(--secondary-bg);">
+                <div id="favoritesTab" class="profile-tab-content active" style="display: block;">
+                    <div class="books-grid" id="favoritesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 2rem;">
+                        <!-- Favorite books injected here -->
+                    </div>
+                </div>
+                
+                <div id="highlightsTab" class="profile-tab-content" style="display: none;">
+                    <div id="highlightsList" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <!-- Highlights injected here -->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div id="toastNotification" class="toast-notification" style="display: none;"></div>
 
     <script src="script.js"></script>
 
