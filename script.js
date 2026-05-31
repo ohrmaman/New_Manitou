@@ -249,6 +249,12 @@ function initApp() {
                 const currentBookTitle = document.getElementById('readerBookTitle').textContent;
                 const currentBook = books.find(b => b.title === currentBookTitle);
                 loadChapter(chapter, currentBook);
+                
+                // Hide sidebar on mobile after selecting a chapter
+                const sidebar = document.querySelector('.chapters-sidebar');
+                if (sidebar) {
+                    sidebar.classList.remove('active');
+                }
             });
             
             chaptersList.appendChild(li);
@@ -373,6 +379,15 @@ function initApp() {
         readerMode.style.display = 'none';
         document.body.style.overflow = 'auto';
     });
+
+    // Sidebar toggle for mobile
+    const toggleSidebarBtn = document.getElementById('toggleSidebarBtn');
+    const chaptersSidebar = document.querySelector('.chapters-sidebar');
+    if (toggleSidebarBtn && chaptersSidebar) {
+        toggleSidebarBtn.addEventListener('click', () => {
+            chaptersSidebar.classList.toggle('active');
+        });
+    }
 
     // Toggle Light/Dark Theme in Reader
     toggleThemeBtn.addEventListener('click', () => {
@@ -663,7 +678,7 @@ function initApp() {
                                 <span style="color: var(--text-muted); font-size: 0.9rem;">${res.chapter.title} ${res.score ? `(ציון התאמה: ${res.score})` : ''}</span>
                             </div>
                             <p style="color: var(--text-main); line-height: 1.6; font-size: 1rem;">${res.snippet}</p>
-                            <button class="btn btn-sm" onclick="openModal(books.find(b=>b.id===${res.book.id}))" style="margin-top: 1rem; border: 1px solid var(--accent); color: var(--accent); background: transparent; padding: 0.3rem 1rem; border-radius: 20px; cursor: pointer;">פתח ספר זה</button>
+                            <button class="btn btn-sm" onclick="openBookToChapter(${res.book.id}, ${res.chapter.id}, '${rawQuery.replace(/'/g, "\\'")}')" style="margin-top: 1rem; border: 1px solid var(--accent); color: var(--accent); background: transparent; padding: 0.3rem 1rem; border-radius: 20px; cursor: pointer;">פתח ספר זה</button>
                         </div>
                     `).join('')}
                 </div>
@@ -867,27 +882,7 @@ function initApp() {
                 card.addEventListener('mouseleave', () => card.style.borderColor = 'var(--border)');
                 card.addEventListener('click', () => {
                     const res = allResults[card.dataset.index];
-                    deepSearchModal.classList.remove('active');
-                    openReader(res.book, res.chapter.id);
-                    
-                    // After a short delay, highlight the word in the reader!
-                    setTimeout(() => {
-                        const contentArea = document.getElementById('textContent');
-                        if (contentArea) {
-                            // Simple highlighting in the actual HTML content
-                            // This is complex due to HTML tags, but a basic replace works for demonstration
-                            // Since we have HTML, we must be careful not to break tags.
-                            // We can use a TreeWalker or just basic innerHTML replacement with caution.
-                            const regex = new RegExp(`(?![^<]+>)(${query})`, 'gi');
-                            contentArea.innerHTML = contentArea.innerHTML.replace(regex, '<mark style="background: var(--accent); color: var(--primary-bg);">$1</mark>');
-                            
-                            // Scroll to first mark
-                            const firstMark = contentArea.querySelector('mark');
-                            if (firstMark) {
-                                firstMark.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            }
-                        }
-                    }, 500);
+                    openBookToChapter(res.book.id, res.chapter.id, rawQuery);
                 });
             });
         });
@@ -1264,6 +1259,123 @@ function initApp() {
             });
         }
     }
+
+    // --- Search Navigation & Highlighting Helper Functions ---
+    window.openBookToChapter = async function(bookId, chapterId, searchQuery) {
+        const book = books.find(b => Number(b.id) === Number(bookId));
+        if (!book) return;
+        
+        // Close modal if open
+        const modal = document.getElementById('bookModal');
+        if (modal) modal.classList.remove('active');
+        
+        // Close deep search modal if open
+        const deepSearchModal = document.getElementById('deepSearchModal');
+        if (deepSearchModal) {
+            deepSearchModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Open reader and load chapter
+        await openReader(book, Number(chapterId));
+        
+        // Highlight and scroll to the searched words
+        if (searchQuery) {
+            setTimeout(() => {
+                window.highlightAndScrollToText(searchQuery);
+            }, 150);
+        }
+    };
+
+    window.highlightAndScrollToText = function(searchQuery) {
+        const contentArea = document.getElementById('textContent');
+        if (!contentArea) return;
+        
+        let rawQuery = searchQuery.trim().toLowerCase();
+        if (!rawQuery) return;
+        
+        const isExactMatch = rawQuery.startsWith('"') && rawQuery.endsWith('"');
+        let searchWords = isExactMatch ? [rawQuery.slice(1, -1).trim()] : rawQuery.split(/\s+/).filter(w => w.length > 0);
+        
+        if (searchWords.length === 0) return;
+        
+        // Clean up any previous highlights
+        const previousHighlights = contentArea.querySelectorAll('.search-highlight');
+        previousHighlights.forEach(el => {
+            const parent = el.parentNode;
+            if (parent) {
+                parent.replaceChild(document.createTextNode(el.textContent), el);
+                parent.normalize(); // merge adjacent text nodes
+            }
+        });
+
+        const textNodes = [];
+        const walk = document.createTreeWalker(contentArea, NodeFilter.SHOW_TEXT, null, false);
+        let node;
+        while (node = walk.nextNode()) {
+            const parent = node.parentNode;
+            if (parent && (parent.tagName === 'SCRIPT' || parent.tagName === 'STYLE' || parent.classList.contains('glossary-tooltip') || parent.tagName === 'MARK' || parent.classList.contains('audio-word'))) {
+                continue;
+            }
+            textNodes.push(node);
+        }
+        
+        let firstMarkedElement = null;
+        
+        // Traverse backwards
+        textNodes.forEach(node => {
+            const parent = node.parentNode;
+            if (!parent) return;
+            
+            const text = node.textContent;
+            let lowerText = text.toLowerCase();
+            
+            let hasMatch = false;
+            searchWords.forEach(word => {
+                if (lowerText.includes(word)) hasMatch = true;
+            });
+            
+            if (!hasMatch) return;
+            
+            const escapedWords = searchWords.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+            escapedWords.sort((a, b) => b.length - a.length);
+            
+            const regexPattern = `(${escapedWords.join('|')})`;
+            const regex = new RegExp(regexPattern, 'gi');
+            
+            const parts = text.split(regex);
+            if (parts.length > 1) {
+                const fragment = document.createDocumentFragment();
+                parts.forEach(part => {
+                    if (regex.test(part)) {
+                        const mark = document.createElement('mark');
+                        mark.className = 'search-highlight';
+                        mark.style.background = 'rgba(212, 175, 55, 0.4)';
+                        mark.style.borderBottom = '2px solid var(--accent)';
+                        mark.style.color = 'var(--text-main)';
+                        mark.style.padding = '2px 4px';
+                        mark.style.borderRadius = '3px';
+                        mark.style.fontWeight = 'bold';
+                        mark.textContent = part;
+                        fragment.appendChild(mark);
+                        
+                        if (!firstMarkedElement) {
+                            firstMarkedElement = mark;
+                        }
+                    } else {
+                        fragment.appendChild(document.createTextNode(part));
+                    }
+                });
+                parent.replaceChild(fragment, node);
+            }
+        });
+        
+        if (firstMarkedElement) {
+            setTimeout(() => {
+                firstMarkedElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 150);
+        }
+    };
 
 }
 
