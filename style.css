@@ -911,62 +911,83 @@ footer {
         display: none; /* Hide navigation links */
     }
 
-    /* User actions: turn buttons into sleek icon circles */
+    /* User actions: keep profile button elegant, hide redundant buttons on mobile */
     .user-greeting {
         display: none !important;
     }
     
+    #navHomeBtn, #navThemeToggle, .user-actions a {
+        display: none !important; /* Hide redundant home, theme toggle, and admin buttons on mobile navbar */
+    }
+
     .user-actions {
         gap: 0.5rem;
     }
 
-    .user-actions button span,
-    .user-actions a span {
-        display: none !important;
-    }
-
-    .user-actions button,
-    .user-actions a {
-        padding: 0.5rem !important;
-        border-radius: 50% !important;
-        width: 38px;
-        height: 38px;
+    #openProfileBtn {
         display: flex !important;
         align-items: center !important;
-        justify-content: center !important;
-        margin: 0 !important;
+        gap: 6px !important;
+        border-radius: 8px !important; /* Premium modern editorial pill */
+        padding: 0.4rem 0.8rem !important;
+        font-size: 0.85rem !important;
+        background: var(--secondary-bg) !important;
+        border: 1px solid var(--border) !important;
+        box-shadow: var(--shadow-sm) !important;
+        width: auto !important;
+        height: auto !important;
     }
 
-    .user-actions svg {
-        margin: 0 !important;
-        width: 18px;
-        height: 18px;
+    #openProfileBtn span {
+        display: inline !important; /* Show "אזור אישי" text for high usability */
+        font-weight: 600 !important;
+        color: var(--accent) !important;
     }
 
-    /* Reader Header Mobile Controls */
+    #openProfileBtn svg {
+        width: 15px;
+        height: 15px;
+    }
+
+    /* Reader Header Mobile Controls: elegant editorial bar */
     .reader-header {
-        padding: 0.8rem 1rem;
-        gap: 0.5rem;
+        padding: 0.6rem 1rem !important;
+        gap: 0.4rem !important;
+        min-height: 52px !important;
     }
 
-    .reader-header button span {
-        display: none !important; /* Hide text on mobile for toolbar look */
+    #playAudioBtn, #downloadPdfBtn {
+        display: none !important; /* Hide experimental/rarely used reader buttons on mobile */
     }
 
     .reader-header button {
-        padding: 0.5rem !important;
-        border-radius: 50% !important;
-        width: 38px;
-        height: 38px;
+        border-radius: 6px !important; /* Refined scholarly toolbar item style */
+        padding: 0.4rem 0.7rem !important;
+        width: auto !important;
+        height: 34px !important;
+        font-size: 0.85rem !important;
+        border: 1px solid var(--border) !important;
+        background: var(--secondary-bg) !important;
+        color: var(--text-main) !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
+        box-shadow: var(--shadow-sm) !important;
+    }
+
+    .reader-header button span {
+        display: inline !important; /* Show "פרקים" or Aa text clearly */
+        font-size: 0.8rem !important;
+        font-weight: 500 !important;
+    }
+
+    #backToLibrary span {
+        display: none !important; /* Keep back button simple to save space */
     }
 
     .reader-header svg {
-        margin: 0 !important;
-        width: 18px;
-        height: 18px;
+        width: 14px;
+        height: 14px;
     }
 
     .reader-title-area {
@@ -1371,27 +1392,10 @@ footer {
     background: var(--accent);
 }
 
-/* 2. Background Glowing Blobs Animation */
-@keyframes floatBlob {
-    0% {
-        transform: translate(0, 0) scale(1) rotate(0deg);
-    }
-    33% {
-        transform: translate(50px, -70px) scale(1.18) rotate(120deg);
-    }
-    66% {
-        transform: translate(-40px, 40px) scale(0.85) rotate(240deg);
-    }
-    100% {
-        transform: translate(0, 0) scale(1) rotate(360deg);
-    }
-}
-
-.shape-1 {
-    animation: floatBlob 25s infinite alternate ease-in-out;
-}
-.shape-2 {
-    animation: floatBlob 30s infinite alternate-reverse ease-in-out 3s;
+/* 2. Static Elegant Background Glows (No wobbles or rotations) */
+.shape-1, .shape-2 {
+    animation: none !important;
+    opacity: 0.15 !important;
 }
 
 /* 3. Premium Glassmorphic Navbar */
@@ -1416,30 +1420,23 @@ footer {
     border-radius: 2px !important;
 }
 
-/* 4. 3D Book hover preserve-3d tilting effects */
-.books-grid {
-    perspective: 1000px;
-}
-
+/* 4. Editorial Book Card Hover Effects (Subtle and Scholarly) */
 .book-card {
-    perspective: 1000px;
-    transform-style: preserve-3d;
-    transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.5s ease, border-color 0.5s ease !important;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease, border-color 0.3s ease !important;
 }
 
 .book-card:hover {
-    transform: translateY(-14px) rotateY(-5deg) scale(1.03) !important;
-    box-shadow: 0 30px 60px rgba(184, 134, 69, 0.12), var(--shadow-glow) !important;
-    border-color: rgba(212, 175, 55, 0.5) !important;
+    transform: translateY(-6px) !important;
+    box-shadow: 0 16px 36px rgba(184, 134, 69, 0.1), var(--shadow-glow) !important;
+    border-color: rgba(212, 175, 55, 0.4) !important;
 }
 
 .book-cover {
-    transform: translateZ(20px);
-    transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
 }
 
 .book-card:hover .book-cover {
-    transform: translateZ(35px) scale(1.03) !important;
+    transform: scale(1.01) !important;
 }
 
 /* 5. Advanced Search Premium Glass Deck */
