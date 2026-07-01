@@ -138,15 +138,6 @@ class ServerControllerApp:
         logo_title_frame = tk.Frame(header_frame, bg=BG_MAIN)
         logo_title_frame.pack(side=tk.RIGHT)
         
-        logo_label = tk.Label(
-            logo_title_frame, 
-            text="🕎", 
-            font=("Heebo", 26), 
-            fg=ACCENT_GOLD, 
-            bg=BG_MAIN
-        )
-        logo_label.pack(side=tk.RIGHT, padx=(12, 0))
-        
         title_text_frame = tk.Frame(logo_title_frame, bg=BG_MAIN)
         title_text_frame.pack(side=tk.RIGHT)
         
@@ -201,7 +192,7 @@ class ServerControllerApp:
         
         server_title = tk.Label(
             server_title_frame, 
-            text="⚙️ ניהול תהליך", 
+            text="ניהול תהליך", 
             font=self.section_font,
             fg=ACCENT_GOLD,
             bg=BG_CARD
@@ -211,7 +202,7 @@ class ServerControllerApp:
         # Start Server Button (Green Style)
         self.start_btn = FlatButton(
             server_card, 
-            text="⚡ הפעל שרת", 
+            text="הפעל שרת", 
             font=self.btn_font, 
             bg=COLOR_GREEN, 
             fg=BG_MAIN, 
@@ -223,7 +214,7 @@ class ServerControllerApp:
         # Stop Server Button (Red Style, initially disabled)
         self.stop_btn = FlatButton(
             server_card, 
-            text="🛑 עצור שרת", 
+            text="עצור שרת", 
             font=self.btn_font, 
             bg=COLOR_RED, 
             fg=TEXT_MAIN, 
@@ -242,7 +233,7 @@ class ServerControllerApp:
         
         links_title = tk.Label(
             links_title_frame, 
-            text="🌐 קישורים מהירים", 
+            text="קישורים מהירים", 
             font=self.section_font,
             fg=ACCENT_GOLD,
             bg=BG_CARD
@@ -252,7 +243,7 @@ class ServerControllerApp:
         # Open Website (Highlight Gold Style)
         self.open_site_btn = FlatButton(
             links_card, 
-            text="📖 פתח אתר ספרייה", 
+            text="פתח אתר ספרייה", 
             font=self.btn_font, 
             bg=ACCENT_GOLD, 
             fg=BG_MAIN, 
@@ -264,7 +255,7 @@ class ServerControllerApp:
         # Open Admin Panel (Outline Style)
         self.open_admin_btn = FlatButton(
             links_card, 
-            text="🔑 ממשק ניהול ספרים", 
+            text="ממשק ניהול ספרים", 
             font=self.btn_font, 
             bg=BG_MAIN, 
             fg=ACCENT_GOLD, 
@@ -304,7 +295,7 @@ class ServerControllerApp:
         
         console_title = tk.Label(
             console_header, 
-            text="📟 קונסולת פלט לוגים", 
+            text="קונסולת פלט לוגים", 
             font=self.section_font, 
             fg=TEXT_MUTED, 
             bg=BG_MAIN
@@ -313,7 +304,7 @@ class ServerControllerApp:
         
         self.clear_btn = FlatButton(
             console_header,
-            text="🗑️ נקה לוגים",
+            text="נקה לוגים",
             font=self.subtitle_font,
             bg=BG_MAIN,
             fg=TEXT_MUTED,
@@ -364,11 +355,11 @@ class ServerControllerApp:
         if self.is_running:
             return
             
-        self.log_write("\n--- ⚡ מתחיל הפעלת שרת... ---\n", "gold")
+        self.log_write("\n--- מתחיל הפעלת שרת... ---\n", "gold")
         
         server_script = os.path.join(self.work_dir, "server.js")
         if not os.path.exists(server_script):
-            self.log_write(f"❌ שגיאה: לא נמצא קובץ השרת {server_script}\n", "error")
+            self.log_write(f"שגיאה: לא נמצא קובץ השרת {server_script}\n", "error")
             messagebox.showerror("שגיאה", f"לא נמצא קובץ השרת server.js בנתיב:\n{self.work_dir}")
             return
             
@@ -396,7 +387,7 @@ class ServerControllerApp:
             self.log_thread.start()
             
         except Exception as e:
-            self.log_write(f"❌ שגיאה בהפעלת השרת: {str(e)}\n", "error")
+            self.log_write(f"שגיאה בהפעלת השרת: {str(e)}\n", "error")
             messagebox.showerror("שגיאה בהפעלה", f"שגיאה בהפעלת תהליך Node.js:\n{str(e)}")
 
     def read_subprocess_output(self):
@@ -418,11 +409,11 @@ class ServerControllerApp:
                 # Tag mapping for colors
                 tag = "info"
                 lower_line = line.lower()
-                if "error" in lower_line or "fail" in lower_line or "exception" in lower_line or "eaddrinuse" in lower_line or "❌" in line:
+                if "error" in lower_line or "fail" in lower_line or "exception" in lower_line or "eaddrinuse" in lower_line or "שגיאה" in line:
                     tag = "error"
                 elif "running" in lower_line or "success" in lower_line or "פעיל" in line:
                     tag = "success"
-                elif "server" in lower_line or "http" in lower_line or "🕎" in line:
+                elif "server" in lower_line or "http" in lower_line or "מכון מניטו" in line:
                     tag = "gold"
                 
                 self.log_write(line, tag)
@@ -440,7 +431,7 @@ class ServerControllerApp:
         if not self.is_running or not self.process:
             return
             
-        self.log_write("\n--- 🛑 מכבה את השרת... ---\n", "gold")
+        self.log_write("\n--- מכבה את השרת... ---\n", "gold")
         try:
             if sys.platform != "win32":
                 os.killpg(os.getpgid(self.process.pid), signal.SIGTERM)
@@ -449,7 +440,7 @@ class ServerControllerApp:
                 
             self.process.wait(timeout=3)
         except Exception as e:
-            self.log_write(f"⚠️ אזהרה בעת הכיבוי: {str(e)}. מבצע כיבוי כפוי...\n", "error")
+            self.log_write(f"אזהרה בעת הכיבוי: {str(e)}. מבצע כיבוי כפוי...\n", "error")
             try:
                 if sys.platform != "win32":
                     os.killpg(os.getpgid(self.process.pid), signal.SIGKILL)
@@ -461,11 +452,11 @@ class ServerControllerApp:
         self.process = None
         self.is_running = False
         self.update_ui_state(False)
-        self.log_write("🟢 השרת כבוי בהצלחה. ---\n", "success")
+        self.log_write("השרת כבוי בהצלחה. ---\n", "success")
 
     def server_exited_unexpectedly(self):
         return_code = self.process.poll() if self.process else -1
-        self.log_write(f"\n❌ השרת הפסיק לפעול באופן לא צפוי (קוד יציאה: {return_code})\n", "error")
+        self.log_write(f"\nהשרת הפסיק לפעול באופן לא צפוי (קוד יציאה: {return_code})\n", "error")
         self.process = None
         self.is_running = False
         self.update_ui_state(False)
