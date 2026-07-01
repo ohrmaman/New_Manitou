@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ממשק ניהול - מכון מניטו</title>
+    <link rel="icon" type="image/png" href="../favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -70,9 +71,93 @@
         #loader { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 1000; flex-direction: column; }
         .spinner { border: 4px solid var(--secondary); border-top: 4px solid var(--accent); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Login Overlay Styling */
+        #loginOverlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .login-card {
+            background: #1e293b;
+            padding: 3rem 2.5rem;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 420px;
+            border: 1px solid #334155;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5), 0 10px 10px -5px rgba(0,0,0,0.4);
+            text-align: center;
+            animation: cardSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes cardSlideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .login-logo {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+        .login-header h2 {
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+        .login-header p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+        .login-error {
+            color: var(--danger);
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            text-align: right;
+            animation: shake 0.3s ease-in-out;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
     </style>
 </head>
 <body>
+
+<div id="loginOverlay" style="display: none;">
+    <div class="login-card">
+        <div class="login-header">
+            <div class="login-logo">🕎</div>
+            <h2>ממשק ניהול - מכון מניטו</h2>
+            <p>אנא הזן שם משתמש וסיסמה כדי להתחבר</p>
+        </div>
+        <form id="loginForm">
+            <div class="form-group" style="text-align: right;">
+                <label for="loginUsername">שם משתמש</label>
+                <input type="text" id="loginUsername" required placeholder="הזן שם משתמש">
+            </div>
+            <div class="form-group" style="text-align: right;">
+                <label for="loginPassword">סיסמה</label>
+                <input type="password" id="loginPassword" required placeholder="הזן סיסמה">
+            </div>
+            <div id="loginError" class="login-error" style="display: none;">
+                ⚠️ שם המשתמש או הסיסמה אינם נכונים
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 1.5rem; font-size: 1.1rem; padding: 0.9rem;">התחברות</button>
+        </form>
+    </div>
+</div>
 
 <div id="loader">
     <div class="spinner"></div>
@@ -491,8 +576,98 @@
         hideLoader();
     }
 
+    // Global fetch interceptor for auth
+    const originalFetch = window.fetch;
+    window.fetch = async function(url, options = {}) {
+        if (url.startsWith('/api/')) {
+            const auth = localStorage.getItem('admin_auth');
+            if (auth) {
+                options.headers = options.headers || {};
+                options.headers['Authorization'] = 'Basic ' + auth;
+            }
+        }
+        
+        const response = await originalFetch(url, options);
+        
+        // If we get a 401 on an API request, trigger login overlay
+        if (response.status === 401 && url.startsWith('/api/')) {
+            localStorage.removeItem('admin_auth');
+            showLoginOverlay();
+        }
+        
+        return response;
+    };
+
+    function showLoginOverlay() {
+        document.getElementById('loginOverlay').style.display = 'flex';
+        document.getElementById('loginError').style.display = 'none';
+        document.getElementById('loginUsername').value = '';
+        document.getElementById('loginPassword').value = '';
+        document.getElementById('loginUsername').focus();
+    }
+
+    function hideLoginOverlay() {
+        document.getElementById('loginOverlay').style.display = 'none';
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('loginUsername').value;
+        const password = document.getElementById('loginPassword').value;
+        
+        const auth = btoa(username + ':' + password);
+        
+        showLoader();
+        try {
+            const res = await originalFetch('/api/auth/verify', {
+                headers: {
+                    'Authorization': 'Basic ' + auth
+                }
+            });
+            
+            if (res.ok) {
+                localStorage.setItem('admin_auth', auth);
+                hideLoginOverlay();
+                loadBooks();
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        } catch(err) {
+            alert('שגיאת תקשורת בנסיון ההתחברות');
+        }
+        hideLoader();
+    });
+
+    // Check auth on startup
+    async function checkAuth() {
+        const auth = localStorage.getItem('admin_auth');
+        if (!auth) {
+            showLoginOverlay();
+            return;
+        }
+        
+        showLoader();
+        try {
+            const res = await originalFetch('/api/auth/verify', {
+                headers: {
+                    'Authorization': 'Basic ' + auth
+                }
+            });
+            if (res.ok) {
+                loadBooks();
+            } else {
+                localStorage.removeItem('admin_auth');
+                showLoginOverlay();
+            }
+        } catch(e) {
+            console.error('Auth verify failed', e);
+            showLoginOverlay();
+        }
+        hideLoader();
+    }
+
     // Init
-    loadBooks();
+    checkAuth();
 </script>
 
 </body>

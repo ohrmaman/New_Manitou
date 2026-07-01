@@ -9,6 +9,17 @@ function initApp() {
     const modalBody = document.getElementById('modalBody');
     const continueReadingBtn = document.getElementById('continueReadingBtn');
 
+    // Mobile Drawer elements
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const drawerOverlay = document.getElementById('drawerOverlay');
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+    const drawerProfileBtn = document.getElementById('drawerProfileBtn');
+    const drawerThemeToggle = document.getElementById('drawerThemeToggle');
+
+    // Chapter cache
+    const chapterCache = {};
+
     // Check for last read book
     const lastReadBookId = localStorage.getItem('lastReadBookId');
     const lastReadChapterId = localStorage.getItem('lastReadChapterId');
@@ -138,8 +149,7 @@ function initApp() {
             const openReaderBtn = document.getElementById('openReaderBtn');
             if (openReaderBtn) {
                 openReaderBtn.addEventListener('click', () => {
-                    modal.classList.remove('active');
-                    openReader(book);
+                    window.location.hash = `#/reader/${book.id}`;
                 });
             }
         }, 100);
@@ -147,14 +157,12 @@ function initApp() {
 
     // Close Modal
     closeModal.addEventListener('click', () => {
-        modal.classList.remove('active');
-        document.body.style.overflow = 'auto';
+        window.location.hash = '#/';
     });
 
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
-            modal.classList.remove('active');
-            document.body.style.overflow = 'auto';
+            window.location.hash = '#/';
         }
     });
 
@@ -197,11 +205,17 @@ function initApp() {
         });
         
         try {
-            const response = await fetch(`data/book_${book.id}.json`);
-            if (!response.ok) {
-                throw new Error("File not found");
+            let chapters;
+            if (chapterCache[book.id]) {
+                chapters = chapterCache[book.id];
+            } else {
+                const response = await fetch(`data/book_${book.id}.json`);
+                if (!response.ok) {
+                    throw new Error("File not found");
+                }
+                chapters = await response.json();
+                chapterCache[book.id] = chapters;
             }
-            const chapters = await response.json();
             
             if (chapters && chapters.length > 0) {
                 renderChaptersList(chapters);
@@ -243,17 +257,10 @@ function initApp() {
             if (index === 0) li.classList.add('active');
             
             li.addEventListener('click', () => {
-                document.querySelectorAll('.chapters-list li').forEach(el => el.classList.remove('active'));
-                li.classList.add('active');
-                // Find the book by matching title from header to pass to loadChapter
                 const currentBookTitle = document.getElementById('readerBookTitle').textContent;
                 const currentBook = books.find(b => b.title === currentBookTitle);
-                loadChapter(chapter, currentBook);
-                
-                // Hide sidebar on mobile after selecting a chapter
-                const sidebar = document.querySelector('.chapters-sidebar');
-                if (sidebar) {
-                    sidebar.classList.remove('active');
+                if (currentBook) {
+                    window.location.hash = `#/reader/${currentBook.id}/chapter/${chapter.id}`;
                 }
             });
             
@@ -376,8 +383,7 @@ function initApp() {
 
     // Close Reader Mode
     backToLibrary.addEventListener('click', () => {
-        readerMode.style.display = 'none';
-        document.body.style.overflow = 'auto';
+        window.location.hash = '#/';
     });
 
     // Sidebar toggle for mobile
@@ -562,7 +568,7 @@ function initApp() {
             const searchMode = isManualExact ? 'exact' : currentSearchMode;
             
             let searchWords = [];
-            if (searchMode === 'exact') {
+            if (searchMode === 'exact' || searchMode === 'exact_word') {
                 searchWords = isManualExact ? [rawQuery.slice(1, -1).trim()] : [rawQuery];
             } else {
                 searchWords = rawQuery.split(/\s+/).filter(w => w.length > 0);
@@ -593,6 +599,10 @@ function initApp() {
                             let isMatch = false;
                             if (searchMode === 'exact') {
                                 isMatch = lowerText.includes(searchWords[0]);
+                            } else if (searchMode === 'exact_word') {
+                                const escapedWord = searchWords[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                                const regex = new RegExp(`(?<=^|[^a-zA-Z0-9\\u0590-\\u05FF])${escapedWord}(?=$|[^a-zA-Z0-9\\u0590-\\u05FF])`, 'i');
+                                isMatch = regex.test(lowerText);
                             } else if (searchMode === 'and') {
                                 isMatch = searchWords.every(word => lowerText.includes(word));
                             } else if (searchMode === 'or') {
@@ -604,17 +614,34 @@ function initApp() {
                             // Calculate score for sorting (optional feature, we'll just count total occurrences)
                             let matchScore = 0;
                             searchWords.forEach(word => {
-                                const occurrences = (lowerText.match(new RegExp(word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi')) || []).length;
+                                const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                                const regexPattern = searchMode === 'exact_word' 
+                                    ? `(?<=^|[^a-zA-Z0-9\\u0590-\\u05FF])${escapedWord}(?=$|[^a-zA-Z0-9\\u0590-\\u05FF])` 
+                                    : escapedWord;
+                                const occurrences = (lowerText.match(new RegExp(regexPattern, 'gi')) || []).length;
                                 matchScore += occurrences;
                             });
                             
                             // Find first occurrence to center snippet
-                            let firstFoundWord = searchWords.find(word => lowerText.includes(word));
-                            let index = lowerText.indexOf(firstFoundWord);
+                            let index = -1;
+                            let firstFoundWord = '';
+                            if (searchMode === 'exact_word') {
+                                const escapedWord = searchWords[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                                const regex = new RegExp(`(?<=^|[^a-zA-Z0-9\\u0590-\\u05FF])${escapedWord}(?=$|[^a-zA-Z0-9\\u0590-\\u05FF])`, 'i');
+                                const match = regex.exec(lowerText);
+                                if (match) {
+                                    index = match.index;
+                                }
+                            } else {
+                                firstFoundWord = searchWords.find(word => lowerText.includes(word));
+                                if (firstFoundWord) {
+                                    index = lowerText.indexOf(firstFoundWord);
+                                }
+                            }
                             
                             // In Exact mode we can return up to 3 snippets. In AND/OR we return 1 long snippet.
                             let occurrences = 0;
-                            while (index !== -1 && occurrences < (searchMode === 'exact' ? 3 : 1)) {
+                            while (index !== -1 && occurrences < (searchMode === 'exact' || searchMode === 'exact_word' ? 3 : 1)) {
                                 const start = Math.max(0, index - 80);
                                 const end = Math.min(plainText.length, index + 200); 
                                 
@@ -625,7 +652,9 @@ function initApp() {
                                 searchWords.forEach(word => {
                                     try {
                                         const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                                        const regex = new RegExp(`(${escapedWord})`, 'gi');
+                                        const regex = searchMode === 'exact_word'
+                                            ? new RegExp(`(?<=^|[^a-zA-Z0-9\\u0590-\\u05FF])(${escapedWord})(?=$|[^a-zA-Z0-9\\u0590-\\u05FF])`, 'gi')
+                                            : new RegExp(`(${escapedWord})`, 'gi');
                                         snippet = snippet.replace(regex, '%%MARK%%$1%%ENDMARK%%');
                                     } catch(e) {}
                                 });
@@ -640,7 +669,15 @@ function initApp() {
                                     score: matchScore
                                 });
                                 
-                                index = lowerText.indexOf(firstFoundWord, index + firstFoundWord.length);
+                                if (searchMode === 'exact_word') {
+                                    const escapedWord = searchWords[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                                    const regex = new RegExp(`(?<=^|[^a-zA-Z0-9\\u0590-\\u05FF])${escapedWord}(?=$|[^a-zA-Z0-9\\u0590-\\u05FF])`, 'gi');
+                                    regex.lastIndex = index + searchWords[0].length;
+                                    const nextMatch = regex.exec(lowerText);
+                                    index = nextMatch ? nextMatch.index : -1;
+                                } else {
+                                    index = lowerText.indexOf(firstFoundWord, index + firstFoundWord.length);
+                                }
                                 occurrences++;
                             }
                         });
@@ -924,7 +961,11 @@ function initApp() {
     if (navHomeBtn) {
         navHomeBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (window.location.hash === '#/' || window.location.hash === '') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                window.location.hash = '#/';
+            }
         });
     }
 
@@ -1171,13 +1212,12 @@ function initApp() {
 
     if (openProfileBtn && profileModal) {
         openProfileBtn.addEventListener('click', () => {
-            profileModal.classList.add('active');
-            renderProfileData();
+            window.location.hash = '#/profile';
         });
 
         if (closeProfileModalBtn) {
             closeProfileModalBtn.addEventListener('click', () => {
-                profileModal.classList.remove('active');
+                window.location.hash = '#/';
             });
         }
 
@@ -1261,7 +1301,7 @@ function initApp() {
     }
 
     // --- Search Navigation & Highlighting Helper Functions ---
-    window.openBookToChapter = async function(bookId, chapterId, searchQuery) {
+    window.openBookToChapter = async function(bookId, chapterId, searchQuery, searchMode = 'and') {
         const book = books.find(b => Number(b.id) === Number(bookId));
         if (!book) return;
         
@@ -1282,12 +1322,12 @@ function initApp() {
         // Highlight and scroll to the searched words
         if (searchQuery) {
             setTimeout(() => {
-                window.highlightAndScrollToText(searchQuery);
+                window.highlightAndScrollToText(searchQuery, searchMode);
             }, 150);
         }
     };
 
-    window.highlightAndScrollToText = function(searchQuery) {
+    window.highlightAndScrollToText = function(searchQuery, searchMode = 'and') {
         const contentArea = document.getElementById('textContent');
         if (!contentArea) return;
         
@@ -1296,6 +1336,9 @@ function initApp() {
         
         const isExactMatch = rawQuery.startsWith('"') && rawQuery.endsWith('"');
         let searchWords = isExactMatch ? [rawQuery.slice(1, -1).trim()] : rawQuery.split(/\s+/).filter(w => w.length > 0);
+        if (searchMode === 'exact_word') {
+            searchWords = [rawQuery];
+        }
         
         if (searchWords.length === 0) return;
         
@@ -1331,23 +1374,37 @@ function initApp() {
             let lowerText = text.toLowerCase();
             
             let hasMatch = false;
-            searchWords.forEach(word => {
-                if (lowerText.includes(word)) hasMatch = true;
-            });
+            if (searchMode === 'exact_word') {
+                const escapedWord = searchWords[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const regex = new RegExp(`(?<=^|[^a-zA-Z0-9\\u0590-\\u05FF])${escapedWord}(?=$|[^a-zA-Z0-9\\u0590-\\u05FF])`, 'i');
+                if (regex.test(lowerText)) hasMatch = true;
+            } else {
+                searchWords.forEach(word => {
+                    if (lowerText.includes(word)) hasMatch = true;
+                });
+            }
             
             if (!hasMatch) return;
             
             const escapedWords = searchWords.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
             escapedWords.sort((a, b) => b.length - a.length);
             
-            const regexPattern = `(${escapedWords.join('|')})`;
-            const regex = new RegExp(regexPattern, 'gi');
+            let regex;
+            if (searchMode === 'exact_word') {
+                regex = new RegExp(`(?<=^|[^a-zA-Z0-9\\u0590-\\u05FF])(${escapedWords[0]})(?=$|[^a-zA-Z0-9\\u0590-\\u05FF])`, 'gi');
+            } else {
+                const regexPattern = `(${escapedWords.join('|')})`;
+                regex = new RegExp(regexPattern, 'gi');
+            }
             
             const parts = text.split(regex);
             if (parts.length > 1) {
                 const fragment = document.createDocumentFragment();
                 parts.forEach(part => {
-                    if (regex.test(part)) {
+                    const isPartMatch = searchMode === 'exact_word'
+                        ? (part.toLowerCase() === searchWords[0])
+                        : (searchWords.some(w => w.toLowerCase() === part.toLowerCase()));
+                    if (isPartMatch) {
                         const mark = document.createElement('mark');
                         mark.className = 'search-highlight';
                         mark.style.background = 'rgba(212, 175, 55, 0.4)';
@@ -1377,19 +1434,175 @@ function initApp() {
         }
     };
 
+    // --- Mobile Navigation Drawer Logic ---
+    if (hamburgerBtn && mobileDrawer && drawerOverlay) {
+        hamburgerBtn.addEventListener('click', () => {
+            mobileDrawer.classList.add('active');
+            drawerOverlay.classList.add('active');
+        });
+    }
+
+    if (closeDrawerBtn && mobileDrawer && drawerOverlay) {
+        closeDrawerBtn.addEventListener('click', () => {
+            mobileDrawer.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+        });
+    }
+
+    if (drawerOverlay && mobileDrawer) {
+        drawerOverlay.addEventListener('click', () => {
+            mobileDrawer.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+        });
+    }
+
+    document.querySelectorAll('.drawer-link').forEach(link => {
+        link.addEventListener('click', () => {
+            if (mobileDrawer) mobileDrawer.classList.remove('active');
+            if (drawerOverlay) drawerOverlay.classList.remove('active');
+        });
+    });
+
+    if (drawerProfileBtn) {
+        drawerProfileBtn.addEventListener('click', () => {
+            if (mobileDrawer) mobileDrawer.classList.remove('active');
+            if (drawerOverlay) drawerOverlay.classList.remove('active');
+            window.location.hash = '#/profile';
+        });
+    }
+
+    if (drawerThemeToggle) {
+        drawerThemeToggle.addEventListener('click', () => {
+            if (document.body.getAttribute('data-theme') === 'dark') {
+                document.body.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            }
+            updateThemeBtnText();
+        });
+    }
+
+    // --- Client-Side Hash Router ---
+    async function handleRoute() {
+        const hash = window.location.hash || '#/';
+        
+        // Close modal and reader modes by default
+        modal.classList.remove('active');
+        profileModal.classList.remove('active');
+        readerMode.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        
+        // Also close mobile drawers/overlays if they are open
+        if (mobileDrawer) mobileDrawer.classList.remove('active');
+        if (drawerOverlay) drawerOverlay.classList.remove('active');
+        
+        // Update active class on nav links & drawer links
+        document.querySelectorAll('.nav-links a, .drawer-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        
+        if (hash === '#/' || hash === '') {
+            const mainLibraryLink = document.querySelector('.nav-links a[href="#/"]');
+            const drawerLibraryLink = document.getElementById('drawer-link-library');
+            if (mainLibraryLink) mainLibraryLink.classList.add('active');
+            if (drawerLibraryLink) drawerLibraryLink.classList.add('active');
+            
+            filterBooks('all', searchInput.value.toLowerCase());
+            
+        } else if (hash.startsWith('#/book/')) {
+            const bookId = Number(hash.split('#/book/')[1]);
+            const book = books.find(b => b.id === bookId);
+            if (book) {
+                filterBooks('all', searchInput.value.toLowerCase());
+                openModal(book);
+            } else {
+                window.location.hash = '#/';
+            }
+        } else if (hash.startsWith('#/reader/')) {
+            const pathParts = hash.split('/');
+            const bookId = Number(pathParts[2]);
+            const book = books.find(b => b.id === bookId);
+            
+            if (book) {
+                let targetChapterId = null;
+                if (pathParts[3] === 'chapter' && pathParts[4]) {
+                    targetChapterId = Number(pathParts[4]);
+                }
+                await openReader(book, targetChapterId);
+                
+                // If there's a search query, highlight it
+                if (window.tempSearchQuery) {
+                    window.highlightAndScrollToText(window.tempSearchQuery, window.tempSearchMode || 'and');
+                    window.tempSearchQuery = null;
+                    window.tempSearchMode = null;
+                }
+            } else {
+                window.location.hash = '#/';
+            }
+        } else if (hash === '#/profile') {
+            filterBooks('all', searchInput.value.toLowerCase());
+            profileModal.classList.add('active');
+            renderProfileData();
+        } else if (hash === '#/about') {
+            const aboutLink = document.querySelector('.nav-links a[href="#/about"]');
+            const drawerAboutLink = document.getElementById('drawer-link-about');
+            if (aboutLink) aboutLink.classList.add('active');
+            if (drawerAboutLink) drawerAboutLink.classList.add('active');
+            
+            const heroSubtitle = document.querySelector('.hero-subtitle');
+            if (heroSubtitle) heroSubtitle.scrollIntoView({ behavior: 'smooth' });
+        } else if (hash === '#/contact') {
+            const contactLink = document.querySelector('.nav-links a[href="#/contact"]');
+            const drawerContactLink = document.getElementById('drawer-link-contact');
+            if (contactLink) contactLink.classList.add('active');
+            if (drawerContactLink) drawerContactLink.classList.add('active');
+            
+            const footer = document.querySelector('footer');
+            if (footer) footer.scrollIntoView({ behavior: 'smooth' });
+        } else if (hash === '#/advanced-search') {
+            const advSearchSection = document.getElementById('advancedSearchSection');
+            if (advSearchSection) {
+                advSearchSection.scrollIntoView({ behavior: 'smooth' });
+                const advSearchInput = document.getElementById('advSearchInput');
+                if (advSearchInput) setTimeout(() => advSearchInput.focus(), 500);
+            }
+        }
+    }
+
+    // Attach listener
+    window.addEventListener('hashchange', handleRoute);
+    
+    // Initial route handling
+    handleRoute();
+
 }
 
 // Initialize when DOM is ready
 async function startApp() {
     try {
-        const response = await fetch('data/catalog.json');
+        // Try fetching from the server API first
+        let response = await fetch('/api/books');
+        if (!response.ok) {
+            // Fallback to static catalog.json if API is unavailable or non-ok
+            response = await fetch('data/catalog.json');
+        }
         if (response.ok) {
             books = await response.json();
         } else {
-            console.error('Failed to load catalog');
+            console.error('Failed to load books catalog from both API and static fallback');
         }
     } catch (e) {
-        console.error('Error loading catalog:', e);
+        console.warn('API call failed, trying static catalog.json fallback...', e);
+        try {
+            const response = await fetch('data/catalog.json');
+            if (response.ok) {
+                books = await response.json();
+            }
+        } catch (fallbackError) {
+            console.error('Fallback static fetch failed:', fallbackError);
+        }
     }
     initApp();
 }

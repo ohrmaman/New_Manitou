@@ -1,0 +1,12 @@
+#!/bin/bash
+# Get the directory of the launcher script
+DIR="$(cd "$(dirname "$0")" && pwd)"
+
+# Get the project root directory (three levels up from launcher)
+PROJECT_DIR="$(cd "$DIR/../../.." && pwd)"
+
+# Change working directory to the project directory
+cd "$PROJECT_DIR"
+
+# Launch the Python GUI server controller using Apple Silicon architecture explicitly
+exec /usr/bin/arch -arm64 python3 gui_server.py

@@ -30,15 +30,19 @@ if (!fs.existsSync(catalogPath)) {
 // Multer setup for PDF uploads
 const upload = multer({ dest: 'uploads/' });
 
-// Protect /admin routes with Basic Auth
+// Protect /admin routes with Basic Auth (challenge disabled to prevent browser popup)
 const adminAuth = basicAuth({
     users: { 'admin': 'manitou2026' },
-    challenge: true,
-    realm: 'Manitou Admin Area'
+    challenge: false
 });
 
-// Serve the admin page securely
-app.use('/admin', adminAuth, express.static(path.join(__dirname, 'admin')));
+// Serve the admin page statically (authentication verified in-page and on APIs)
+app.use('/admin', express.static(path.join(__dirname, 'admin')));
+
+// 0. Verify credentials (client will check this on load/submit)
+app.get('/api/auth/verify', adminAuth, (req, res) => {
+    res.json({ success: true });
+});
 
 // --- API ROUTES ---
 

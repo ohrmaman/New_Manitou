@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>מכון מניטו | ספריית אונליין</title>
     <meta name="description" content="הספרייה המקוונת של מכון מניטו - ספרי הרב יהודא לאון אשכנזי זצ״ל.">
+    <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&family=Frank+Ruhl+Libre:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -17,9 +18,9 @@
                 <span class="logo-subtext">ספרים מקוונים</span>
             </div>
             <div class="nav-links">
-                <a href="#" class="active">ספרייה</a>
-                <a href="#">אודות</a>
-                <a href="#">צור קשר</a>
+                <a href="#/" class="active">ספרייה</a>
+                <a href="#/about">אודות</a>
+                <a href="#/contact">צור קשר</a>
             </div>
             <div class="user-actions" style="display: flex; gap: 10px; align-items: center;">
                 <div class="user-greeting" style="margin-left: 10px;">שלום אור ממן</div>
@@ -38,6 +39,9 @@
                 <button id="navHomeBtn" class="btn btn-primary btn-sm" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer; border: none; background: var(--accent); color: var(--primary-bg);">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                     <span>ראשי</span>
+                </button>
+                <button id="hamburgerBtn" class="hamburger-btn" aria-label="תפריט" style="display: none; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border); background: var(--secondary-bg); color: var(--text-main); cursor: pointer;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
                 </button>
             </div>
         </nav>
@@ -99,6 +103,7 @@
                         <button class="toolbar-btn active" data-mode="and" style="padding: 0.6rem 1.5rem; border-radius: 20px; border: 2px solid var(--accent); background: var(--accent); color: var(--primary-bg); font-weight: bold; cursor: pointer; transition: all 0.3s ease; font-size: 1rem;">כל המילים (AND)</button>
                         <button class="toolbar-btn" data-mode="or" style="padding: 0.6rem 1.5rem; border-radius: 20px; border: 2px solid var(--border); background: var(--secondary-bg); color: var(--text-muted); font-weight: bold; cursor: pointer; transition: all 0.3s ease; font-size: 1rem;">לפחות מילה אחת (OR)</button>
                         <button class="toolbar-btn" data-mode="exact" style="padding: 0.6rem 1.5rem; border-radius: 20px; border: 2px solid var(--border); background: var(--secondary-bg); color: var(--text-muted); font-weight: bold; cursor: pointer; transition: all 0.3s ease; font-size: 1rem;">ביטוי מדויק (Exact)</button>
+                        <button class="toolbar-btn" data-mode="exact_word" style="padding: 0.6rem 1.5rem; border-radius: 20px; border: 2px solid var(--border); background: var(--secondary-bg); color: var(--text-muted); font-weight: bold; cursor: pointer; transition: all 0.3s ease; font-size: 1rem;">ביטוי מדויק כמילה (Exact Word)</button>
                     </div>
                 </div>
 
@@ -270,6 +275,33 @@
             </div>
         </div>
     </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobileDrawer" class="mobile-drawer">
+        <div class="drawer-header">
+            <div class="logo">
+                <span class="logo-text">מכון מניטו</span>
+                <span class="logo-subtext">ספרים מקוונים</span>
+            </div>
+            <button id="closeDrawerBtn" class="close-drawer">&times;</button>
+        </div>
+        <div class="drawer-body">
+            <a href="#/" class="drawer-link active" id="drawer-link-library">ספרייה</a>
+            <a href="#/about" class="drawer-link" id="drawer-link-about">אודות</a>
+            <a href="#/contact" class="drawer-link" id="drawer-link-contact">צור קשר</a>
+            <a href="/admin" class="drawer-link">ממשק ניהול</a>
+            <hr class="drawer-divider">
+            <button id="drawerProfileBtn" class="drawer-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span>אזור אישי</span>
+            </button>
+            <button id="drawerThemeToggle" class="drawer-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                <span id="drawerThemeText">מצב לילה</span>
+            </button>
+        </div>
+    </div>
+    <div id="drawerOverlay" class="drawer-overlay"></div>
 
     <div id="toastNotification" class="toast-notification" style="display: none;"></div>
 
