@@ -36,15 +36,20 @@ class FlatButton(tk.Label):
         self.command = command
         self.state = state
         
+        bd = kwargs.pop('bd', 0)
+        relief = kwargs.pop('relief', tk.FLAT)
+        padx = kwargs.pop('padx', 15)
+        pady = kwargs.pop('pady', 8)
+        
         super().__init__(
             parent, 
             text=text, 
             bg=bg if state == tk.NORMAL else self.disabled_bg, 
             fg=fg if state == tk.NORMAL else self.disabled_fg, 
-            relief=tk.FLAT, 
-            bd=0,
-            padx=15,
-            pady=8,
+            relief=relief, 
+            bd=bd,
+            padx=padx,
+            pady=pady,
             anchor="center",
             justify="center",
             cursor="hand2" if state == tk.NORMAL else "",
