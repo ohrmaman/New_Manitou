@@ -268,10 +268,10 @@ class ServerControllerApp:
         self.log_display.pack(fill=tk.BOTH, expand=True)
         
         # Log coloring tags
-        self.log_display.tag_config("info", fg=TEXT_MUTED)
-        self.log_display.tag_config("success", fg=COLOR_GREEN, weight="bold")
-        self.log_display.tag_config("error", fg=COLOR_RED, weight="bold")
-        self.log_display.tag_config("gold", fg=ACCENT_GOLD)
+        self.log_display.tag_config("info", foreground=TEXT_MUTED)
+        self.log_display.tag_config("success", foreground=COLOR_GREEN, font=("Courier", 10, "bold"))
+        self.log_display.tag_config("error", foreground=COLOR_RED, font=("Courier", 10, "bold"))
+        self.log_display.tag_config("gold", foreground=ACCENT_GOLD)
         
         self.log_write("לחץ על 'הפעל שרת' כדי להפעיל את השרת המקומי...\n", "info")
         self.log_display.configure(state=tk.DISABLED)
