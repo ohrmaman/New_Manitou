@@ -10,7 +10,7 @@ import tkinter as tk
 from tkinter import messagebox, font
 from tkinter import scrolledtext
 
-# Theme Colors (Premium Editorial Gold & Slate)
+# Theme Colors (Premium Dark Gold Scheme)
 BG_MAIN = "#0b0f19"       # Deep slate background
 BG_CARD = "#161e2e"       # Card element background
 BG_CONSOLE = "#050b14"    # Very dark terminal background
@@ -19,30 +19,95 @@ TEXT_MUTED = "#94a3b8"    # Muted slate text
 ACCENT_GOLD = "#e5c158"   # Gold accent color
 COLOR_GREEN = "#10b981"   # Emerald success green
 COLOR_RED = "#ef4444"     # Red error/stopped
-COLOR_BORDER = "#1e293b"  # Border line slate
+COLOR_BORDER = "#1f2937"  # Border line slate
 COLOR_HOVER_GOLD = "#f5d066"
 COLOR_HOVER_RED = "#f87171"
-COLOR_HOVER_BTN = "#273549"
+COLOR_HOVER_GREEN = "#34d399"
+COLOR_HOVER_BTN = "#1e293b"
+
+class FlatButton(tk.Label):
+    """Custom Label-based Button to bypass macOS Tkinter native styling limitations."""
+    def __init__(self, parent, text, command, bg, fg, hover_bg, state=tk.NORMAL, **kwargs):
+        self.normal_bg = bg
+        self.normal_fg = fg
+        self.hover_bg = hover_bg
+        self.disabled_bg = "#1e293b"
+        self.disabled_fg = "#475569"
+        self.command = command
+        self.state = state
+        
+        super().__init__(
+            parent, 
+            text=text, 
+            bg=bg if state == tk.NORMAL else self.disabled_bg, 
+            fg=fg if state == tk.NORMAL else self.disabled_fg, 
+            relief=tk.FLAT, 
+            bd=0,
+            padx=15,
+            pady=8,
+            anchor="center",
+            justify="center",
+            cursor="hand2" if state == tk.NORMAL else "",
+            **kwargs
+        )
+        
+        if state == tk.NORMAL:
+            self.bind_events()
+
+    def bind_events(self):
+        self.bind("<Enter>", self.on_enter)
+        self.bind("<Leave>", self.on_leave)
+        self.bind("<Button-1>", self.on_click)
+
+    def unbind_events(self):
+        self.unbind("<Enter>")
+        self.unbind("<Leave>")
+        self.unbind("<Button-1>")
+
+    def on_enter(self, event):
+        if self.state == tk.NORMAL:
+            self.configure(bg=self.hover_bg)
+
+    def on_leave(self, event):
+        if self.state == tk.NORMAL:
+            self.configure(bg=self.normal_bg)
+
+    def on_click(self, event):
+        if self.state == tk.NORMAL and self.command:
+            self.command()
+
+    def configure_state(self, state):
+        self.state = state
+        if state == tk.NORMAL:
+            self.configure(bg=self.normal_bg, fg=self.normal_fg, cursor="hand2")
+            self.bind_events()
+        else:
+            self.configure(bg=self.disabled_bg, fg=self.disabled_fg, cursor="")
+            self.unbind_events()
+
 
 class ServerControllerApp:
     def __init__(self, root):
         self.root = root
         self.root.title("מנהל שרת - מכון מניטו")
-        self.root.geometry("700x560")
+        self.root.geometry("740x600")
         self.root.configure(bg=BG_MAIN)
         self.root.resizable(True, True)
         
-        # Set default font configuration
+        # Set RTL Font Defaults
         self.root.option_add('*font', ('Heebo', 10))
         
         self.process = None
         self.log_queue = queue.Queue()
         self.is_running = False
         
+        # Variables
+        self.auto_open_var = tk.BooleanVar(value=True)
+        
         # Determine working directory
         self.work_dir = os.path.dirname(os.path.abspath(__file__))
         
-        # Setup UI styles and variables
+        # Setup UI
         self.setup_styles()
         self.create_widgets()
         
@@ -53,7 +118,7 @@ class ServerControllerApp:
         self.root.after(100, self.poll_logs)
 
     def setup_styles(self):
-        self.title_font = font.Font(family="Frank Ruhl Libre", size=20, weight="bold")
+        self.title_font = font.Font(family="Frank Ruhl Libre", size=22, weight="bold")
         self.subtitle_font = font.Font(family="Heebo", size=10, weight="normal")
         self.section_font = font.Font(family="Heebo", size=11, weight="bold")
         self.btn_font = font.Font(family="Heebo", size=11, weight="bold")
@@ -64,18 +129,18 @@ class ServerControllerApp:
         header_frame = tk.Frame(self.root, bg=BG_MAIN, padx=24, pady=20)
         header_frame.pack(fill=tk.X)
         
-        # Logo Icon & Title (Align Right for Hebrew RTL flow)
+        # Logo & Title (RTL Alignment)
         logo_title_frame = tk.Frame(header_frame, bg=BG_MAIN)
         logo_title_frame.pack(side=tk.RIGHT)
         
         logo_label = tk.Label(
             logo_title_frame, 
             text="🕎", 
-            font=("Heebo", 24), 
+            font=("Heebo", 26), 
             fg=ACCENT_GOLD, 
             bg=BG_MAIN
         )
-        logo_label.pack(side=tk.RIGHT, padx=(10, 0))
+        logo_label.pack(side=tk.RIGHT, padx=(12, 0))
         
         title_text_frame = tk.Frame(logo_title_frame, bg=BG_MAIN)
         title_text_frame.pack(side=tk.RIGHT)
@@ -98,12 +163,12 @@ class ServerControllerApp:
         )
         subtitle_label.pack(anchor=tk.NE)
         
-        # Status Label / Indicator (Align Left)
-        status_frame = tk.Frame(header_frame, bg=BG_CARD, padx=12, pady=8, bd=1, relief=tk.SOLID, highlightbackground=COLOR_BORDER)
+        # Status Box (LTL Alignment)
+        status_frame = tk.Frame(header_frame, bg=BG_CARD, padx=14, pady=8, bd=1, relief=tk.SOLID, highlightbackground=COLOR_BORDER)
         status_frame.pack(side=tk.LEFT, pady=5)
         
         self.status_indicator = tk.Frame(status_frame, bg=COLOR_RED, width=12, height=12)
-        self.status_indicator.pack(side=tk.LEFT, padx=(0, 8))
+        self.status_indicator.pack(side=tk.LEFT, padx=(0, 10))
         
         self.status_text = tk.Label(
             status_frame, 
@@ -114,7 +179,7 @@ class ServerControllerApp:
         )
         self.status_text.pack(side=tk.LEFT)
 
-        # Divider line
+        # Divider
         divider = tk.Frame(self.root, height=1, bg=COLOR_BORDER)
         divider.pack(fill=tk.X, padx=24)
 
@@ -122,106 +187,108 @@ class ServerControllerApp:
         controls_container = tk.Frame(self.root, bg=BG_MAIN, padx=24, pady=15)
         controls_container.pack(fill=tk.X)
         
-        # Card 1: Server Control Actions
-        server_card = tk.LabelFrame(
-            controls_container, 
-            text=" ⚙️ ניהול תהליך ", 
-            font=self.section_font,
-            fg=ACCENT_GOLD, 
-            bg=BG_CARD, 
-            bd=1, 
-            relief=tk.SOLID,
-            padx=15, 
-            pady=15,
-            highlightbackground=COLOR_BORDER
-        )
+        # --- Card 1: Server Control Actions (Right Side) ---
+        server_card = tk.Frame(controls_container, bg=BG_CARD, bd=1, relief=tk.SOLID, highlightbackground=COLOR_BORDER)
         server_card.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=(10, 0))
         
-        # Start Server Button
-        self.start_btn = tk.Button(
+        server_title_frame = tk.Frame(server_card, bg=BG_CARD)
+        server_title_frame.pack(fill=tk.X, padx=15, pady=(12, 8))
+        
+        server_title = tk.Label(
+            server_title_frame, 
+            text="⚙️ ניהול תהליך", 
+            font=self.section_font,
+            fg=ACCENT_GOLD,
+            bg=BG_CARD
+        )
+        server_title.pack(side=tk.RIGHT)
+        
+        # Start Server Button (Green Style)
+        self.start_btn = FlatButton(
             server_card, 
             text="⚡ הפעל שרת", 
             font=self.btn_font, 
-            bg=ACCENT_GOLD, 
+            bg=COLOR_GREEN, 
             fg=BG_MAIN, 
-            activebackground=COLOR_HOVER_GOLD, 
-            activeforeground=BG_MAIN,
-            bd=0, 
-            height=2,
-            width=14,
-            cursor="hand2",
-            highlightthickness=0,
+            hover_bg=COLOR_HOVER_GREEN,
             command=self.start_server
         )
-        self.start_btn.pack(side=tk.TOP, fill=tk.X, pady=4)
+        self.start_btn.pack(side=tk.TOP, fill=tk.X, padx=15, pady=6)
         
-        # Stop Server Button (Disabled initially)
-        self.stop_btn = tk.Button(
+        # Stop Server Button (Red Style, initially disabled)
+        self.stop_btn = FlatButton(
             server_card, 
             text="🛑 עצור שרת", 
             font=self.btn_font, 
-            bg="#374151", 
+            bg=COLOR_RED, 
             fg=TEXT_MAIN, 
-            activebackground=COLOR_HOVER_RED, 
-            activeforeground=TEXT_MAIN,
-            bd=0, 
-            height=2,
-            width=14,
+            hover_bg=COLOR_HOVER_RED,
             state=tk.DISABLED,
-            cursor="hand2",
-            highlightthickness=0,
             command=self.stop_server
         )
-        self.stop_btn.pack(side=tk.TOP, fill=tk.X, pady=4)
+        self.stop_btn.pack(side=tk.TOP, fill=tk.X, padx=15, pady=(0, 15))
         
-        # Card 2: Quick Links
-        links_card = tk.LabelFrame(
-            controls_container, 
-            text=" 🌐 קישורים מהירים ", 
-            font=self.section_font,
-            fg=ACCENT_GOLD, 
-            bg=BG_CARD, 
-            bd=1, 
-            relief=tk.SOLID,
-            padx=15, 
-            pady=15,
-            highlightbackground=COLOR_BORDER
-        )
+        # --- Card 2: Quick Links (Left Side) ---
+        links_card = tk.Frame(controls_container, bg=BG_CARD, bd=1, relief=tk.SOLID, highlightbackground=COLOR_BORDER)
         links_card.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 10))
         
-        # Open Website
-        self.open_site_btn = tk.Button(
+        links_title_frame = tk.Frame(links_card, bg=BG_CARD)
+        links_title_frame.pack(fill=tk.X, padx=15, pady=(12, 8))
+        
+        links_title = tk.Label(
+            links_title_frame, 
+            text="🌐 קישורים מהירים", 
+            font=self.section_font,
+            fg=ACCENT_GOLD,
+            bg=BG_CARD
+        )
+        links_title.pack(side=tk.RIGHT)
+        
+        # Open Website (Highlight Gold Style)
+        self.open_site_btn = FlatButton(
             links_card, 
             text="📖 פתח אתר ספרייה", 
             font=self.btn_font, 
-            bg=BG_MAIN, 
-            fg=TEXT_MAIN, 
-            activebackground=COLOR_HOVER_BTN,
-            activeforeground=TEXT_MAIN,
-            bd=1, 
-            height=2,
-            cursor="hand2",
-            highlightbackground=COLOR_BORDER,
+            bg=ACCENT_GOLD, 
+            fg=BG_MAIN, 
+            hover_bg=COLOR_HOVER_GOLD,
             command=lambda: webbrowser.open("http://localhost:3000")
         )
-        self.open_site_btn.pack(side=tk.TOP, fill=tk.X, pady=4)
+        self.open_site_btn.pack(side=tk.TOP, fill=tk.X, padx=15, pady=6)
         
-        # Open Admin Panel
-        self.open_admin_btn = tk.Button(
+        # Open Admin Panel (Outline Style)
+        self.open_admin_btn = FlatButton(
             links_card, 
             text="🔑 ממשק ניהול ספרים", 
             font=self.btn_font, 
             bg=BG_MAIN, 
             fg=ACCENT_GOLD, 
-            activebackground=COLOR_HOVER_BTN,
-            activeforeground=ACCENT_GOLD,
-            bd=1, 
-            height=2,
-            cursor="hand2",
+            hover_bg=COLOR_HOVER_BTN,
+            bd=1,
+            relief=tk.SOLID,
             highlightbackground=COLOR_BORDER,
             command=lambda: webbrowser.open("http://localhost:3000/admin")
         )
-        self.open_admin_btn.pack(side=tk.TOP, fill=tk.X, pady=4)
+        self.open_admin_btn.pack(side=tk.TOP, fill=tk.X, padx=15, pady=(0, 15))
+
+        # Checkbox Row under cards
+        checkbox_frame = tk.Frame(self.root, bg=BG_MAIN, padx=24)
+        checkbox_frame.pack(fill=tk.X, pady=(0, 10))
+        
+        self.auto_open_check = tk.Checkbutton(
+            checkbox_frame,
+            text="פתח אתר אוטומטית בהפעלת השרת",
+            variable=self.auto_open_var,
+            font=self.subtitle_font,
+            fg=TEXT_MAIN,
+            bg=BG_MAIN,
+            activebackground=BG_MAIN,
+            activeforeground=TEXT_MAIN,
+            selectcolor=BG_CARD,
+            bd=0,
+            highlightthickness=0
+        )
+        self.auto_open_check.pack(side=tk.RIGHT)
 
         # 3. Log Console Section
         console_container = tk.Frame(self.root, bg=BG_MAIN, padx=24, pady=5)
@@ -239,18 +306,18 @@ class ServerControllerApp:
         )
         console_title.pack(side=tk.RIGHT)
         
-        clear_btn = tk.Button(
+        self.clear_btn = FlatButton(
             console_header,
             text="🗑️ נקה לוגים",
             font=self.subtitle_font,
             bg=BG_MAIN,
             fg=TEXT_MUTED,
-            bd=0,
-            cursor="hand2",
-            highlightthickness=0,
-            command=self.clear_logs
+            hover_bg=COLOR_HOVER_BTN,
+            command=self.clear_logs,
+            padx=10,
+            pady=4
         )
-        clear_btn.pack(side=tk.LEFT)
+        self.clear_btn.pack(side=tk.LEFT)
         
         # Log Text Box
         self.log_display = scrolledtext.ScrolledText(
@@ -304,7 +371,6 @@ class ServerControllerApp:
             # Spawn Node subprocess natively under arm64/Apple Silicon if on macOS
             cmd = ["node", "server.js"]
             if sys.platform == "darwin":
-                # Ensure child runs natively in Apple Silicon environment if possible
                 cmd = ["/usr/bin/arch", "-arm64", "node", "server.js"]
 
             self.process = subprocess.Popen(
@@ -340,7 +406,6 @@ class ServerControllerApp:
             self.root.after(0, self.server_exited_unexpectedly)
 
     def poll_logs(self):
-        # Empty the queue into log display
         while not self.log_queue.empty():
             try:
                 line = self.log_queue.get_nowait()
@@ -354,8 +419,13 @@ class ServerControllerApp:
                     tag = "success"
                 elif "server" in lower_line or "http" in lower_line or "🕎" in line:
                     tag = "gold"
-                    
+                
                 self.log_write(line, tag)
+                
+                # Auto open browser when node server says running
+                if "server running" in lower_line and self.auto_open_var.get():
+                    self.root.after(100, lambda: webbrowser.open("http://localhost:3000"))
+                    
             except queue.Empty:
                 break
         
@@ -367,7 +437,6 @@ class ServerControllerApp:
             
         self.log_write("\n--- 🛑 מכבה את השרת... ---\n", "gold")
         try:
-            # Kill process group (handles any children processes)
             if sys.platform != "win32":
                 os.killpg(os.getpgid(self.process.pid), signal.SIGTERM)
             else:
@@ -400,13 +469,13 @@ class ServerControllerApp:
         if running:
             self.status_indicator.configure(bg=COLOR_GREEN)
             self.status_text.configure(text="שרת פעיל בפורט 3000", fg=COLOR_GREEN)
-            self.start_btn.configure(state=tk.DISABLED, bg="#1e293b", fg=TEXT_MUTED)
-            self.stop_btn.configure(state=tk.NORMAL, bg=COLOR_RED, fg=TEXT_MAIN)
+            self.start_btn.configure_state(tk.DISABLED)
+            self.stop_btn.configure_state(tk.NORMAL)
         else:
             self.status_indicator.configure(bg=COLOR_RED)
             self.status_text.configure(text="שרת כבוי", fg=TEXT_MUTED)
-            self.start_btn.configure(state=tk.NORMAL, bg=ACCENT_GOLD, fg=BG_MAIN)
-            self.stop_btn.configure(state=tk.DISABLED, bg="#1e293b", fg=TEXT_MUTED)
+            self.start_btn.configure_state(tk.NORMAL)
+            self.stop_btn.configure_state(tk.DISABLED)
 
     def on_close(self):
         if self.is_running:
