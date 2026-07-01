@@ -296,8 +296,10 @@ a {
 .section-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
     margin-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.2rem;
 }
 
 .section-header h2 {
@@ -309,12 +311,13 @@ a {
 .section-header h2::after {
     content: '';
     position: absolute;
-    bottom: -10px;
+    bottom: -1.2rem; /* Align perfectly on the border-bottom line */
     right: 0;
-    width: 60px;
+    width: 75px;
     height: 3px;
     background: var(--accent);
     border-radius: 2px;
+    z-index: 1;
 }
 
 .filter-tabs {
@@ -809,6 +812,8 @@ footer {
         align-items: center;
         gap: 1.5rem;
         margin-bottom: 2rem;
+        border-bottom: none !important;
+        padding-bottom: 0 !important;
     }
     
     .section-header h2 {
@@ -819,6 +824,7 @@ footer {
         left: 50%;
         right: auto;
         transform: translateX(-50%);
+        bottom: -10px !important;
     }
 
     .filter-tabs {
