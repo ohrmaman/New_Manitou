@@ -107,7 +107,7 @@ class ServerControllerApp:
         self.is_running = False
         
         # Variables
-        self.auto_open_var = tk.BooleanVar(value=True)
+        self.auto_open_var = tk.BooleanVar(value=False)
         
         # Determine working directory
         self.work_dir = os.path.dirname(os.path.abspath(__file__))
