@@ -364,10 +364,18 @@ class ServerControllerApp:
             return
             
         try:
-            # Spawn Node subprocess natively under arm64/Apple Silicon if on macOS
-            cmd = ["node", "server.js"]
+            # Resolve absolute path to node binary on macOS to handle GUI environment PATH limits
+            node_bin = "node"
             if sys.platform == "darwin":
-                cmd = ["/usr/bin/arch", "-arm64", "node", "server.js"]
+                for path in ["/opt/homebrew/bin/node", "/usr/local/bin/node", "/usr/bin/node"]:
+                    if os.path.exists(path):
+                        node_bin = path
+                        break
+            
+            # Spawn Node subprocess natively under arm64/Apple Silicon if on macOS
+            cmd = [node_bin, "server.js"]
+            if sys.platform == "darwin":
+                cmd = ["/usr/bin/arch", "-arm64", node_bin, "server.js"]
 
             self.process = subprocess.Popen(
                 cmd,
