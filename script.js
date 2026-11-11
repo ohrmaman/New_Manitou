@@ -5427,12 +5427,23 @@ async function startApp() {
         }).catch(() => {});
     }
 
-    // Live Local Server Health Monitor (Port 3000) so user never has to guess if server is off
+    // Live Local Server Health Monitor (Port 3000 on localhost; static health in production)
     let lastKnownServerOnline = true;
+    const isLocalhostEnv = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
     async function checkLocalServerHealth(manualRetry = false) {
         const banner = document.getElementById('serverOfflineBanner');
         const pill = document.getElementById('navServerStatusPill');
         const pillText = document.getElementById('navServerStatusText');
+        if (!isLocalhostEnv) {
+            if (banner) banner.style.display = 'none';
+            if (pill) {
+                pill.classList.remove('is-offline');
+                pill.classList.add('is-online');
+                pill.title = 'האתר מחובר ופעיל (פרודקשיין)';
+            }
+            if (pillText) pillText.textContent = 'אתר פעיל';
+            return true;
+        }
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), 2500);
         try {
