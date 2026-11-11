@@ -46,6 +46,12 @@ app.get('/api/auth/verify', adminAuth, (req, res) => {
 
 // --- API ROUTES ---
 
+// Health check endpoint (never cached, used by UI to detect if local server is running)
+app.get('/api/ping', (req, res) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    res.json({ status: 'ok', port: PORT, time: Date.now() });
+});
+
 // 1. Get all books (Public - so main site can use it)
 app.get('/api/books', (req, res) => {
     try {
@@ -190,8 +196,32 @@ app.post('/api/upload-pdf/:bookId', adminAuth, upload.single('pdf'), async (req,
     }
 });
 
-// Serve the main website statically (Public)
-app.use(express.static(__dirname));
+// 5b. Public endpoint to get chapters for a book (fallback for reader)
+app.get('/api/books/:id/public-chapters', (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+        const bookFile = path.join(dataDir, `book_${id}.json`);
+        if (fs.existsSync(bookFile)) {
+            const chapters = JSON.parse(fs.readFileSync(bookFile, 'utf8'));
+            res.json(chapters);
+        } else {
+            res.status(404).json({ error: 'Book file not found' });
+        }
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+// Serve the main website statically (Public) with fresh headers for HTML, JS, CSS, and JSON
+app.use(express.static(__dirname, {
+    etag: false,
+    lastModified: false,
+    setHeaders: (res, filePath) => {
+        if (/\.(html|js|css|json)$/i.test(filePath)) {
+            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        }
+    }
+}));
 
 app.listen(PORT, () => {
     console.log(`Server running!`);

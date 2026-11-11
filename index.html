@@ -6,42 +6,74 @@
     <title>מכון מניטו | ספריית אונליין</title>
     <meta name="description" content="הספרייה המקוונת של מכון מניטו - ספרי הרב יהודא לאון אשכנזי זצ״ל.">
     <link rel="icon" type="image/png" href="favicon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&family=Frank+Ruhl+Libre:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#d4af37">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&family=Frank+Ruhl+Libre:wght@400;700&family=David+Libre:wght@400;500;700&family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=21">
 </head>
 <body>
+    <!-- Live Server Offline Warning Banner -->
+    <div id="serverOfflineBanner" class="server-offline-banner" style="display: none;" role="alert">
+        <div class="server-offline-banner-inner">
+            <span class="server-offline-dot"></span>
+            <div class="server-offline-text">
+                <strong>השרת המקומי אינו פועל (Port 3000 כבוי)!</strong>
+                <span>האתר מוצג כעת מתוך הזיכרון המקומי של הדפדפן בלבד. כדי לטעון ספרים ועדכונים חדשים, הפעל את <code>ManitouServer.app</code> (או הרץ <code>node server.js</code>).</span>
+            </div>
+            <button id="retryServerConnBtn" class="server-offline-retry-btn" type="button">בדוק חיבור מחדש</button>
+        </div>
+    </div>
     <div class="app-container">
         <!-- Navigation -->
         <nav class="navbar">
-            <div class="logo">
+            <a href="#/" class="logo" style="text-decoration: none;">
                 <span class="logo-text">מכון מניטו</span>
                 <span class="logo-subtext">ספרים מקוונים</span>
-            </div>
+            </a>
             <div class="nav-links">
                 <a href="#/" class="active">ספרייה</a>
+                <a href="#/timeline" id="navTimelineLink">תולדות מניטו</a>
                 <a href="#/about">אודות</a>
                 <a href="#/contact">צור קשר</a>
             </div>
-            <div class="user-actions" style="display: flex; gap: 10px; align-items: center;">
-                <div class="user-greeting" style="margin-left: 10px;">שלום אור ממן</div>
-                <a href="/admin" class="btn btn-secondary btn-sm" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer; border: 1px solid var(--accent); background: rgba(212, 175, 55, 0.1); color: var(--accent); text-decoration: none;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
-                    <span style="font-weight: bold;">ניהול</span>
+            <div class="user-actions">
+                <button id="navQuickSearchBtn" class="navbar-btn" title="חיפוש מהיר (⌘K / Ctrl+K)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <span>חיפוש</span>
+                    <kbd style="font-size: 0.65rem; background: rgba(128,128,128,0.2); padding: 1px 5px; border-radius: 4px; border: 1px solid var(--border); font-family: inherit;">⌘K</kbd>
+                </button>
+                <button id="navTopicsBtn" class="navbar-btn" title="מפתח פרשת השבוע, מועדי ישראל ונושאי לימוד">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    <span>פרשה ומועד</span>
+                </button>
+                <button id="navGlossaryBtn" class="navbar-btn" title="מילון מושגים במשנת מניטו">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    <span>מילון</span>
+                </button>
+                <div class="streak-badge" id="navStreakBadge" title="רצף ימי לימוד ברציפות">
+                    <span>🔥</span>
+                    <span id="navStreakText">יום 1</span>
+                </div>
+                <div class="server-status-pill is-online" id="navServerStatusPill" title="סטטוס שרת מקומי (http://localhost:3000)">
+                    <span class="server-status-dot"></span>
+                    <span id="navServerStatusText">שרת פעיל</span>
+                </div>
+                <button id="openProfileBtn" class="navbar-btn navbar-btn-accent" title="אזור אישי ויומן לימוד (אור ממן)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span>אזור אישי</span>
+                </button>
+                <a href="/admin" class="navbar-btn" style="border-color: rgba(212, 175, 55, 0.35); color: var(--accent); background: rgba(212, 175, 55, 0.06);" title="ממשק ניהול">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+                    <span>ניהול</span>
                 </a>
-                <button id="openProfileBtn" class="btn btn-secondary btn-sm" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer; border: 1px solid var(--border); background: var(--secondary-bg); color: var(--text-main);">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                    <span style="font-weight: bold; color: var(--accent);">אזור אישי</span>
+                <button id="navThemeToggle" class="navbar-icon-btn" title="מעבר בין מצב יום למצב לילה">
+                    <svg id="navThemeIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <span id="navThemeText" style="display: none;">מצב לילה</span>
                 </button>
-                <button id="navThemeToggle" class="btn btn-secondary btn-sm" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer; border: 1px solid var(--border); background: var(--secondary-bg); color: var(--text-main);">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                    <span id="navThemeText">מצב לילה</span>
-                </button>
-                <button id="navHomeBtn" class="btn btn-primary btn-sm" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer; border: none; background: var(--accent); color: var(--primary-bg);">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                    <span>ראשי</span>
-                </button>
-                <button id="hamburgerBtn" class="hamburger-btn" aria-label="תפריט" style="display: none; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border); background: var(--secondary-bg); color: var(--text-main); cursor: pointer;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                <button id="navHomeBtn" style="display: none;" aria-hidden="true"></button>
+                <div class="user-greeting" style="display: none;" aria-hidden="true">שלום אור ממן</div>
+                <button id="hamburgerBtn" class="hamburger-btn" aria-label="תפריט" style="display: none; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border); background: var(--secondary-bg); color: var(--text-main); cursor: pointer;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
                 </button>
             </div>
         </nav>
@@ -63,9 +95,13 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         חיפוש חכם בטקסטים
                     </button>
-                    <button id="resumeReadingBtn" class="btn btn-secondary" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: var(--text-main);">
+                    <button id="heroTopicsBtn" class="btn btn-secondary" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; border: 1px solid var(--accent); background: rgba(212, 175, 55, 0.1); color: var(--accent); cursor: pointer;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        <span>מפתח פרשת השבוע ומועדים</span>
+                    </button>
+                    <button id="resumeReadingBtn" class="btn btn-secondary" style="display: none; align-items: center; gap: 8px; border-radius: 20px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: var(--text-main);">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-                        המשך קריאה
+                        <span id="resumeReadingText">המשך קריאה</span>
                     </button>
                 </div>
             </div>
@@ -85,16 +121,22 @@
                 </div>
                 
                 <div style="background: var(--primary-bg); padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid var(--border);">
-                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                        <select id="advSearchCategory" style="padding: 0 1rem; border-radius: 8px; border: 1px solid var(--border); background: var(--secondary-bg); color: var(--text-main); font-family: var(--font-sans); outline: none; flex: 1; min-width: 200px; font-size: 1.1rem;">
+                    <div class="adv-search-controls-row">
+                        <select id="advSearchCategory" class="adv-search-select" aria-label="סינון לפי קטגוריה">
                             <option value="all">כל הקטגוריות</option>
                             <option value="history">היסטוריה ומדרש</option>
                             <option value="philosophy">פילוסופיה</option>
                             <option value="lessons">שיעורים</option>
                         </select>
-                        <div class="search-container" style="flex: 3; margin: 0; min-width: 300px; max-width: 100%;">
-                            <input type="text" id="advSearchInput" placeholder="הקלד את מילות החיפוש כאן..." style="font-size: 1.1rem; padding: 1.2rem 2rem;">
-                            <button class="search-btn" id="advSearchBtn" style="width: auto; padding: 0 2rem; border-radius: 30px; left: 8px; background: var(--accent); color: var(--primary-bg);">חפש עכשיו</button>
+                        <select id="advSearchBook" class="adv-search-select" aria-label="סינון לפי ספר">
+                            <option value="all">כל הספרים במאגר</option>
+                        </select>
+                        <div class="adv-search-input-box">
+                            <input type="text" id="advSearchInput" class="adv-search-input" placeholder="הקלד את מילות החיפוש כאן..." autocomplete="off">
+                            <button id="advSearchBtn" class="adv-search-submit-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                <span>חפש עכשיו</span>
+                            </button>
                         </div>
                     </div>
                     
@@ -119,13 +161,60 @@
 
         <!-- Main Content -->
         <main class="library-section" id="librarySection">
-            <div class="section-header">
-                <h2>ספרים מובילים</h2>
+            <!-- Daily Insight Card -->
+            <div class="daily-insight-container">
+                <div class="daily-insight-card" id="dailyInsightCard">
+                    <div class="daily-insight-badge">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                        <span>תובנה יומית ממשנת מניטו</span>
+                    </div>
+                    <div class="daily-insight-quote" id="dailyInsightQuote">
+                        "הזהות הישראלית איננה מסתכמת בדת, אלא היא מהות אנושית כוללת – להיות עברי זה לקחת אחריות מוסרית על העולם."
+                    </div>
+                    <div class="daily-insight-source">
+                        <span id="dailyInsightSource">מתוך: <strong>מספד למשיח</strong></span>
+                        <div class="daily-insight-actions">
+                            <button class="insight-action-btn" id="nextInsightBtn" title="ציטוט נוסף">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                                <span>ציטוט נוסף</span>
+                            </button>
+                            <button class="insight-action-btn" id="shareInsightWhatsappBtn" title="שתף בוואטסאפ">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                                <span>שתף</span>
+                            </button>
+                            <button class="insight-action-btn" id="createInsightCardBtn" title="צור תמונה מעוצבת לשיתוף">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                                <span>כרטיס תמונה</span>
+                            </button>
+                            <button class="insight-action-btn" id="copyInsightBtn" title="העתק ללוח">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                <span>העתק</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-header" style="flex-wrap: wrap; gap: 1rem;">
+                <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                    <h2>ספרים וסדרות (24 כרכים • 271 פרקים)</h2>
+                    <select id="seriesFilterSelect" class="series-filter-select" aria-label="סינון לפי סדרת ספרים">
+                        <option value="all">📚 כל הסדרות (24 ספרים)</option>
+                        <option value="סוד מדרש התולדות">סוד מדרש התולדות (כרכים 1–10)</option>
+                        <option value="שערי דמעה">שערי דמעה (כרכים 1–3)</option>
+                        <option value="סוד לשון הקודש">סוד לשון הקודש (כרכים 1–2)</option>
+                        <option value="סוד העברי">סוד העברי (כרכים 1–2)</option>
+                        <option value="מועדי ישראל">מועדי ישראל וקול המועד</option>
+                        <option value="ספרי יסוד ושיעורים">מספד למשיח והדיבור והכתב</option>
+                        <option value="כתבים בצרפתית">כתבים ושיעורים בצרפתית (FR)</option>
+                    </select>
+                </div>
                 <div class="filter-tabs">
                     <button class="tab active" data-filter="all">הכל</button>
-                    <button class="tab" data-filter="history">היסטוריה</button>
-                    <button class="tab" data-filter="philosophy">פילוסופיה</button>
-                    <button class="tab" data-filter="lessons">שיעורים</button>
+                    <button class="tab" data-filter="history">היסטוריה ומדרש</button>
+                    <button class="tab" data-filter="philosophy">פילוסופיה וקבלה</button>
+                    <button class="tab" data-filter="lessons">שיעורים ומועדים</button>
+                    <button class="tab" data-filter="other">ספרות</button>
                 </div>
             </div>
 
@@ -146,32 +235,67 @@
         <div class="reader-progress-container" id="readerProgressContainer">
             <div class="reader-progress-bar" id="readerProgressBar"></div>
         </div>
-        <div class="reader-header" style="padding: 1rem 2rem;">
-            <button class="btn btn-primary btn-sm" id="backToLibrary" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; border: none; cursor: pointer; background: var(--accent); color: var(--primary-bg);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                <span>חזור לספרייה</span>
-            </button>
-            <button class="btn btn-secondary btn-sm" id="toggleSidebarBtn" style="display: none; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer; border: 1px solid var(--border); background: var(--secondary-bg); color: var(--text-main);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-                <span>פרקים</span>
-            </button>
+        <div class="reader-header">
+            <div class="reader-nav-group">
+                <button class="reader-back-btn" id="backToLibrary" title="חזרה לספרייה הראשית">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <span>חזור לספרייה</span>
+                </button>
+                <button class="reader-pill-btn" id="desktopSidebarToggleBtn" title="הסתר או הצג את עמודת פרקי הספר">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="15" y1="3" x2="15" y2="21"></line></svg>
+                    <span id="desktopSidebarToggleText">הסתר פרקים</span>
+                </button>
+                <button class="reader-pill-btn" id="toggleSidebarBtn" style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                    <span>פרקים</span>
+                </button>
+            </div>
             <div class="reader-title-area">
-                <span class="reader-book-title" id="readerBookTitle" style="font-weight:bold;">שם הספר</span>
+                <span class="reader-book-title" id="readerBookTitle">שם הספר</span>
                 <span class="reader-chapter-title" id="readerChapterTitle">פרק...</span>
             </div>
-            <div class="reader-actions" style="display: flex; gap: 10px; align-items: center; position: relative;">
-                <button class="btn btn-primary btn-sm" id="playAudioBtn" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer; background: var(--accent); color: var(--primary-bg); border: none;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                    <span>הקרא טקסט (ניסיון)</span>
+            <div class="reader-actions">
+                <button class="reader-audio-cta-btn" id="playAudioBtn" title="הקראה קולית או האזנה לשיעור">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    <span id="playAudioBtnText">האזן לשיעור</span>
                 </button>
-                <button class="btn btn-secondary btn-sm" id="downloadPdfBtn" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                    הורד PDF
-                </button>
-                <button class="btn btn-secondary btn-sm" id="toggleTextSettingsBtn" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer; background: var(--secondary-bg); color: var(--text-main); border: 1px solid var(--border);">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
-                    <span>Aa</span>
-                </button>
+
+                <div class="reader-pill-group" id="readerPdfCapsule">
+                    <button class="reader-pill-btn" id="togglePdfViewBtn" title="הצג קובץ PDF מוטמע בתוך הקורא" style="display: none;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                        <span id="togglePdfViewText">תצוגת PDF</span>
+                    </button>
+                    <button class="reader-pill-btn" id="splitPdfViewBtn" title="מסך מפוצל: קריאת הטקסט לצד קובץ ה-PDF המקורי" style="display: none;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="3" x2="12" y2="21"></line></svg>
+                        <span id="splitPdfViewText">מסך מפוצל</span>
+                    </button>
+                    <button class="reader-pill-btn" id="downloadPdfBtn" title="הורד קובץ PDF מקורי">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        <span>PDF</span>
+                    </button>
+                </div>
+
+                <div class="reader-pill-group">
+                    <button class="reader-pill-btn" id="toggleChapterSearchBtn" title="חיפוש בפרק הנוכחי (Ctrl+F)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <span>חיפוש</span>
+                    </button>
+                    <button class="reader-pill-btn" id="readerQuickSearchBtn" title="חיפוש מהיר בכל הספרייה והמושגים (⌘K)">
+                        <kbd class="reader-kbd-badge">⌘K</kbd>
+                    </button>
+                    <button class="reader-pill-btn" id="toggleTextSettingsBtn" title="הגדרות תצוגה, גופן וערכת צבעים">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+                        <span>Aa</span>
+                    </button>
+                    <button class="reader-pill-btn" id="readerGlossaryBtn" title="מילון מושגים במשנת מניטו">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        <span>מילון</span>
+                    </button>
+                    <button class="reader-pill-btn" id="printChapterBtn" title="הדפסת פרק נקייה">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    </button>
+                </div>
+
                 <div class="text-settings-dropdown" id="textSettingsDropdown" style="display: none;">
                     <div class="settings-group">
                         <label>גודל גופן</label>
@@ -182,23 +306,146 @@
                         </div>
                     </div>
                     <div class="settings-group">
-                        <label>סגנון גופן</label>
-                        <div class="font-family-controls">
-                            <button class="font-btn active" data-font="serif" style="font-family: var(--font-serif);">פרנק ריהל (מסורתי)</button>
-                            <button class="font-btn" data-font="sans" style="font-family: var(--font-sans);">היבו (מודרני)</button>
+                        <label>סגנון גופן עברי</label>
+                        <div class="font-family-controls font-grid-2x2">
+                            <button class="font-btn active" data-font="serif" style="font-family: 'Frank Ruhl Libre', serif;">פרנק ריהל (קלאסי)</button>
+                            <button class="font-btn" data-font="david" style="font-family: 'David Libre', serif;">דוד (ספרי קודש)</button>
+                            <button class="font-btn" data-font="sans" style="font-family: 'Heebo', sans-serif;">היבו (מודרני)</button>
+                            <button class="font-btn" data-font="rubik" style="font-family: 'Rubik', sans-serif;">רוביק (עגול ונקי)</button>
                         </div>
                     </div>
+                    <div class="settings-group">
+                        <label>מרווח בין שורות</label>
+                        <div class="font-family-controls">
+                            <button class="lh-btn" data-lh="1.65">צפוף</button>
+                            <button class="lh-btn active" data-lh="1.92">רגיל</button>
+                            <button class="lh-btn" data-lh="2.2">מרווח</button>
+                        </div>
+                    </div>
+                    <div class="settings-group">
+                        <label>רוחב עמוד קריאה</label>
+                        <div class="font-family-controls">
+                            <button class="width-btn active" data-width="normal">רגיל (מומלץ)</button>
+                            <button class="width-btn" data-width="wide">רחב</button>
+                        </div>
+                    </div>
+                    <div class="settings-group">
+                        <label>ערכת צבעים לקריאה</label>
+                        <div class="theme-controls">
+                            <button class="theme-btn theme-swatch-light" data-theme-val="light" title="מצב יום: רקע לבן בהיר ונקי">☀️ יום</button>
+                            <button class="theme-btn theme-swatch-sepia" data-theme-val="sepia" title="מצב קלף (ספיה): גוון נייר ספר חם להפחתת סינוור ומאמץ בעיניים">📜 קלף (ספיה)</button>
+                            <button class="theme-btn theme-swatch-dark" data-theme-val="dark" title="מצב לילה: רקע כהה לקריאה נוחה בחושך">🌙 לילה</button>
+                        </div>
+                        <div id="themeModeDescText" class="theme-mode-desc">רקע בהיר ונקי לקריאה באור יום</div>
+                    </div>
                 </div>
-                <button class="btn btn-secondary btn-sm" id="toggleTheme" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer; background: var(--secondary-bg); color: var(--text-main); border: 1px solid var(--border);">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                    <span id="readerThemeText">מצב לילה</span>
-                </button>
+
+                <div class="reader-pill-group">
+                    <button class="reader-pill-btn" id="zenModeBtn" title="מצב מסך מלא וממוקד (Zen Mode)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="zen-icon-enter"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="zen-icon-exit" style="display: none;"><path d="M4 14h6m0 0v6m0-6L3 21m17-7h-6m0 0v6m0-6l7 7M4 10h6m0 0V4m0 6L3 3m17 7h-6m0 0V4m0 6l7-7"></path></svg>
+                        <span id="zenModeText">מסך מלא</span>
+                    </button>
+                    <button class="reader-pill-btn" id="toggleTheme" title="החלפת מצב יום / לילה">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="readerThemeIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                        <span id="readerThemeText">מצב לילה</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Audio Player Bar -->
+        <div class="reader-audio-bar" id="readerAudioPlayerBar" style="display: none;">
+            <div class="audio-bar-inner">
+                <div class="audio-track-info">
+                    <span class="audio-badge" id="audioModeBadge">🎙️ הקלטה מקורית</span>
+                    <div class="audio-titles">
+                        <span class="audio-book-label" id="audioBookLabel">שם הספר</span>
+                        <span class="audio-chapter-label" id="audioChapterLabel">פרק...</span>
+                    </div>
+                </div>
+
+                <div class="audio-main-controls">
+                    <div class="audio-buttons-row">
+                        <div class="audio-mode-selector">
+                            <button class="audio-mode-btn active" id="audioModeReal" title="הקלטה אותנטית של מניטו">🎙️ מקורית</button>
+                            <button class="audio-mode-btn" id="audioModeTTS" title="הקראה קולית ממוחשבת">🗣️ הקראה</button>
+                        </div>
+
+                        <button class="audio-btn-step" id="audioSkipBackBtn" title="15 שניות אחורה">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 17l-5-5 5-5M18 17l-5-5 5-5"/></svg>
+                            <span>15-</span>
+                        </button>
+
+                        <button class="audio-play-main-btn" id="audioPlayMainBtn" title="נגן / השהה">
+                            <svg id="audioPlayMainIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                            <svg id="audioPauseMainIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                        </button>
+
+                        <button class="audio-btn-step" id="audioSkipFwdBtn" title="15 שניות קדימה">
+                            <span>15+</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 17l5-5-5-5M6 17l5-5-5-5"/></svg>
+                        </button>
+
+                        <button class="audio-speed-btn" id="audioSpeedBtn" title="מהירות השמעה">1.0x</button>
+                    </div>
+
+                    <div class="audio-progress-row">
+                        <span class="audio-time" id="audioCurrentTime">00:00</span>
+                        <div class="audio-progress-track" id="audioProgressTrack">
+                            <div class="audio-progress-fill" id="audioProgressFill" style="width: 0%;"></div>
+                        </div>
+                        <span class="audio-time" id="audioTotalDuration">--:--</span>
+                    </div>
+                </div>
+
+                <div class="audio-extra-controls">
+                    <div class="audio-volume-wrapper">
+                        <button class="audio-vol-btn" id="audioMuteBtn" title="השתק">
+                            <svg id="audioVolHighIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                            <svg id="audioVolMuteIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                        </button>
+                        <input type="range" id="audioVolumeSlider" min="0" max="1" step="0.05" value="1" class="audio-volume-slider">
+                    </div>
+                    <button class="audio-close-btn" id="audioCloseBtn" title="סגור נגן">&times;</button>
+                </div>
+            </div>
+            <!-- Hidden real audio element -->
+            <audio id="realAudioElement" preload="metadata" src="/data/audio/manitou_sample.mp3"></audio>
+        </div>
+
+        <!-- In-Chapter Search Bar -->
+        <div class="in-chapter-search-bar" id="inChapterSearchBar" style="display: none;">
+            <div class="in-chapter-search-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="inChapterSearchInput" class="in-chapter-search-input" placeholder="חפש בתוך פרק זה... (Enter למופע הבא)">
+                <span id="inChapterCount" class="in-chapter-count">0/0</span>
+                <button id="inChapterPrevBtn" class="in-chapter-nav-btn" title="הקודם (Shift+Enter)">▲</button>
+                <button id="inChapterNextBtn" class="in-chapter-nav-btn" title="הבא (Enter)">▼</button>
+                <button id="closeInChapterSearchBtn" class="in-chapter-nav-btn" title="סגור (Esc)">✕</button>
             </div>
         </div>
 
         <div class="reader-layout">
-            <aside class="chapters-sidebar">
-                <h3>פרקי הספר</h3>
+            <button type="button" id="sidebarExpandFloatingTab" class="sidebar-expand-floating-tab" title="פתח את רשימת פרקי הספר">
+                <span>⇤ פרקי הספר</span>
+            </button>
+            <aside class="chapters-sidebar sidebar-simple-view" id="chaptersSidebar">
+                <div class="sidebar-header-row">
+                    <h3>פרקי הספר</h3>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <button type="button" id="toggleSidebarSimpleViewBtn" class="sidebar-view-toggle-btn" title="החלף בין תצוגה פשוטה (שמות פרקים בלבד) לתצוגה מלאה (עם התקדמות וזמן)">
+                            <span id="sidebarViewToggleText">📊 הצג התקדמות</span>
+                        </button>
+                        <button type="button" id="sidebarDirectCollapseBtn" class="sidebar-view-toggle-btn" title="קפל והסתר את עמודת הפרקים">
+                            <span>⇥ קפל</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="sidebar-search-container" style="margin-bottom: 1rem; position: relative;">
+                    <input type="text" id="sidebarChapterSearch" placeholder="סנן פרקים..." style="width: 100%; padding: 0.6rem 1.2rem; padding-left: 2rem; border-radius: 20px; border: 1px solid var(--border); background: var(--primary-bg); color: var(--text-main); font-family: var(--font-sans); outline: none; font-size: 0.9rem; direction: rtl;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
                 <ul class="chapters-list" id="chaptersList">
                     <!-- Chapters injected via JS -->
                 </ul>
@@ -208,20 +455,57 @@
                     <!-- Text injected via JS -->
                 </div>
             </article>
+            <!-- Floating Circular Reading Progress & Scroll-to-Top Button -->
+            <button type="button" id="readerScrollTopRingBtn" class="reader-scroll-ring-btn" title="חזרה לראש הפרק">
+                <svg class="reader-ring-svg" width="48" height="48" viewBox="0 0 48 48">
+                    <circle class="reader-ring-bg" cx="24" cy="24" r="20" fill="none" stroke-width="3"></circle>
+                    <circle class="reader-ring-fill" id="readerRingCircle" cx="24" cy="24" r="20" fill="none" stroke-width="3" stroke-dasharray="125.66" stroke-dashoffset="125.66"></circle>
+                </svg>
+                <div class="reader-ring-inner">
+                    <span class="reader-ring-arrow">↑</span>
+                    <span class="reader-ring-pct" id="readerRingPct">0%</span>
+                </div>
+            </button>
         </div>
         </div>
 
         <div id="textContextMenu" class="text-context-menu" style="display: none;">
-            <button id="highlightBtn" class="context-btn" title="מרקר ושמור">
+            <div class="highlight-colors" style="display: flex; gap: 8px; padding: 0 10px; align-items: center;">
+                <button class="color-btn" data-color="gold" style="width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--primary-bg); background: #d4af37; cursor: pointer; box-shadow: 0 0 4px rgba(0,0,0,0.3); transition: transform 0.2s;" title="מרקר זהב"></button>
+                <button class="color-btn" data-color="green" style="width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--primary-bg); background: #2ecc71; cursor: pointer; box-shadow: 0 0 4px rgba(0,0,0,0.3); transition: transform 0.2s;" title="מרקר ירוק"></button>
+                <button class="color-btn" data-color="blue" style="width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--primary-bg); background: #3498db; cursor: pointer; box-shadow: 0 0 4px rgba(0,0,0,0.3); transition: transform 0.2s;" title="מרקר כחול"></button>
+                <button class="color-btn" data-color="pink" style="width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--primary-bg); background: #e74c3c; cursor: pointer; box-shadow: 0 0 4px rgba(0,0,0,0.3); transition: transform 0.2s;" title="מרקר ורוד"></button>
+            </div>
+            <div style="width: 1px; height: 20px; background: var(--border); margin: 0 5px;"></div>
+            <button id="addNoteBtn" class="context-btn" title="הוסף הערה אישית">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-                <span>מרקר</span>
+                <span>הערה</span>
             </button>
             <div style="width: 1px; height: 20px; background: var(--border); margin: 0 5px;"></div>
             <button id="shareQuoteBtn" class="context-btn" title="שתף לוואטסאפ">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
                 <span>שתף</span>
             </button>
+            <div style="width: 1px; height: 20px; background: var(--border); margin: 0 5px;"></div>
+            <button id="createQuoteCardBtn" class="context-btn" title="צור תמונת ציטוט מעוצבת">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                <span>כרטיס ציטוט</span>
+            </button>
+            <div style="width: 1px; height: 20px; background: var(--border); margin: 0 5px;"></div>
+            <button id="copyParaLinkBtn" class="context-btn" title="העתק קישור ישיר לפסקה זו">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                <span>קישור לפסקה</span>
+            </button>
+            <div style="width: 1px; height: 20px; background: var(--border); margin: 0 5px;"></div>
+            <button id="searchSelectionBtn" class="context-btn" title="חפש בארכיון">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span>חפש בארכיון</span>
+            </button>
         </div>
+        <!-- Floating scroll-to-top button -->
+        <button id="scrollToTopBtn" class="scroll-to-top-btn" title="חזור למעלה" style="display: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+        </button>
     </div>
 
     <!-- Book Detail Modal -->
@@ -239,23 +523,70 @@
         <div class="modal-content" style="max-width: 800px; height: 80vh; display: flex; flex-direction: column;">
             <button class="close-modal" id="closeProfileModal">&times;</button>
             <div style="padding: 2rem 3rem; background: var(--primary-bg); border-bottom: 1px solid var(--border);">
-                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                    <div style="width: 60px; height: 60px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary-bg); font-size: 1.5rem; font-weight: bold;">
-                        א"מ
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 54px; height: 54px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary-bg); font-size: 1.4rem; font-weight: bold;">
+                            א"מ
+                        </div>
+                        <div>
+                            <h2 style="font-family: var(--font-serif); color: var(--text-main); font-size: 1.8rem; margin: 0;">האזור האישי שלי</h2>
+                            <p style="color: var(--text-muted); margin: 0.2rem 0 0 0;">אור ממן • יומן לימוד והערות</p>
+                        </div>
                     </div>
-                    <div>
-                        <h2 style="font-family: var(--font-serif); color: var(--text-main); font-size: 2rem;">האזור האישי שלי</h2>
-                        <p style="color: var(--text-muted);">אור ממן</p>
+                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                        <button id="exportProfileBtn" class="btn btn-secondary btn-sm" style="display: flex; align-items: center; gap: 8px; border-radius: 20px; padding: 0.5rem 1.1rem; border: 1px solid var(--accent); background: rgba(212, 175, 55, 0.1); color: var(--accent); cursor: pointer; font-size: 0.9rem; font-weight: bold; transition: all 0.2s;" title="ייצוא והדפסת כל ההערות והציטוטים">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                            <span>ייצוא והדפסה</span>
+                        </button>
+                        <button id="downloadNotebookMdDirectBtn" class="btn btn-secondary btn-sm" style="display: flex; align-items: center; gap: 6px; border-radius: 20px; padding: 0.5rem 1rem; border: 1px solid var(--border); background: var(--secondary-bg); color: var(--text-main); cursor: pointer; font-size: 0.88rem; font-weight: 600; transition: all 0.2s;" title="הורד ישירות את מחברת הלימוד וההדגשות כקובץ Markdown (.md)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                            <span>הורד מחברת (.md)</span>
+                        </button>
+                        <button id="backupJsonBtn" class="btn btn-secondary btn-sm" style="display: flex; align-items: center; gap: 6px; border-radius: 20px; padding: 0.5rem 1rem; border: 1px solid var(--border); background: var(--secondary-bg); color: var(--text-main); cursor: pointer; font-size: 0.88rem; font-weight: 600; transition: all 0.2s;" title="שמור קובץ גיבוי מלא של כל הנתונים האישיים (JSON)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            <span>גיבוי נתונים</span>
+                        </button>
+                        <button id="restoreJsonBtn" class="btn btn-secondary btn-sm" style="display: flex; align-items: center; gap: 6px; border-radius: 20px; padding: 0.5rem 1rem; border: 1px solid var(--border); background: var(--secondary-bg); color: var(--text-main); cursor: pointer; font-size: 0.88rem; font-weight: 600; transition: all 0.2s;" title="שחזר נתונים מקובץ גיבוי (JSON)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                            <span>שחזור מגיבוי</span>
+                        </button>
+                        <input type="file" id="restoreJsonInput" accept=".json" style="display: none;">
                     </div>
                 </div>
-                <div class="profile-tabs" style="display: flex; gap: 2rem; border-bottom: 1px solid var(--border);">
-                    <button class="profile-tab active" data-target="favoritesTab" style="background: none; border: none; padding: 0.5rem 0; color: var(--accent); font-weight: bold; border-bottom: 2px solid var(--accent); cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem; transition: var(--transition);">
+                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                    <div class="stat-card" style="background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.15); padding: 0.6rem 1.2rem; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 1.4rem; font-weight: bold; color: var(--accent); font-family: var(--font-sans);" id="statsChaptersCount">0</span>
+                        <span style="font-size: 0.9rem; color: var(--text-muted);">פרקים שנקראו</span>
+                    </div>
+                    <div class="stat-card" style="background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.15); padding: 0.6rem 1.2rem; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 1.4rem; font-weight: bold; color: var(--accent); font-family: var(--font-sans);" id="statsFavoritesCount">0</span>
+                        <span style="font-size: 0.9rem; color: var(--text-muted);">ספרים מועדפים</span>
+                    </div>
+                    <div class="stat-card" style="background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.15); padding: 0.6rem 1.2rem; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 1.4rem; font-weight: bold; color: var(--accent); font-family: var(--font-sans);" id="statsNotesCount">0</span>
+                        <span style="font-size: 0.9rem; color: var(--text-muted);">הערות אישיות</span>
+                    </div>
+                    <div class="stat-card" style="background: rgba(255, 107, 0, 0.08); border: 1px solid rgba(255, 107, 0, 0.25); padding: 0.6rem 1.2rem; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 1.4rem; font-weight: bold; color: #ff6b00; font-family: var(--font-sans);" id="statsStreakCount">🔥 1</span>
+                        <span style="font-size: 0.9rem; color: var(--text-muted);">רצף ימים</span>
+                    </div>
+                    <div class="stat-card" style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); padding: 0.6rem 1.2rem; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 1.4rem; font-weight: bold; color: #38bdf8; font-family: var(--font-sans);" id="statsReadingMinutes">⏱️ 0</span>
+                        <span style="font-size: 0.9rem; color: var(--text-muted);">דקות קריאה</span>
+                    </div>
+                </div>
+                <div class="profile-tabs" style="display: flex; gap: 1.5rem; border-bottom: 1px solid var(--border);">
+                    <button class="profile-tab active" data-target="favoritesTab" style="background: none; border: none; padding: 0.5rem 0; color: var(--accent); font-weight: bold; border-bottom: 2px solid var(--accent); cursor: pointer; font-size: 1.05rem; display: flex; align-items: center; gap: 0.5rem; transition: var(--transition);">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
                         ספרים מועדפים
                     </button>
-                    <button class="profile-tab" data-target="highlightsTab" style="background: none; border: none; padding: 0.5rem 0; color: var(--text-muted); cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem; transition: var(--transition);">
+                    <button class="profile-tab" data-target="highlightsTab" style="background: none; border: none; padding: 0.5rem 0; color: var(--text-muted); cursor: pointer; font-size: 1.05rem; display: flex; align-items: center; gap: 0.5rem; transition: var(--transition);">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                         ההדגשות שלי
+                    </button>
+                    <button class="profile-tab" data-target="notesTab" style="background: none; border: none; padding: 0.5rem 0; color: var(--text-muted); cursor: pointer; font-size: 1.05rem; display: flex; align-items: center; gap: 0.5rem; transition: var(--transition);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        המחברת שלי
                     </button>
                 </div>
             </div>
@@ -271,6 +602,75 @@
                     <div id="highlightsList" style="display: flex; flex-direction: column; gap: 1rem;">
                         <!-- Highlights injected here -->
                     </div>
+                </div>
+
+                <div id="notesTab" class="profile-tab-content" style="display: none;">
+                    <div style="margin-bottom: 1.5rem; position: relative;">
+                        <input type="text" id="notesSearchInput" placeholder="חפש במחברת ההערות שלך..." style="width: 100%; padding: 0.7rem 1.2rem; border-radius: 20px; border: 1px solid var(--border); background: var(--primary-bg); color: var(--text-main); font-family: var(--font-sans); outline: none;">
+                    </div>
+                    <div id="notesList" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <!-- Notes injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Note Editor Modal -->
+    <div class="modal-overlay" id="noteModal">
+        <div class="modal-content" style="max-width: 560px; padding: 2rem; border-radius: 16px; background: var(--secondary-bg); border: 1px solid var(--border);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
+                <h3 style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--accent); margin: 0; display: flex; align-items: center; gap: 8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                    הוספת הערה אישית לקטע
+                </h3>
+                <button class="close-modal" id="closeNoteModal" style="position: static; font-size: 1.5rem; background: none; border: none; cursor: pointer; color: var(--text-main);">&times;</button>
+            </div>
+            <div id="noteQuotePreview" style="font-family: var(--font-serif); font-size: 1.05rem; line-height: 1.5; color: var(--text-muted); background: var(--primary-bg); padding: 1rem; border-radius: 8px; border-right: 4px solid var(--accent); margin-bottom: 1.2rem; max-height: 110px; overflow-y: auto;">
+            </div>
+            <textarea id="noteTextInput" placeholder="כתוב כאן את התובנה, הסיכום או המחשבה שלך על הפסקה..." rows="4" style="width: 100%; padding: 1rem; border-radius: 10px; border: 1px solid var(--border); background: var(--primary-bg); color: var(--text-main); font-family: var(--font-sans); font-size: 1.05rem; resize: vertical; outline: none; margin-bottom: 1.5rem; line-height: 1.5;"></textarea>
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button class="btn btn-secondary" id="cancelNoteBtn" style="border-radius: 20px; padding: 0.6rem 1.5rem; cursor: pointer;">ביטול</button>
+                <button class="btn btn-primary" id="saveNoteBtn" style="border-radius: 20px; padding: 0.6rem 1.8rem; cursor: pointer; background: var(--accent); color: var(--primary-bg); border: none; font-weight: bold;">שמור הערה</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manitou Glossary Modal -->
+    <div class="modal-overlay" id="glossaryModal">
+        <div class="modal-content" style="max-width: 900px; height: 85vh; display: flex; flex-direction: column; background: var(--secondary-bg);">
+            <button class="close-modal" id="closeGlossaryModal">&times;</button>
+            
+            <div style="padding: 2rem 2.5rem; background: var(--primary-bg); border-bottom: 1px solid var(--border);">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 0.5rem;">
+                    <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(212,175,55,0.15); display: flex; align-items: center; justify-content: center; color: var(--accent);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    </div>
+                    <div>
+                        <h2 style="font-family: var(--font-serif); color: var(--accent); font-size: 2rem; margin: 0;">מילון מושגי היסוד במשנת מניטו</h2>
+                        <p style="color: var(--text-muted); margin: 0.2rem 0 0 0; font-size: 1rem;">ביאור המושגים המרכזיים של הרב יהודא לאון אשכנזי (מניטו) זצ״ל</p>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+                    <div class="search-container" style="flex: 1; min-width: 250px; margin: 0;">
+                        <input type="text" id="glossarySearchInput" placeholder="חפש מושג או הגדרה במילון..." style="padding: 0.8rem 1.5rem;">
+                        <button class="search-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </button>
+                    </div>
+                    <div class="glossary-filter-pills" id="glossaryCategoryFilters" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                        <button class="glossary-pill active" data-cat="all">הכל (<span id="glossaryTotalCount">0</span>)</button>
+                        <button class="glossary-pill" data-cat="identity">זהות ותולדות</button>
+                        <button class="glossary-pill" data-cat="redemption">גאולה ומשיחיות</button>
+                        <button class="glossary-pill" data-cat="morality">תורה ומוסר</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="flex: 1; overflow-y: auto; padding: 2rem 2.5rem;" id="glossaryContainer">
+                <div class="glossary-grid" id="glossaryGrid">
+                    <!-- Glossary cards injected here -->
                 </div>
             </div>
         </div>
@@ -288,26 +688,307 @@
         <div class="drawer-body">
             <a href="#/" class="drawer-link active" id="drawer-link-library">ספרייה</a>
             <a href="#/about" class="drawer-link" id="drawer-link-about">אודות</a>
+            <a href="#/timeline" class="drawer-link" id="drawer-link-timeline">תולדות מניטו (ציר זמן)</a>
             <a href="#/contact" class="drawer-link" id="drawer-link-contact">צור קשר</a>
             <a href="/admin" class="drawer-link">ממשק ניהול</a>
             <hr class="drawer-divider">
+            <button id="drawerQuickSearchBtn" class="drawer-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span>חיפוש מהיר (⌘K)</span>
+            </button>
+            <button id="drawerTimelineBtn" class="drawer-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                <span>תולדות מניטו (ציר זמן)</span>
+            </button>
+            <button id="drawerTopicsBtn" class="drawer-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span>מפתח פרשה ומועדים</span>
+            </button>
+            <button id="drawerGlossaryBtn" class="drawer-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                <span>מילון מושגים</span>
+            </button>
             <button id="drawerProfileBtn" class="drawer-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                 <span>אזור אישי</span>
             </button>
             <button id="drawerThemeToggle" class="drawer-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                <svg id="drawerThemeIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                 <span id="drawerThemeText">מצב לילה</span>
             </button>
         </div>
     </div>
     <div id="drawerOverlay" class="drawer-overlay"></div>
 
+    <!-- Spotlight Quick Search Modal (⌘K / Ctrl+K) -->
+    <div id="quickSearchModal" class="quick-search-modal" style="display: none;">
+        <div class="quick-search-backdrop" id="quickSearchBackdrop"></div>
+        <div class="quick-search-dialog" role="dialog" aria-modal="true" aria-label="חיפוש מהיר בכל הספרים והמושגים">
+            <div class="spotlight-input-container">
+                <svg class="spotlight-search-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="spotlightSearchInput" class="spotlight-input" placeholder="חיפוש מהיר בכל ספרי מניטו, הפרקים ומושגי היסוד... (לדוגמה: עברי, משיח, סוד)" autocomplete="off">
+                <kbd class="spotlight-kbd" id="closeSpotlightKbd">ESC</kbd>
+            </div>
+            <div class="spotlight-quick-tags" id="spotlightQuickTags">
+                <span class="spotlight-tag-title">חיפושים פופולריים:</span>
+                <button class="spotlight-tag-btn" data-search="זהות עברית">זהות עברית</button>
+                <button class="spotlight-tag-btn" data-search="מספד למשיח">מספד למשיח</button>
+                <button class="spotlight-tag-btn" data-search="תולדות">תולדות</button>
+                <button class="spotlight-tag-btn" data-search="מוסר">מוסר</button>
+                <button class="spotlight-tag-btn" data-search="גלות">גלות וגאולה</button>
+            </div>
+            <div class="spotlight-results" id="spotlightResults">
+                <!-- Dynamically populated -->
+            </div>
+            <div class="spotlight-footer">
+                <div class="spotlight-footer-hint">
+                    <span><kbd>↑</kbd> <kbd>↓</kbd> לניווט</span>
+                    <span><kbd>↵</kbd> לפתיחה</span>
+                    <span><kbd>ESC</kbd> לסגירה</span>
+                </div>
+                <div class="spotlight-footer-powered">
+                    מכון מניטו • חיפוש מיידי
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manitou Timeline Modal -->
+    <div id="timelineModal" class="timeline-modal" style="display: none;">
+        <div class="timeline-dialog" role="dialog" aria-modal="true" aria-label="תולדות חייו ומשנתו של הרב יהודא לאון אשכנזי (מניטו)">
+            <div class="timeline-modal-header">
+                <div>
+                    <div class="badge" style="margin-bottom: 0.5rem;">תולדות מניטו • ציר זמן היסטורי</div>
+                    <h2 style="font-family: var(--font-serif); font-size: 1.8rem; color: var(--text-main); margin: 0;">חייו, מפעלו ומשנתו של מניטו</h2>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.3rem;">תחנות מפתח בעיצוב הזהות העברית ממאורעות אלג'יריה ואירופה ועד שיבת ציון וירושלים</p>
+                </div>
+                <button class="close-modal" id="closeTimelineBtn" style="font-size: 2rem; background: none; border: none; color: var(--text-muted); cursor: pointer;">&times;</button>
+            </div>
+            <div class="timeline-modal-body">
+                <div class="timeline-track-wrap">
+                    <div class="timeline-vertical-line"></div>
+
+                    <!-- Milestone 1 -->
+                    <div class="timeline-node-item">
+                        <div class="timeline-node-marker"></div>
+                        <div class="timeline-item-card">
+                            <span class="timeline-date-pill">1922 – 1940</span>
+                            <h3 class="timeline-card-title">שורשים באוראן: מסורת המקובלים</h3>
+                            <p class="timeline-card-desc">נולד באוראן שבאלג'יריה, נצר לשושלת מקובלים ורבנים ספרדית ואשכנזית (הרא"ש). ספג מאביו, הדיין הרב דוד אשכנזי, ומחכמי צפון אפריקה את מסורת הסוד העברית השורשית.</p>
+                            <div class="timeline-quote-box">"המסורת של חכמי אלג'יר לא ראתה בקבלה תיאוריה מנותקת, אלא את המפתח הפנימי להבנת ההיסטוריה והאדם."</div>
+                            <button class="timeline-filter-btn" data-timeline-filter="all">
+                                <span>עיין בכתבים אודות שורשי המסורת</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Milestone 2 -->
+                    <div class="timeline-node-item">
+                        <div class="timeline-node-marker"></div>
+                        <div class="timeline-item-card">
+                            <span class="timeline-date-pill">1940 – 1945</span>
+                            <h3 class="timeline-card-title">תנועת הצופים, המחתרת ושחרור צרפת</h3>
+                            <p class="timeline-card-desc">כמנהיג בצופי צרפת היהודים (EIF) קיבל את הכינוי הבלתי-נשכח "מניטו". הצטרף למחתרת הצרפתית (Resistance), לחם בשורות צבא צרפת החופשית בפיקוד דה-גול ונפצע בקרב.</p>
+                            <div class="timeline-quote-box">"בימי המלחמה למדנו שהמוסר אינו הצהרה בלבד, אלא היכולת של האדם לקחת אחריות מוחלטת על גורל אחיו."</div>
+                            <button class="timeline-filter-btn" data-timeline-filter="history">
+                                <span>ספרים מתוך פרק זה</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Milestone 3 -->
+                    <div class="timeline-node-item">
+                        <div class="timeline-node-marker"></div>
+                        <div class="timeline-item-card">
+                            <span class="timeline-date-pill">1946 – 1955</span>
+                            <h3 class="timeline-card-title">אסכולת אורסיי (Orsay): בית המדרש למנהיגות</h3>
+                            <p class="timeline-card-desc">הקמת בית המדרש המהפכני באורסיי להכשרת מנהיגות יהודית לאחר השואה, יחד עם הפילוסוף יעקב גורדין ורוברט גמזון. שילוב מקורי בין תנ"ך, קבלה ופילוסופיה אירופית מודרנית.</p>
+                            <div class="timeline-quote-box">"חיפשנו להחזיר ליהדות את קולה האוניברסלי – לא כדת של בית כנסת גלותי, אלא כתרבות כוללת ומחנכת."</div>
+                            <button class="timeline-filter-btn" data-timeline-filter="philosophy">
+                                <span>הגות אסכולת אורסיי בספרייה</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Milestone 4 -->
+                    <div class="timeline-node-item">
+                        <div class="timeline-node-marker"></div>
+                        <div class="timeline-item-card">
+                            <span class="timeline-date-pill">1957 – 1967</span>
+                            <h3 class="timeline-card-title">קולוקוויום האינטלקטואלים היהודים בפריז</h3>
+                            <p class="timeline-card-desc">יחד עם גדולי ההוגים – עמנואל לוינס, אנדרה נהר וולדימיר ינקלביץ' – הוביל מניטו את תחיית המחשבה היהודית בצרפת, והביא את מושג "העברי" לקדמת הבמה האקדמית.</p>
+                            <div class="timeline-quote-box">"העברי איננו יהודי של הגטו; הוא האדם שלפני החלוקות, המחזיר את תודעת היעוד האנושי לעולם."</div>
+                            <button class="timeline-filter-btn" data-timeline-filter="lessons">
+                                <span>שיעורים והרצאות פריזאיות</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Milestone 5 -->
+                    <div class="timeline-node-item">
+                        <div class="timeline-node-marker"></div>
+                        <div class="timeline-item-card">
+                            <span class="timeline-date-pill">1967 – 1985</span>
+                            <h3 class="timeline-card-title">העלייה לירושלים והקמת מרכז 'מעיינות'</h3>
+                            <p class="timeline-card-desc">מיד לאחר מלחמת ששת הימים ושחרור ירושלים עולה מניטו ארצה. מקים את מכללת שניאור ואת מכון 'מעיינות' בירושלים להוראת יהדות לדור הצעיר ולעולים מצרפת.</p>
+                            <div class="timeline-quote-box">"שיבת ציון אינה רק מקלט פיזי – היא הרגע שבו ההיסטוריה היהודית שבה להיפגש עם המוסר המדיני והאנושי."</div>
+                            <button class="timeline-filter-btn" data-timeline-filter="all">
+                                <span>כל שיעורי ירושלים ומעיינות</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Milestone 6 -->
+                    <div class="timeline-node-item">
+                        <div class="timeline-node-marker"></div>
+                        <div class="timeline-item-card">
+                            <span class="timeline-date-pill">1985 – 1996</span>
+                            <h3 class="timeline-card-title">יצירות המופת: 'מספד למשיח' ו'סוד מדרש התולדות'</h3>
+                            <p class="timeline-card-desc">עשור שבו גובשו ספרי היסוד – ביאורי המדרשים, ספר בראשית, הגאולה ותורת הזהות הישראלית. נפטר בירושלים בה' בחשוון תשנ"ז (1996), והותיר מורשת מחשבתית ענפה החיה עד היום.</p>
+                            <div class="timeline-quote-box">"התולדות אינן מקרה. כל צעד בהיסטוריה של ישראל הוא גילוי של המשיחיות האוניברסלית."</div>
+                            <button class="timeline-filter-btn" data-timeline-filter="philosophy">
+                                <span>לספרי המופת בספרייה</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visual Quote Card Studio Modal -->
+    <div id="quoteCardModal" class="quote-studio-modal" style="display: none;">
+        <div class="quote-studio-dialog" role="dialog" aria-modal="true" aria-label="מחולל כרטיסי ציטוט מעוצבים">
+            <div class="quote-studio-header">
+                <div>
+                    <h3 style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--text-main); margin: 0;">מחולל כרטיסי ציטוט • סטודיו מניטו</h3>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 2px;">עיצוב כרטיס תמונה מהודר לשיתוף ברשתות ובוואטסאפ</p>
+                </div>
+                <button class="close-modal" id="closeQuoteStudioBtn" style="font-size: 1.8rem; background: none; border: none; color: var(--text-muted); cursor: pointer;">&times;</button>
+            </div>
+            <div class="quote-studio-body">
+                <!-- Preview Stage -->
+                <div class="quote-preview-stage">
+                    <div id="quoteCardPreview" class="quote-render-card theme-royal ratio-square">
+                        <div class="quote-card-inner">
+                            <div>
+                                <div class="quote-mark">“</div>
+                                <div class="quote-card-text" id="studioQuoteText">הזהות הישראלית איננה מסתכמת בדת, אלא היא מהות אנושית כוללת – להיות עברי זה לקחת אחריות מוסרית על העולם.</div>
+                            </div>
+                            <div class="quote-card-footer">
+                                <div>
+                                    <div class="quote-card-source" id="studioQuoteSource">מספד למשיח</div>
+                                    <div class="quote-card-author">הרב יהודא לאון אשכנזי (מניטו)</div>
+                                </div>
+                                <div class="quote-card-emblem">מכון מניטו</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controls Panel -->
+                <div class="quote-controls-wrap">
+                    <div class="quote-control-group">
+                        <label class="quote-control-label">עריכת הציטוט</label>
+                        <textarea id="studioInputText" class="quote-edit-textarea" rows="3" placeholder="הקלד או ערוך את הציטוט..."></textarea>
+                    </div>
+
+                    <div class="quote-control-group">
+                        <label class="quote-control-label">מקור הציטוט / שם הספר</label>
+                        <input type="text" id="studioInputSource" class="quote-source-input" placeholder="שם הספר או השיעור...">
+                    </div>
+
+                    <div class="quote-control-group">
+                        <label class="quote-control-label">ערכת נושא ועיצוב</label>
+                        <div class="theme-options-grid">
+                            <button class="theme-option-btn active" data-theme="royal">
+                                <div class="theme-color-dot" style="background: linear-gradient(135deg, #0e1526, #b8860b);"></div>
+                                <span>זהב כהה</span>
+                            </button>
+                            <button class="theme-option-btn" data-theme="sepia">
+                                <div class="theme-color-dot" style="background: linear-gradient(135deg, #f4ecd8, #8b5a2b);"></div>
+                                <span>קלף ספיה</span>
+                            </button>
+                            <button class="theme-option-btn" data-theme="stone">
+                                <div class="theme-color-dot" style="background: linear-gradient(135deg, #fbfaf6, #c9b084);"></div>
+                                <span>אבן בהירה</span>
+                            </button>
+                            <button class="theme-option-btn" data-theme="azure">
+                                <div class="theme-color-dot" style="background: linear-gradient(135deg, #0c2340, #38bdf8);"></div>
+                                <span>כחול מודרני</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="quote-control-group">
+                        <label class="quote-control-label">יחס תמונה (פורמט)</label>
+                        <div class="ratio-options-grid">
+                            <button class="ratio-option-btn active" data-ratio="square">ריבוע 1:1 (פוסט)</button>
+                            <button class="ratio-option-btn" data-ratio="story">סטורי 9:16</button>
+                            <button class="ratio-option-btn" data-ratio="wide">רוחבי 16:9</button>
+                        </div>
+                    </div>
+
+                    <div class="quote-actions-row">
+                        <button id="downloadQuotePngBtn" class="btn btn-primary" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 12px; padding: 0.8rem 1rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            <span>הורד תמונה (PNG)</span>
+                        </button>
+                        <button id="shareQuoteWhatsappBtn" class="btn btn-secondary" style="display: flex; align-items: center; gap: 8px; border-radius: 12px; padding: 0.8rem 1rem; border: 1px solid var(--border);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                            <span>שתף בוואטסאפ</span>
+                        </button>
+                        <button id="copyQuoteImageBtn" class="btn btn-secondary" title="העתק את תמונת הציטוט ללוח להדבקה ישירה בוואטסאפ/טלגרם" style="display: flex; align-items: center; gap: 8px; border-radius: 12px; padding: 0.8rem 1rem; border: 1px solid var(--border);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            <span>העתק תמונה</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <canvas id="quoteRenderCanvas" style="display: none;"></canvas>
+
+    <!-- Parasha, Holidays & Topics Index Modal -->
+    <div class="modal-overlay" id="topicsModal">
+        <div class="modal-content" style="max-width: 960px; height: 86vh; display: flex; flex-direction: column; background: var(--secondary-bg);">
+            <button class="close-modal" id="closeTopicsModal">&times;</button>
+            <div style="padding: 1.8rem 2.5rem; background: var(--primary-bg); border-bottom: 1px solid var(--border);">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 0.5rem;">
+                    <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(212,175,55,0.15); display: flex; align-items: center; justify-content: center; color: var(--accent);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    </div>
+                    <div>
+                        <h2 style="font-family: var(--font-serif); color: var(--accent); font-size: 1.9rem; margin: 0;">מפתח פרשת השבוע, מועדי ישראל ונושאי לימוד</h2>
+                        <p style="color: var(--text-muted); margin: 0.2rem 0 0 0; font-size: 0.95rem;">ריכוז חכם של שיעורי וכתבי מניטו מכל 24 הספרים לפי פרשות התורה, חגי השנה ונושאי יסוד</p>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1.2rem; flex-wrap: wrap; align-items: center;">
+                    <div class="glossary-filter-pills" id="topicsGroupFilters" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button class="glossary-pill active" data-group="all">כל הנושאים</button>
+                        <button class="glossary-pill" data-group="parasha">📖 פרשות השבוע והתורה</button>
+                        <button class="glossary-pill" data-group="moed">🕯️ חגי ומועדי ישראל</button>
+                        <button class="glossary-pill" data-group="theme">✨ נושאי יסוד במשנת מניטו</button>
+                    </div>
+                    <input type="text" id="topicsSearchInput" placeholder="סנן פרשה, חג או מאמר..." style="flex: 1; min-width: 200px; padding: 0.55rem 1.1rem; border-radius: 20px; border: 1px solid var(--border); background: var(--secondary-bg); color: var(--text-main); font-family: var(--font-sans); outline: none;">
+                </div>
+            </div>
+            <div style="flex: 1; overflow-y: auto; padding: 1.8rem 2.5rem;" id="topicsModalBody">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </div>
+    </div>
+
+    <div id="footnotePopover" class="footnote-popover" style="display: none;"></div>
     <div id="toastNotification" class="toast-notification" style="display: none;"></div>
 
-    <script src="script.js"></script>
-
-    
+    <script src="script.js?v=21"></script>
 
 </body>
 </html>

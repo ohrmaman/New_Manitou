@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 580" width="400" height="580">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a120b"/>
+      <stop offset="100%" stop-color="#3c2a21"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#e5c158" stop-opacity="0.6"/>
+      <stop offset="50%" stop-color="#fff3b0" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#e5c158" stop-opacity="0.6"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="580" fill="url(#bgGrad)"/>
+  <rect x="22" y="22" width="356" height="536" rx="8" fill="none" stroke="url(#goldGrad)" stroke-width="2" opacity="0.75"/>
+  <rect x="30" y="30" width="340" height="520" rx="5" fill="none" stroke="#e5c158" stroke-width="0.8" opacity="0.4"/>
+  <circle cx="200" cy="120" r="34" fill="none" stroke="#e5c158" stroke-width="1.2" opacity="0.45"/>
+  <path d="M180 120 L220 120 M200 100 L200 140" stroke="#e5c158" stroke-width="1.2" opacity="0.5"/>
+  <text x="200" y="90" text-anchor="middle" fill="#e5c158" font-family="'Frank Ruhl Libre', Georgia, serif" font-size="15" letter-spacing="2" opacity="0.85">מכון מניטו • ארכיון כתבים</text>
+  <text x="200" y="255" text-anchor="middle" fill="#ffffff" font-family="'Frank Ruhl Libre', Georgia, serif" font-weight="bold" font-size="34">סוד לשון</text>
+  <text x="200" y="302" text-anchor="middle" fill="#ffffff" font-family="Frank Ruhl Libre, Georgia, serif" font-weight="bold" font-size="32">הקודש 2</text>
+  <line x1="120" y1="335" x2="280" y2="335" stroke="url(#goldGrad)" stroke-width="2.5"/>
+  <text x="200" y="375" text-anchor="middle" fill="#e5c158" font-family="'Heebo', sans-serif" font-size="18" opacity="0.9">שפה וקבלה</text>
+  <text x="200" y="505" text-anchor="middle" fill="#cbd5e1" font-family="'Frank Ruhl Libre', Georgia, serif" font-size="16" opacity="0.8">הרב יהודא לאון אשכנזי (מניטו) זצ״ל</text>
+</svg>

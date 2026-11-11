@@ -99,8 +99,8 @@ class ServerControllerApp:
         self.root.configure(bg=BG_MAIN)
         self.root.resizable(True, True)
         
-        # Set RTL Font Defaults
-        self.root.option_add('*font', ('Heebo', 10))
+        # Set RTL Font Defaults (using Arial to prevent fallback failures on macOS)
+        self.root.option_add('*font', 'Arial 10')
         
         self.process = None
         self.log_queue = queue.Queue()
@@ -123,10 +123,10 @@ class ServerControllerApp:
         self.root.after(100, self.poll_logs)
 
     def setup_styles(self):
-        self.title_font = font.Font(family="Frank Ruhl Libre", size=22, weight="bold")
-        self.subtitle_font = font.Font(family="Heebo", size=10, weight="normal")
-        self.section_font = font.Font(family="Heebo", size=11, weight="bold")
-        self.btn_font = font.Font(family="Heebo", size=11, weight="bold")
+        self.title_font = font.Font(family="Georgia", size=22, weight="bold")
+        self.subtitle_font = font.Font(family="Arial", size=10, weight="normal")
+        self.section_font = font.Font(family="Arial", size=11, weight="bold")
+        self.btn_font = font.Font(family="Arial", size=11, weight="bold")
         self.log_font = font.Font(family="Courier", size=10)
 
     def create_widgets(self):
@@ -280,7 +280,7 @@ class ServerControllerApp:
             bg=BG_MAIN,
             activebackground=BG_MAIN,
             activeforeground=TEXT_MAIN,
-            selectcolor=BG_CARD,
+            selectcolor=BG_MAIN,
             bd=0,
             highlightthickness=0
         )
