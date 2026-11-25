@@ -1,0 +1,6 @@
+{
+  "port": 5030,
+  "host": "localhost",
+  "version": "v35",
+  "cachePrefix": "manitou-library"
+}

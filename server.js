@@ -7,7 +7,23 @@ const path = require('path');
 const cors = require('cors');
 
 const app = express();
-const PORT = 3000;
+const configPath = path.join(__dirname, 'config.json');
+
+function loadAppConfig() {
+    const defaults = { port: 3090, host: 'localhost', version: 'v34', cachePrefix: 'manitou-library' };
+    try {
+        if (fs.existsSync(configPath)) {
+            const parsed = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+            return { ...defaults, ...parsed };
+        }
+    } catch (err) {
+        console.warn('Warning: failed to parse config.json, using defaults:', err.message);
+    }
+    return defaults;
+}
+
+const initialConfig = loadAppConfig();
+const PORT = Number(process.env.PORT) || Number(initialConfig.port) || 3090;
 
 // Enable JSON bodies and CORS
 app.use(express.json());
@@ -46,10 +62,94 @@ app.get('/api/auth/verify', adminAuth, (req, res) => {
 
 // --- API ROUTES ---
 
-// Health check endpoint (never cached, used by UI to detect if local server is running)
-app.get('/api/ping', (req, res) => {
+// Load local .env if present (gitignored)
+const envPath = path.join(__dirname, '.env');
+if (fs.existsSync(envPath)) {
+    fs.readFileSync(envPath, 'utf8').split(/\r?\n/).forEach(line => {
+        const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
+        if (match && !process.env[match[1]]) {
+            process.env[match[1]] = (match[2] || '').replace(/^['"]|['"]$/g, '');
+        }
+    });
+}
+
+// Health check & dynamic runtime config endpoints (single source of truth from config.json)
+const DEFAULT_GEMINI_KEY = process.env.GEMINI_API_KEY || '';
+
+app.get('/config.js', (req, res) => {
+    const cfg = loadAppConfig();
+    const runtimeConfig = {
+        port: PORT,
+        host: cfg.host || 'localhost',
+        version: cfg.version || 'v34',
+        cacheName: `${cfg.cachePrefix || 'manitou-library'}-${cfg.version || 'v34'}`,
+        hasServerAiKey: Boolean(DEFAULT_GEMINI_KEY)
+    };
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
-    res.json({ status: 'ok', port: PORT, time: Date.now() });
+    res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+    res.send(`window.__MANITOU_CONFIG__ = ${JSON.stringify(runtimeConfig)};\n`);
+});
+
+app.get('/api/ping', (req, res) => {
+    const cfg = loadAppConfig();
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    res.json({
+        status: 'ok',
+        port: PORT,
+        host: cfg.host || 'localhost',
+        version: cfg.version || 'v34',
+        cacheName: `${cfg.cachePrefix || 'manitou-library'}-${cfg.version || 'v34'}`,
+        time: Date.now()
+    });
+});
+
+// Proxy endpoint for Gemini AI synthesis (avoids browser CORS and supports both AIza... keys and AQ... tokens)
+app.post('/api/ai-ask', async (req, res) => {
+    try {
+        const { key, systemPrompt, userPayload } = req.body || {};
+        const activeKey = (key || DEFAULT_GEMINI_KEY || '').trim();
+        if (!activeKey) {
+            return res.status(400).json({ error: 'Missing Gemini API key' });
+        }
+
+        const payload = {
+            system_instruction: { parts: [{ text: systemPrompt || '' }] },
+            contents: [{ role: 'user', parts: [{ text: userPayload || '' }] }],
+            generationConfig: { temperature: 0.25, maxOutputTokens: 900 }
+        };
+
+        // Try standard API key query parameter first
+        let url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(activeKey)}`;
+        let resp = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        // If key starts with AQ. or query param returned 400/401/403, also try Bearer token / x-goog-api-key header
+        if (!resp.ok && activeKey.startsWith('AQ.')) {
+            const altUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`;
+            resp = await fetch(altUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${activeKey}`
+                },
+                body: JSON.stringify(payload)
+            });
+        }
+
+        if (!resp.ok) {
+            const errBody = await resp.text().catch(() => '');
+            return res.status(resp.status).json({ error: `Gemini API HTTP ${resp.status}`, details: errBody });
+        }
+
+        const data = await resp.json();
+        const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        res.json({ text: text.trim() });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 // 1. Get all books (Public - so main site can use it)
@@ -167,10 +267,17 @@ app.post('/api/upload-pdf/:bookId', adminAuth, upload.single('pdf'), async (req,
 
         const dataBuffer = fs.readFileSync(req.file.path);
         
-        // Parse PDF
-        const data = await pdfParse(dataBuffer);
-        
-        const fullText = data.text;
+        // Parse PDF (compatible with both pdf-parse v1 function and v2 PDFParse class)
+        let fullText = '';
+        if (typeof pdfParse === 'function') {
+            const data = await pdfParse(dataBuffer);
+            fullText = data.text || '';
+        } else if (pdfParse && pdfParse.PDFParse) {
+            const parser = new pdfParse.PDFParse({ data: dataBuffer });
+            const resData = await parser.getText();
+            fullText = resData.text || '';
+            if (typeof parser.destroy === 'function') await parser.destroy().catch(() => {});
+        }
         
         const newChapter = {
             title: "פרק מצורף (מ-PDF)",
@@ -210,6 +317,51 @@ app.get('/api/books/:id/public-chapters', (req, res) => {
     } catch (e) {
         res.status(500).json({ error: e.message });
     }
+});
+
+// 8. Get scraped transcripts archive from library.manitou.org.il & manitou.org.il
+const transcriptsArchivePath = path.join(dataDir, 'transcripts_archive.json');
+app.get('/api/transcripts', (req, res) => {
+    try {
+        if (fs.existsSync(transcriptsArchivePath)) {
+            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+            return res.sendFile(transcriptsArchivePath);
+        }
+        res.json({ updatedAt: null, totalCount: 0, libraryCount: 0, manitouOrgCount: 0, items: [] });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+// 9. Trigger live sync/scrape of transcripts from library.manitou.org.il & manitou.org.il
+const { execFile } = require('child_process');
+let isTranscriptSyncRunning = false;
+app.post('/api/transcripts/sync', (req, res) => {
+    if (isTranscriptSyncRunning) {
+        return res.json({ status: 'running', message: 'סנכרון תמלולים כבר פועל ברקע...' });
+    }
+    isTranscriptSyncRunning = true;
+    const scriptPath = path.join(__dirname, 'fetch_transcripts.py');
+    execFile('python3', [scriptPath], { timeout: 300000, maxBuffer: 20 * 1024 * 1024 }, (err, stdout, stderr) => {
+        isTranscriptSyncRunning = false;
+        if (err) {
+            console.error('Transcripts sync error:', err, stderr);
+            // Still return existing archive if available
+            if (fs.existsSync(transcriptsArchivePath)) {
+                try {
+                    const existing = JSON.parse(fs.readFileSync(transcriptsArchivePath, 'utf8'));
+                    return res.json({ status: 'cached', warning: err.message, data: existing });
+                } catch (_) {}
+            }
+            return res.status(500).json({ error: err.message, details: stderr });
+        }
+        try {
+            const updated = JSON.parse(fs.readFileSync(transcriptsArchivePath, 'utf8'));
+            res.json({ status: 'ok', log: stdout, data: updated });
+        } catch (readErr) {
+            res.status(500).json({ error: readErr.message });
+        }
+    });
 });
 
 // Serve the main website statically (Public) with fresh headers for HTML, JS, CSS, and JSON

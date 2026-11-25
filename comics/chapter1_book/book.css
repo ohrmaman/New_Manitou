@@ -1,0 +1,709 @@
+/* ==========================================================================
+   סוד הראשית — ספר קומיקס בפורמט הוצאת ספרים (Print-Ready Publishing Layout)
+   ========================================================================== */
+:root {
+    --ink: #162033;
+    --midnight: #0f1b35;
+    --midnight-light: #1c2f59;
+    --gold: #d4a63a;
+    --gold-bright: #f6d575;
+    --paper: #fdfaf3;
+    --cream: #fff7df;
+    --border-ink: #141c2c;
+    --font-display: 'Rubik', 'Heebo', sans-serif;
+    --font-serif: 'Frank Ruhl Libre', 'David Libre', serif;
+    --font-comic: 'Heebo', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #141a26;
+    color: var(--ink);
+    font-family: var(--font-comic);
+    direction: rtl;
+    padding-bottom: 4rem;
+}
+
+/* Top Publishing Studio Toolbar (hidden in print/PDF) */
+.publisher-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(15, 27, 53, 0.94);
+    backdrop-filter: blur(12px);
+    border-bottom: 1.5px solid rgba(212, 166, 58, 0.4);
+    padding: 0.85rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    color: #f8fafc;
+}
+
+.pub-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.pub-badge {
+    background: linear-gradient(135deg, var(--gold), #b07f1e);
+    color: #0b1120;
+    font-weight: 800;
+    font-size: 0.78rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+}
+
+.pub-title {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--gold-bright);
+}
+
+.pub-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+}
+
+.pub-btn {
+    padding: 0.5rem 1.1rem;
+    border-radius: 10px;
+    border: 1px solid rgba(212, 166, 58, 0.45);
+    background: rgba(255, 255, 255, 0.06);
+    color: #f8fafc;
+    font-family: var(--font-comic);
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    text-decoration: none;
+}
+
+.pub-btn:hover {
+    background: rgba(212, 166, 58, 0.2);
+    border-color: var(--gold-bright);
+}
+
+.pub-btn.primary {
+    background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+    color: #0b1120;
+    border-color: transparent;
+}
+
+.pub-btn.primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(212, 166, 58, 0.4);
+}
+
+/* Book Container */
+.book-pages-wrapper {
+    max-width: 1120px;
+    margin: 2.2rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+    padding: 0 1rem;
+}
+
+/* Single Print Book Page (Standard Comic Album 210mm x 275mm proportion) */
+.book-page {
+    width: 210mm;
+    min-height: 278mm;
+    background: var(--paper);
+    border-radius: 6px;
+    box-shadow: 0 22px 60px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 13mm 13mm 11mm;
+    page-break-after: always;
+    break-after: page;
+}
+
+/* Subtle paper texture & inner spine shadow */
+.book-page::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgba(20, 28, 44, 0.07);
+}
+
+/* Page Footer with Book Title & Page Number */
+.page-footer {
+    margin-top: auto;
+    padding-top: 3.5mm;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 9.5pt;
+    color: #5b667a;
+    border-top: 1px solid rgba(20, 28, 44, 0.12);
+}
+
+.page-num-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--midnight);
+    color: var(--gold-bright);
+    font-weight: 800;
+    font-size: 9.5pt;
+}
+
+/* ==========================================================================
+   FRONT COVER PAGE
+   ========================================================================== */
+.book-page.cover-page {
+    padding: 0;
+    background: radial-gradient(circle at 50% 42%, #1e3566 0%, #0b1329 100%);
+    color: #fff;
+}
+
+.cover-art-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.cover-art-layer svg,
+.cover-art-layer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+.cover-overlay-ui {
+    position: relative;
+    z-index: 3;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15mm 16mm 14mm;
+    background: linear-gradient(180deg, rgba(9, 15, 32, 0.72) 0%, rgba(9, 15, 32, 0.08) 38%, rgba(9, 15, 32, 0.12) 72%, rgba(9, 15, 32, 0.85) 100%);
+}
+
+.cover-series-ribbon {
+    align-self: center;
+    background: rgba(15, 27, 53, 0.88);
+    border: 1.5px solid var(--gold);
+    color: var(--gold-bright);
+    padding: 0.35rem 1.3rem;
+    border-radius: 999px;
+    font-size: 11pt;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+}
+
+.cover-title-block {
+    text-align: center;
+    margin-top: 6mm;
+}
+
+.cover-main-title {
+    font-family: var(--font-serif);
+    font-size: 56pt;
+    font-weight: 700;
+    line-height: 1.02;
+    color: #fff7dc;
+    text-shadow: 0 5px 24px rgba(0, 0, 0, 0.65), 0 0 32px rgba(212, 166, 58, 0.45);
+}
+
+.cover-subtitle {
+    margin-top: 4mm;
+    font-family: var(--font-display);
+    font-size: 17pt;
+    font-weight: 700;
+    color: var(--gold-bright);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.75);
+}
+
+.cover-bottom-bar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-top: 1.5px solid rgba(246, 213, 117, 0.4);
+    padding-top: 5mm;
+}
+
+.cover-chapter-pill {
+    background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+    color: #0b1120;
+    padding: 0.45rem 1.2rem;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 12pt;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.cover-imprint {
+    text-align: left;
+    font-size: 10.5pt;
+    color: #e2e8f0;
+    line-height: 1.45;
+}
+
+/* ==========================================================================
+   TITLE / COPYRIGHT / CHARACTERS INTRO PAGE
+   ========================================================================== */
+.title-page-inner {
+    flex: 1;
+    border: 2px solid rgba(212, 166, 58, 0.45);
+    border-radius: 10px;
+    padding: 12mm 11mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: radial-gradient(circle at 50% 0%, rgba(212, 166, 58, 0.08), transparent 60%);
+}
+
+.tp-header {
+    text-align: center;
+    padding-bottom: 6mm;
+    border-bottom: 1.5px dashed rgba(212, 166, 58, 0.5);
+}
+
+.tp-kicker {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #9a7014;
+    margin-bottom: 2mm;
+}
+
+.tp-title {
+    font-family: var(--font-serif);
+    font-size: 32pt;
+    color: var(--midnight);
+}
+
+.tp-sub {
+    font-size: 13pt;
+    color: #475569;
+    margin-top: 2mm;
+}
+
+.cast-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5mm;
+    margin: 7mm 0;
+}
+
+.cast-card {
+    background: #fff;
+    border: 1.5px solid #e2d9c2;
+    border-radius: 12px;
+    padding: 4.5mm;
+    display: flex;
+    align-items: center;
+    gap: 4mm;
+    box-shadow: 0 3px 10px rgba(15, 27, 53, 0.05);
+}
+
+.cast-avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--midnight);
+    color: var(--gold-bright);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    border: 2px solid var(--gold);
+}
+
+.cast-card h4 {
+    font-size: 11.5pt;
+    color: var(--midnight);
+    margin-bottom: 1mm;
+}
+
+.cast-card p {
+    font-size: 9.2pt;
+    color: #475569;
+    line-height: 1.4;
+}
+
+.manitou-dedication-box {
+    background: var(--cream);
+    border-right: 4px solid var(--gold);
+    border-radius: 8px;
+    padding: 5mm 6mm;
+    font-family: var(--font-serif);
+    font-size: 11.5pt;
+    line-height: 1.65;
+    color: #293548;
+}
+
+.copyright-colophon {
+    margin-top: 6mm;
+    font-size: 8.5pt;
+    color: #64748b;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 3.5mm;
+}
+
+/* ==========================================================================
+   COMIC STORY PAGES (GRID, PANELS, SPEECH BUBBLES, SFX)
+   ========================================================================== */
+.comic-chapter-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--midnight);
+    color: #fff;
+    padding: 3.2mm 5.5mm;
+    border-radius: 8px;
+    margin-bottom: 4.5mm;
+    border-bottom: 3px solid var(--gold);
+}
+
+.comic-chapter-banner h2 {
+    font-family: var(--font-serif);
+    font-size: 16pt;
+    color: var(--gold-bright);
+}
+
+.comic-chapter-banner span {
+    font-size: 9.5pt;
+    color: #cbd5e1;
+    font-weight: 700;
+}
+
+.comic-grid {
+    flex: 1;
+    display: grid;
+    gap: 4.2mm;
+}
+
+.comic-grid.layout-4 {
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+}
+
+.comic-grid.layout-hero-top {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1.12fr 1fr;
+}
+
+.comic-grid.layout-hero-top .panel-wide {
+    grid-column: 1 / -1;
+}
+
+.comic-grid.layout-2-wide {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1.15fr;
+}
+
+.comic-grid.layout-finale {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1.45fr auto;
+}
+
+/* Comic Panel Frame */
+.comic-panel {
+    position: relative;
+    border: 2.6px solid var(--border-ink);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #0f1b35;
+    box-shadow: 3px 3px 0 rgba(20, 28, 44, 0.14);
+}
+
+.comic-panel svg.panel-art,
+.comic-panel img.panel-art {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+}
+
+.back-cover-vignette img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* Narrative Caption Box (Classic Comic Yellow/Cream Box) */
+.caption-box {
+    position: absolute;
+    z-index: 6;
+    background: #fff4c4;
+    border: 2px solid var(--border-ink);
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-family: var(--font-serif);
+    font-size: 10.5pt;
+    font-weight: 700;
+    line-height: 1.38;
+    color: #1a202c;
+    box-shadow: 2px 2px 0 rgba(20, 28, 44, 0.25);
+    max-width: 82%;
+}
+
+/* Speech Bubble */
+.speech-bubble {
+    position: absolute;
+    z-index: 8;
+    background: #ffffff;
+    border: 2.2px solid var(--border-ink);
+    border-radius: 18px;
+    padding: 7px 12px;
+    font-family: var(--font-comic);
+    font-size: 10pt;
+    font-weight: 700;
+    line-height: 1.35;
+    color: #0f172a;
+    text-align: center;
+    box-shadow: 2px 3px 0 rgba(20, 28, 44, 0.18);
+    max-width: 48%;
+}
+
+.speech-bubble .speaker-tag {
+    display: block;
+    font-size: 7.5pt;
+    font-weight: 800;
+    color: #9a6b0d;
+    margin-bottom: 1px;
+}
+
+/* Bubble tails */
+.speech-bubble.tail-bottom-right::after {
+    content: "";
+    position: absolute;
+    bottom: -11px;
+    right: 22px;
+    border-width: 11px 10px 0 0;
+    border-style: solid;
+    border-color: var(--border-ink) transparent transparent transparent;
+}
+.speech-bubble.tail-bottom-right::before {
+    content: "";
+    position: absolute;
+    bottom: -7px;
+    right: 24px;
+    z-index: 1;
+    border-width: 9px 7px 0 0;
+    border-style: solid;
+    border-color: #fff transparent transparent transparent;
+}
+
+.speech-bubble.tail-bottom-left::after {
+    content: "";
+    position: absolute;
+    bottom: -11px;
+    left: 22px;
+    border-width: 11px 0 0 10px;
+    border-style: solid;
+    border-color: var(--border-ink) transparent transparent transparent;
+}
+.speech-bubble.tail-bottom-left::before {
+    content: "";
+    position: absolute;
+    bottom: -7px;
+    left: 24px;
+    z-index: 1;
+    border-width: 9px 0 0 7px;
+    border-style: solid;
+    border-color: #fff transparent transparent transparent;
+}
+
+.speech-bubble.bird-bubble {
+    background: #f0f9ff;
+    border-color: #0c4a6e;
+}
+
+/* Comic SFX Sound Effect */
+.comic-sfx {
+    position: absolute;
+    z-index: 7;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 16pt;
+    color: #fde047;
+    -webkit-text-stroke: 1.5px #141c2c;
+    text-shadow: 2px 3px 0 #141c2c;
+    transform: rotate(-7deg);
+    letter-spacing: 0.5px;
+    pointer-events: none;
+}
+
+/* Parent-Child Manitou Corner Box (End of Chapter) */
+.manitou-parent-corner {
+    background: linear-gradient(135deg, #fff9e6 0%, #fef3c7 100%);
+    border: 2.4px solid var(--gold);
+    border-radius: 14px;
+    padding: 6mm 7mm;
+    display: flex;
+    flex-direction: column;
+    gap: 3mm;
+}
+
+.manitou-corner-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1.5px solid rgba(212, 166, 58, 0.45);
+    padding-bottom: 2.5mm;
+}
+
+.manitou-corner-header h3 {
+    font-family: var(--font-serif);
+    font-size: 15pt;
+    color: var(--midnight);
+}
+
+.manitou-corner-tag {
+    background: var(--midnight);
+    color: var(--gold-bright);
+    padding: 0.2rem 0.7rem;
+    border-radius: 999px;
+    font-size: 8.5pt;
+    font-weight: 700;
+}
+
+.manitou-corner-body {
+    font-size: 10.5pt;
+    line-height: 1.6;
+    color: #1e293b;
+}
+
+.manitou-corner-question {
+    background: #fff;
+    border-right: 4px solid var(--midnight);
+    border-radius: 8px;
+    padding: 3.5mm 4.5mm;
+    font-weight: 700;
+    color: var(--midnight);
+    font-size: 10.5pt;
+}
+
+.manitou-corner-sources {
+    font-size: 8.5pt;
+    color: #64748b;
+}
+
+/* ==========================================================================
+   BACK COVER PAGE
+   ========================================================================== */
+.book-page.back-cover-page {
+    background: linear-gradient(180deg, #0f1b35 0%, #172a52 100%);
+    color: #f8fafc;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    padding: 18mm 18mm 14mm;
+}
+
+.back-cover-vignette {
+    width: 72mm;
+    height: 72mm;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3.5px solid var(--gold);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+}
+
+.back-cover-blurb {
+    max-width: 150mm;
+    font-family: var(--font-serif);
+    font-size: 13.5pt;
+    line-height: 1.75;
+    color: #e2e8f0;
+}
+
+.back-cover-quote {
+    background: rgba(212, 166, 58, 0.12);
+    border: 1px solid rgba(212, 166, 58, 0.45);
+    border-radius: 12px;
+    padding: 5mm 8mm;
+    font-family: var(--font-serif);
+    font-size: 12pt;
+    color: var(--gold-bright);
+    max-width: 145mm;
+}
+
+.back-cover-isbn-row {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-top: 1px solid rgba(246, 213, 117, 0.3);
+    padding-top: 5mm;
+    font-size: 9pt;
+    color: #94a3b8;
+}
+
+.isbn-barcode-box {
+    background: #fff;
+    color: #000;
+    padding: 3mm 5mm;
+    border-radius: 4px;
+    text-align: center;
+    font-family: monospace;
+    font-size: 8pt;
+}
+
+.barcode-lines {
+    height: 26px;
+    width: 110px;
+    background: repeating-linear-gradient(90deg, #000 0, #000 2px, #fff 2px, #fff 4px, #000 4px, #000 5px, #fff 5px, #fff 8px, #000 8px, #000 11px, #fff 11px, #fff 13px);
+    margin-bottom: 3px;
+}
+
+/* ==========================================================================
+   PRINT & PDF EXPORT RULES (Publishing Exact Output)
+   ========================================================================== */
+@page {
+    size: 210mm 278mm;
+    margin: 0;
+}
+
+@media print {
+    body {
+        background: #fff !important;
+        padding: 0 !important;
+    }
+    .publisher-toolbar {
+        display: none !important;
+    }
+    .book-pages-wrapper {
+        margin: 0 !important;
+        padding: 0 !important;
+        gap: 0 !important;
+        max-width: none !important;
+    }
+    .book-page {
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+}

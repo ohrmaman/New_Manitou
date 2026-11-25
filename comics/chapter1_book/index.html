@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>סוד הראשית • פרק 1: האור שפינה מקום לחבר | רומן גרפי ממשנת מניטו</title>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&family=Frank+Ruhl+Libre:wght@500;700&family=Rubik:wght@500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="book.css">
+</head>
+<body>
+
+    <!-- Top Publishing Studio Bar (Hidden on Print / PDF Export) -->
+    <header class="publisher-toolbar">
+        <div class="pub-brand">
+            <span class="pub-badge">מהדורת הוצאה לאור • Print Ready</span>
+            <span class="pub-title">סוד הראשית — פרק 1: האור שפינה מקום לחבר</span>
+        </div>
+        <div class="pub-actions">
+            <a href="/" class="pub-btn">← חזרה לספריית מניטו</a>
+            <a href="../chapter2_book/index.html" class="pub-btn">פרק 2: למה לא בבת-אחת? ←</a>
+            <button type="button" class="pub-btn primary" onclick="window.print()">🖨️ הדפס / שמור כספר PDF</button>
+        </div>
+    </header>
+
+    <main class="book-pages-wrapper">
+
+        <!-- ================================================================
+             PAGE 0: FRONT COVER (כריכה קדמית)
+             ================================================================ -->
+        <section class="book-page cover-page" aria-label="כריכה קדמית">
+            <div class="cover-art-layer">
+                <img src="images/cover.png?v=2" alt="כריכת הספר סוד הראשית — האור שפינה מקום לחבר">
+            </div>
+            <div class="cover-overlay-ui">
+                <div class="cover-series-ribbon">סדרת הקומיקס למשפחה • לאור משנת הרב מניטו זצ״ל</div>
+                <div class="cover-title-block">
+                    <h1 class="cover-main-title">סוֹד הָרֵאשִׁית</h1>
+                    <p class="cover-subtitle">הָאוֹר שֶׁפִּנָּה מָקוֹם לְחָבֵר</p>
+                </div>
+                <div class="cover-bottom-bar">
+                    <div class="cover-chapter-pill">פרק 1 • סוד הצמצום והאות ב׳</div>
+                    <div class="cover-imprint">
+                        <strong>הוצאת מכון מניטו לילדים</strong><br>
+                        מבוסס על "סוד מדרש התולדות" ותמלולי השיעורים
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================
+             FRONT MATTER: TITLE PAGE, CAST & COPYRIGHT
+             ================================================================ -->
+        <section class="book-page" aria-label="עמוד שער ודמויות">
+            <div class="title-page-inner">
+                <div class="tp-header">
+                    <div class="tp-kicker">סִדְרַת "סוֹד הָרֵאשִׁית" — קוֹמִיקְס מַעֲשֵׂה בְּרֵאשִׁית</div>
+                    <h1 class="tp-title">הָאוֹר שֶׁפִּנָּה מָקוֹם לְחָבֵר</h1>
+                    <p class="tp-sub">פֶּרֶק רִאשׁוֹן: סוֹד הַצִּמְצוּם וְהָאוֹת ב׳ — עַל-פִּי מִשְׁנַת הָרַב יְהוּדָא לֵאוֹן אַשְׁכְּנַזִּי (מָנִיטוּ) זצ״ל</p>
+                </div>
+
+                <div>
+                    <h3 style="font-family: var(--font-serif); font-size: 15pt; color: var(--midnight); margin-bottom: 3mm;">הַכִּירוּ אֶת גִּבּוֹרֵי הַמַּסָּע:</h3>
+                    <div class="cast-grid">
+                        <div class="cast-card">
+                            <div class="cast-avatar">👦</div>
+                            <div>
+                                <h4>נֹעַם (בֶּן 8)</h4>
+                                <p>סַקְרָן, חוֹבֵב מַדָּע וְחָלָל — שֶׁתָּמִיד שׁוֹאֵל "אָבָל לָמָּה?" וְ"אֵיךְ זֶה עוֹבֵד?".</p>
+                            </div>
+                        </div>
+                        <div class="cast-card">
+                            <div class="cast-avatar">👧</div>
+                            <div>
+                                <h4>תָּמָר (בַּת 6.5)</h4>
+                                <p>חַדַּת-עַיִן וּרְגִישָׁה — שָׂמָה לֵב לִפְרָטִים קְטַנִּים, לְרְגָשׁוֹת וּלְסוֹדוֹת הַשָּׂפָה הָעִבְרִית.</p>
+                            </div>
+                        </div>
+                        <div class="cast-card">
+                            <div class="cast-avatar">🐦</div>
+                            <div>
+                                <h4>אֵלֶּה (צִפּוֹר הָאוֹר)</h4>
+                                <p>צִפּוֹר כְּחֻלָּה עִם כַּנְפֵי זָהָב שֶׁיּוֹצֵאת מִן הָאוֹת ב׳ וּמַדְרִיכָה אֶת הַיְּלָדִים בִּימֵי הַבְּרִיאָה.</p>
+                            </div>
+                        </div>
+                        <div class="cast-card">
+                            <div class="cast-avatar">👴</div>
+                            <div>
+                                <h4>סַבָּא יְהוּדָא</h4>
+                                <p>סַבָּא חָכָם וּמֵאִיר פָּנִים מִירוּשָׁלַיִם, שֶׁמַּגִּישׁ לַנְּכָדִים אֶת "סֵפֶר הַתּוֹלָדוֹת הַמֻּזְהָב".</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manitou-dedication-box">
+                    <strong>דְּבַר הַהוֹצָאָה לַהוֹרִים:</strong><br>
+                    בְּמִשְׁנָתוֹ הָעֲמֻקָּה שֶׁל הָרַב מָנִיטוּ, מַעֲשֵׂה בְּרֵאשִׁית אֵינוֹ רַק תֵּאוּר שֶׁל הִוָּצְרוּת הַיְּקוּם — אֶלָּא <strong>מַעֲשֶׂה מוּסָרִי שֶׁל אַהֲבָה</strong>: הַקָּדוֹשׁ בָּרוּךְ הוּא "מְפַנֶּה מָקוֹם" מֵעַצְמוֹ (צִמְצוּם) כְּדֵי שֶׁיּוּכַל לְהִתְקַיֵּם אָדָם חָפְשִׁי, שָׂמֵחַ וְשֻׁתָּף בְּתִקּוּן הָעוֹלָם. חוֹבֶרֶת קוֹמִיקְס זוֹ נִכְתְּבָה בִּמְיֻחָד לִקְרִיאָה מְשֻׁתֶּפֶת שֶׁל יְלָדִים וְהוֹרִים.
+                </div>
+
+                <div class="copyright-colophon">
+                    <span>© 2026 הוצאת ספריית מניטו • מהדורת קומיקס ראשונה</span>
+                    <span>מקורות: סוד מדרש התולדות כרך ג׳ (פרקים 3, 11–12), תורת הצמצום ותמלולי השיעורים</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================
+             COMIC PAGE 1: הַסֵּפֶר הַמֻּזְהָב שֶׁל סַבָּא
+             ================================================================ -->
+        <section class="book-page" aria-label="עמוד 1 בקומיקס">
+            <div class="comic-chapter-banner">
+                <h2>פֶּרֶק 1: הָאוֹר שֶׁפִּנָּה מָקוֹם לְחָבֵר</h2>
+                <span>סֵפֶר הַתּוֹלָדוֹת • עַמּוּד 1</span>
+            </div>
+
+            <div class="comic-grid layout-2-wide">
+                <div class="comic-panel">
+                    <img class="panel-art" src="images/page1_panel1.png?v=2" alt="סבא יהודא מגיש לנֹעַם ותָּמָר את הספר המוזהב בירושלים">
+                    <div class="caption-box" style="top: 10px; right: 12px;">עֶרֶב שַׁבָּת בִּירוּשָׁלַיִם. סַבָּא יְהוּדָא מַגִּישׁ לַיְּלָדִים אֶת "סֵפֶר הַתּוֹלָדוֹת הַמֻּזְהָב"...</div>
+                    <div class="speech-bubble tail-bottom-right" style="top: 52px; right: 16px; max-width: 39%;">
+                        <span class="speaker-tag">סַבָּא יְהוּדָא</span>
+                        רוֹצִים לִשְׁמֹעַ אֶת הַסּוֹד הֲכִי גָּדוֹל שֶׁל מַעֲשֵׂה בְּרֵאשִׁית?
+                    </div>
+                    <div class="speech-bubble tail-bottom-left" style="top: 52px; left: 16px; max-width: 40%;">
+                        <span class="speaker-tag">נֹעַם</span>
+                        רֶגַע, סַבָּא! לָמָּה הַתּוֹרָה מַתְחִילָה בָּאוֹת <strong>ב׳</strong> ("בְּרֵאשִׁית") וְלֹא בָּאוֹת <strong>א׳</strong>?!
+                    </div>
+                </div>
+
+                <div class="comic-panel">
+                    <img class="panel-art" src="images/page1_panel2.png?v=2" alt="הספר נפתח ומתוכו יוצאת ציפור האור אֵלֶּה">
+                    <div class="comic-sfx" style="top: 18px; left: 42%;">פְּשׁשׁשׁ... טִינְג!</div>
+                    <div class="speech-bubble bird-bubble tail-bottom-right" style="top: 18px; right: 16px; max-width: 39%;">
+                        <span class="speaker-tag">אֵלֶּה (צִפּוֹר הָאוֹר)</span>
+                        שָׁלוֹם! קוֹרְאִים לִי אֵלֶּה. תַּחְזִיקוּ חָזָק — אֲנַחְנוּ חוֹזְרִים אֲחוֹרָה, אֲפִלּוּ לִפְנֵי שֶׁהָיָה עוֹלָם!
+                    </div>
+                    <div class="speech-bubble tail-bottom-left" style="bottom: 16px; left: 16px; max-width: 35%;">
+                        <span class="speaker-tag">תָּמָר</span>
+                        נֹעַם! הָאוֹת ב׳ נִפְתְּחָה כְּמוֹ דֶּלֶת שֶׁל אוֹר!
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-footer">
+                <span>סוד הראשית • פרק 1: האור שפינה מקום לחבר</span>
+                <span class="page-num-badge">1</span>
+            </div>
+        </section>
+
+        <!-- ================================================================
+             COMIC PAGE 2: כְּשֶׁהַכֹּל הָיָה רַק אוֹר — וְרֶגַע הַצִּמְצוּם
+             ================================================================ -->
+        <section class="book-page" aria-label="עמוד 2 בקומיקס">
+            <div class="comic-grid layout-2-wide">
+                <div class="comic-panel">
+                    <img class="panel-art" src="images/page2_panel1.png?v=2" alt="ים של אור אינסופי — נֹעַם ותָּמָר מרחפים עם משקפי שמש">
+                    <div class="caption-box" style="top: 10px; right: 12px;">פַּעַם, לִפְנֵי שֶׁהָיוּ כּוֹכָבִים, יָם אוֹ גַּנֵּי שַׁעֲשׁוּעִים — הָיָה רַק אוֹר אֶחָד אֵינְסוֹפִי שֶׁמִּלֵּא הַכֹּל!</div>
+                    <div class="speech-bubble tail-bottom-right" style="top: 62px; right: 18px; max-width: 39%;">
+                        <span class="speaker-tag">נֹעַם</span>
+                        וָואוּ! אֵין פֹּה אֲפִלּוּ פִּנָּה קְטַנָּה לָשִׂים בָּהּ רֶגֶל! אֵיפֹה אֶפְשָׁר לְשַׂחֵק פֹּה?!
+                    </div>
+                    <div class="speech-bubble bird-bubble tail-bottom-left" style="top: 62px; left: 16px; max-width: 39%;">
+                        <span class="speaker-tag">אֵלֶּה</span>
+                        בְּדִיּוּק! כְּשֶׁמִּישֶׁהוּ אֶחָד מְמַלֵּא אֶת כָּל הַחֶדֶר — אֵין מָקוֹם לְאַף חָבֵר אַחֵר!
+                    </div>
+                </div>
+
+                <div class="comic-panel">
+                    <img class="panel-art" src="images/page2_panel2.png?v=2" alt="רגע הצמצום — האור מתכווץ לאחור ומשאיר חלל פנוי עם ניצוץ זהב">
+                    <div class="comic-sfx" style="top: 16px; left: 40%;">וְוווושׁ...</div>
+                    <div class="speech-bubble tail-bottom-right" style="top: 16px; right: 16px; max-width: 40%;">
+                        <span class="speaker-tag">תָּמָר</span>
+                        תִּרְאֶה, נֹעַם! הָאוֹר הַגָּדוֹל לָקַח צַעַד אֲחוֹרָה בְּכַוָּנָה — כְּדֵי לְפַנּוֹת לָנוּ חֶדֶר פָּנוּי!
+                    </div>
+                    <div class="speech-bubble bird-bubble tail-bottom-left" style="bottom: 16px; left: 16px; max-width: 50%;">
+                        <span class="speaker-tag">אֵלֶּה</span>
+                        וְזֶה נִקְרָא <strong>צִמְצוּם</strong>! הַבּוֹרֵא פִּנָּה מָקוֹם כְּדֵי שֶׁנּוּכַל לִהְיוֹת חָפְשִׁיִּים — אֲבָל הִשְׁאִיר בָּאֶמְצַע <strong>נִיצוֹץ קָטָן שֶׁל חֹם</strong>, כְּדֵי שֶׁלְּעוֹלָם לֹא נַרְגִּישׁ לְבַד.
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-footer">
+                <span>סוד הראשית • פרק 1: האור שפינה מקום לחבר</span>
+                <span class="page-num-badge">2</span>
+            </div>
+        </section>
+
+        <!-- ================================================================
+             COMIC PAGE 3: סוֹד הָאוֹת ב׳ — בַּיִת וּבְרָכָה
+             ================================================================ -->
+        <section class="book-page" aria-label="עמוד 3 בקומיקס">
+            <div class="comic-grid layout-2-wide">
+                <div class="comic-panel">
+                    <img class="panel-art" src="images/page3_panel1.png?v=2" alt="שער האות ב׳ המוזהב בחלל הכוכבים">
+                    <div class="speech-bubble tail-bottom-left" style="top: 16px; left: 16px; max-width: 42%;">
+                        <span class="speaker-tag">נֹעַם</span>
+                        אָה!! עַכְשָׁו אֲנִי מֵבִין לָמָּה הַתּוֹרָה מַתְחִילָה בָּאוֹת <strong>ב׳</strong>!
+                    </div>
+                    <div class="speech-bubble bird-bubble tail-bottom-right" style="bottom: 14px; right: 16px; max-width: 48%;">
+                        <span class="speaker-tag">אֵלֶּה</span>
+                        נָכוֹן! <strong>א׳</strong> זֶה "אֲנִי לְבַד". אֲבָל <strong>ב׳</strong> זֶה <strong>בַּ</strong>יִת, <strong>בְּ</strong>רָכָה, <strong>בְּ</strong>יַחַד — וְשַׁעַר שֶׁפָּתוּחַ קָדִימָה אֶל הֶעָתִיד!
+                    </div>
+                </div>
+
+                <div class="comic-panel">
+                    <img class="panel-art" src="images/page3_panel2.png?v=2" alt="תָּמָר נוגעת בעדינות בניצוץ הזהוב">
+                    <div class="speech-bubble tail-bottom-right" style="top: 18px; right: 16px; max-width: 44%;">
+                        <span class="speaker-tag">תָּמָר</span>
+                        אֵיזֶה יָפֶה... הַבּוֹרֵא בָּרָא אֶת הָעוֹלָם רַק בִּגְלַל שֶׁהוּא רָצָה לָתֵת וְלֶאֱהֹב!
+                    </div>
+                    <div class="speech-bubble bird-bubble tail-bottom-left" style="bottom: 16px; left: 16px; max-width: 44%;">
+                        <span class="speaker-tag">אֵלֶּה</span>
+                        עַכְשָׁו כְּשֶׁיֵּשׁ מָקוֹם פָּנוּי וּבְרָכָה — הַהַרְפַּתְקָה שֶׁל שֵׁשֶׁת יְמֵי הַבְּרִיאָה יְכוֹלָה לְהַתְחִיל!
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-footer">
+                <span>סוד הראשית • פרק 1: האור שפינה מקום לחבר</span>
+                <span class="page-num-badge">3</span>
+            </div>
+        </section>
+
+        <!-- ================================================================
+             COMIC PAGE 4: סִיּוּם הַפֶּרֶק + פִּנַּת מָנִיטוּ לַהוֹרִים וְלַיְּלָדִים
+             ================================================================ -->
+        <section class="book-page" aria-label="עמוד 4 בקומיקס">
+            <div class="comic-grid layout-finale">
+                <div class="comic-panel">
+                    <img class="panel-art" src="images/page4_panel1.png?v=2" alt="נֹעַם ותָּמָר מביטים אל שחר הבריאה">
+                    <div class="caption-box" style="top: 16px; right: 18px; max-width: 75%;">
+                        וְכָךְ, מִתּוֹךְ הָאֹמֶץ שֶׁל הָאוֹר הַגָּדוֹל לְפַנּוֹת מָקוֹם לְחָבֵר — הִתְחִיל הַסִּפּוּר הֲכִי גָּדוֹל בָּעוֹלָם...
+                    </div>
+                    <div class="speech-bubble tail-bottom-right" style="bottom: 18px; right: 18px; max-width: 38%;">
+                        <span class="speaker-tag">נֹעַם</span>
+                        קָדִימָה לַפֶּרֶק הַבָּא! בּוֹאוּ נִרְאֶה אֶת עֲשֶׂרֶת הַמַּאֲמָרוֹת!
+                    </div>
+                </div>
+
+                <!-- PARENT-CHILD MANITOU CORNER -->
+                <aside class="manitou-parent-corner">
+                    <div class="manitou-corner-header">
+                        <h3>💡 פִּנַּת מָנִיטוּ לַהוֹרִים וְלַיְּלָדִים</h3>
+                        <span class="manitou-corner-tag">סוֹד הַצִּמְצוּם וְהָאוֹת ב׳</span>
+                    </div>
+                    <p class="manitou-corner-body">
+                        הָרַב יְהוּדָא לֵאוֹן אַשְׁכְּנַזִּי (מָנִיטוּ) מְלַמֵּד כִּי בְּרִיאַת הָעוֹלָם הִיא קֹדֶם כֹּל <strong>מַעֲשֶׂה מוּסָרִי</strong>: לִפְנֵי הַבְּרִיאָה הָיָה רַק הָאֵינְסוֹף, וְהַקָּדוֹשׁ בָּרוּךְ הוּא "צִמְצֵם" וּפִנָּה מָקוֹם כְּדֵי שֶׁהַנִּבְרָאִים יוּכְלוּ לִחְיוֹת, לִבְחֹר וְלֶאֱהֹב בְּעַצְמָם. לָכֵן הַתּוֹרָה נִפְתַּחַת בָּאוֹת <strong>ב׳</strong> — אוֹת שֶׁל בְּרָכָה, בַּיִת וְשֻׁתָּפוּת.
+                    </p>
+                    <div class="manitou-corner-question">
+                        🗣️ שְׁאֵלָה לְשִׂיחָה מִשְׁפַּחְתִּית: מָתַי הַיּוֹם אֲנַחְנוּ יְכוֹלִים לַעֲשׂוֹת "צִמְצוּם קָטָן" וּלְפַנּוֹת מָקוֹם לְאָח, לְאָחוֹת אוֹ לְחָבֵר?
+                    </div>
+                    <div class="manitou-corner-sources">
+                        <strong>מְקוֹרוֹת מִסִּפְרִיַּת מָנִיטוּ:</strong> <em>סוד מדרש התולדות כרך ג׳</em>, פרק 3 ("מי ברא אלה?") ופרקים 11–12 ("נאצלים ונבראים", "על הצורך בצמצום"); תמלול השיעור <em>"מידת הדין ומידת הרחמים בבריאת העולם"</em>.
+                    </div>
+                </aside>
+            </div>
+
+            <div class="page-footer">
+                <span>סוד הראשית • סוף פרק 1 — המשך בפרק 2: "למה לא בבת-אחת?"</span>
+                <span class="page-num-badge">4</span>
+            </div>
+        </section>
+
+        <!-- ================================================================
+             BACK COVER (עמוד גב — פורמט הוצאת ספרים)
+             ================================================================ -->
+        <section class="book-page back-cover-page" aria-label="עמוד גב הספר">
+            <div style="font-family: var(--font-serif); font-size: 22pt; color: var(--gold-bright);">
+                סוֹד הָרֵאשִׁית • פֶּרֶק 1
+            </div>
+
+            <div class="back-cover-vignette">
+                <img src="images/back_cover.png?v=2" alt="לילה ירושלמי וציפור האור">
+            </div>
+
+            <p class="back-cover-blurb">
+                אֵיךְ הִתְחִיל הָעוֹלָם? לָמָּה הַתּוֹרָה נִפְתַּחַת בָּאוֹת <strong>ב׳</strong> וְלֹא בָּאוֹת <strong>א׳</strong>? וּמַה קָּרָה בָּרֶגַע שֶׁבּוֹ הָאוֹר הַגָּדוֹל הֶחְלִיט לְפַנּוֹת מָקוֹם לְחָבֵר?<br><br>
+                הִצְטָרְפוּ אֶל <strong>נֹעַם, תָּמָר וְאֵלֶּה צִפּוֹר הָאוֹר</strong> בְּמַסַּע קוֹמִיקְס קָסוּם אֶל תּוֹךְ מַעֲשֵׂה בְּרֵאשִׁית — הַמְּתַרְגֵּם לִשְׂפַת יְלָדִים אֶת רַעְיוֹנוֹת הָעֹמֶק שֶׁל הָרַב יְהוּדָא לֵאוֹן אַשְׁכְּנַזִּי (מָנִיטוּ) זצ״ל.
+            </p>
+
+            <div class="back-cover-quote">
+                "הַבְּרִיאָה הִיא הַמַּעֲשֶׂה הַמּוּסָרִי בְּיוֹתֵר: לָתֵת מָקוֹם לָאַחֵר כְּדֵי שֶׁיּוּכַל לִהְיוֹת חָפְשִׁי וְלֶאֱהֹב."
+            </div>
+
+            <div class="back-cover-isbn-row">
+                <div style="text-align: right;">
+                    <strong style="color: #fff;">הוצאת ספריית מניטו לילדים</strong><br>
+                    מיועד לגילאי 5–10 • לקריאה עצמאית ומשותפת<br>
+                    סדרה מלאה: 10 פרקי מעשה בראשית
+                </div>
+                <div class="isbn-barcode-box">
+                    <div class="barcode-lines"></div>
+                    ISBN 978-965-00-0101-1
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+</body>
+</html>

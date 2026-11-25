@@ -6,6 +6,7 @@ import threading
 import queue
 import webbrowser
 import signal
+import json
 import tkinter as tk
 from tkinter import messagebox, font
 from tkinter import scrolledtext
@@ -111,7 +112,7 @@ class ServerControllerApp:
         
         # Determine working directory
         self.work_dir = os.path.dirname(os.path.abspath(__file__))
-        
+
         # Setup UI
         self.setup_styles()
         self.create_widgets()
@@ -121,6 +122,23 @@ class ServerControllerApp:
         
         # Start queue polling
         self.root.after(100, self.poll_logs)
+
+    def get_config(self):
+        defaults = {"port": 3090, "host": "localhost"}
+        cfg_path = os.path.join(self.work_dir, "config.json")
+        try:
+            if os.path.exists(cfg_path):
+                with open(cfg_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    if isinstance(data, dict):
+                        defaults.update(data)
+        except Exception:
+            pass
+        return defaults
+
+    def get_base_url(self):
+        cfg = self.get_config()
+        return f"http://{cfg.get('host', 'localhost')}:{cfg.get('port', 3090)}"
 
     def setup_styles(self):
         self.title_font = font.Font(family="Georgia", size=22, weight="bold")
@@ -248,7 +266,7 @@ class ServerControllerApp:
             bg=ACCENT_GOLD, 
             fg=BG_MAIN, 
             hover_bg=COLOR_HOVER_GOLD,
-            command=lambda: webbrowser.open("http://localhost:3000")
+            command=lambda: webbrowser.open(self.get_base_url())
         )
         self.open_site_btn.pack(side=tk.TOP, fill=tk.X, padx=15, pady=6)
         
@@ -263,7 +281,7 @@ class ServerControllerApp:
             bd=1,
             relief=tk.SOLID,
             highlightbackground=COLOR_BORDER,
-            command=lambda: webbrowser.open("http://localhost:3000/admin")
+            command=lambda: webbrowser.open(f"{self.get_base_url()}/admin")
         )
         self.open_admin_btn.pack(side=tk.TOP, fill=tk.X, padx=15, pady=(0, 15))
 
@@ -428,7 +446,7 @@ class ServerControllerApp:
                 
                 # Auto open browser when node server says running
                 if "server running" in lower_line and self.auto_open_var.get():
-                    self.root.after(100, lambda: webbrowser.open("http://localhost:3000"))
+                    self.root.after(100, lambda: webbrowser.open(self.get_base_url()))
                     
             except queue.Empty:
                 break
@@ -471,8 +489,9 @@ class ServerControllerApp:
 
     def update_ui_state(self, running):
         if running:
+            active_port = self.get_config().get("port", 3090)
             self.status_indicator.configure(bg=COLOR_GREEN)
-            self.status_text.configure(text="שרת פעיל בפורט 3000", fg=COLOR_GREEN)
+            self.status_text.configure(text=f"שרת פעיל בפורט {active_port}", fg=COLOR_GREEN)
             self.start_btn.configure_state(tk.DISABLED)
             self.stop_btn.configure_state(tk.NORMAL)
         else:

@@ -17,6 +17,7 @@ venv/
 # Large scraped data
 data/pdfs/
 data/audio/
+data/transcripts/
 
 # Dependency directories
 node_modules/
