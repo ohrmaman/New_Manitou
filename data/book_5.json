@@ -15,45 +15,45 @@
         "chapterTitle": "מבוא לתורת התולדות - מאת חיים רוטנברג",
         "readingMinutes": 134,
         "sharedTopics": [
-          "תולדות",
-          "נח",
-          "מוסר"
+          "תשובה",
+          "רוטנברג",
+          "מאת"
         ]
       },
       {
-        "bookId": 9,
-        "bookTitle": "סוד מדרש התולדות 7",
+        "bookId": 2,
+        "bookTitle": "מספד למשיח",
         "chapterId": 2,
-        "chapterTitle": "יציאה לקראת העתיד",
-        "readingMinutes": 143,
+        "chapterTitle": "פרק 1: המספד בירושלים",
+        "readingMinutes": 188,
         "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "תשובה"
+          "תשובה",
+          "גאולה",
+          "נבואה"
         ]
       },
       {
-        "bookId": 6,
-        "bookTitle": "סוד מדרש התולדות 4",
-        "chapterId": 8,
-        "chapterTitle": "ייסורי הצדיק",
-        "readingMinutes": 130,
+        "bookId": 24,
+        "bookTitle": "קול המועד",
+        "chapterId": 23,
+        "chapterTitle": "הערות והרחבות",
+        "readingMinutes": 345,
         "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "תשובה"
+          "תשובה",
+          "גאולה",
+          "נבואה"
         ]
       },
       {
-        "bookId": 7,
-        "bookTitle": "סוד מדרש התולדות 5",
-        "chapterId": 4,
-        "chapterTitle": "לידה בלתי אפשרית",
-        "readingMinutes": 153,
+        "bookId": 4,
+        "bookTitle": "סוד מדרש התולדות 2",
+        "chapterId": 6,
+        "chapterTitle": "ירידה לצורך עלייה",
+        "readingMinutes": 114,
         "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "תשובה"
+          "תשובה",
+          "גאולה",
+          "נבואה"
         ]
       }
     ],
@@ -71,49 +71,49 @@
       {
         "bookId": 6,
         "bookTitle": "סוד מדרש התולדות 4",
-        "chapterId": 2,
-        "chapterTitle": "התפתחות או אבולוציה אקראית?",
-        "readingMinutes": 124,
-        "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "נח"
-        ]
-      },
-      {
-        "bookId": 6,
-        "bookTitle": "סוד מדרש התולדות 4",
         "chapterId": 5,
         "chapterTitle": "תיקון העולמות",
         "readingMinutes": 104,
         "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "נח"
+          "קבלה",
+          "מוסר",
+          "גלות"
         ]
       },
       {
-        "bookId": 25,
-        "bookTitle": "סוד מדרש התולדות 10",
-        "chapterId": 21,
-        "chapterTitle": "אתונה וירושלים",
-        "readingMinutes": 54,
+        "bookId": 11,
+        "bookTitle": "סוד מדרש התולדות 9",
+        "chapterId": 2,
+        "chapterTitle": "מבוא לתורת התולדות - מאת חיים רוטנברג",
+        "readingMinutes": 134,
         "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "נח"
+          "קבלה",
+          "מוסר",
+          "גלות"
         ]
       },
       {
-        "bookId": 10,
-        "bookTitle": "סוד מדרש התולדות 8",
+        "bookId": 17,
+        "bookTitle": "סוד העברי 1",
         "chapterId": 3,
-        "chapterTitle": "מורשת היהדות והאוניברסיטה",
-        "readingMinutes": 60,
+        "chapterTitle": "שער ראשון - הבריאה",
+        "readingMinutes": 173,
         "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "נח"
+          "קבלה",
+          "מוסר",
+          "גלות"
+        ]
+      },
+      {
+        "bookId": 17,
+        "bookTitle": "סוד העברי 1",
+        "chapterId": 5,
+        "chapterTitle": "שער רביעי - שושלת שת",
+        "readingMinutes": 114,
+        "sharedTopics": [
+          "קבלה",
+          "מוסר",
+          "גלות"
         ]
       }
     ],
@@ -129,42 +129,6 @@
     "readingMinutes": 93,
     "relatedChapters": [
       {
-        "bookId": 11,
-        "bookTitle": "סוד מדרש התולדות 9",
-        "chapterId": 1,
-        "chapterTitle": "ה' קנני ראשית דרכו",
-        "readingMinutes": 161,
-        "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "תשובה"
-        ]
-      },
-      {
-        "bookId": 6,
-        "bookTitle": "סוד מדרש התולדות 4",
-        "chapterId": 5,
-        "chapterTitle": "תיקון העולמות",
-        "readingMinutes": 104,
-        "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "תשובה"
-        ]
-      },
-      {
-        "bookId": 9,
-        "bookTitle": "סוד מדרש התולדות 7",
-        "chapterId": 2,
-        "chapterTitle": "יציאה לקראת העתיד",
-        "readingMinutes": 143,
-        "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "תשובה"
-        ]
-      },
-      {
         "bookId": 24,
         "bookTitle": "קול המועד",
         "chapterId": 23,
@@ -172,8 +136,44 @@
         "readingMinutes": 345,
         "sharedTopics": [
           "תשובה",
-          "תולדות",
-          "שבת"
+          "רש\"י",
+          "קדושה"
+        ]
+      },
+      {
+        "bookId": 11,
+        "bookTitle": "סוד מדרש התולדות 9",
+        "chapterId": 1,
+        "chapterTitle": "ה' קנני ראשית דרכו",
+        "readingMinutes": 161,
+        "sharedTopics": [
+          "תשובה",
+          "רש\"י",
+          "קבלה"
+        ]
+      },
+      {
+        "bookId": 12,
+        "bookTitle": "שערי דמעה 1",
+        "chapterId": 12,
+        "chapterTitle": "על קן ציפור יגיעו רחמיך",
+        "readingMinutes": 157,
+        "sharedTopics": [
+          "תשובה",
+          "רש\"י",
+          "קדושה"
+        ]
+      },
+      {
+        "bookId": 17,
+        "bookTitle": "סוד העברי 1",
+        "chapterId": 5,
+        "chapterTitle": "שער רביעי - שושלת שת",
+        "readingMinutes": 114,
+        "sharedTopics": [
+          "רש\"י",
+          "קדושה",
+          "מוסר"
         ]
       }
     ],
@@ -195,33 +195,21 @@
         "chapterTitle": "ה' קנני ראשית דרכו",
         "readingMinutes": 161,
         "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "תשובה"
+          "תשובה",
+          "שבת",
+          "מדרש"
         ]
       },
       {
-        "bookId": 6,
-        "bookTitle": "סוד מדרש התולדות 4",
-        "chapterId": 5,
-        "chapterTitle": "תיקון העולמות",
-        "readingMinutes": 104,
+        "bookId": 24,
+        "bookTitle": "קול המועד",
+        "chapterId": 23,
+        "chapterTitle": "הערות והרחבות",
+        "readingMinutes": 345,
         "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "תשובה"
-        ]
-      },
-      {
-        "bookId": 8,
-        "bookTitle": "סוד מדרש התולדות 6",
-        "chapterId": 9,
-        "chapterTitle": "תפילות אבות תקנום",
-        "readingMinutes": 125,
-        "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "תשובה"
+          "תשובה",
+          "שבת",
+          "מדרש"
         ]
       },
       {
@@ -231,9 +219,21 @@
         "chapterTitle": "סיבת הגלות",
         "readingMinutes": 115,
         "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "תשובה"
+          "תשובה",
+          "שבת",
+          "מדרש"
+        ]
+      },
+      {
+        "bookId": 8,
+        "bookTitle": "סוד מדרש התולדות 6",
+        "chapterId": 9,
+        "chapterTitle": "תפילות אבות תקנום",
+        "readingMinutes": 125,
+        "sharedTopics": [
+          "תשובה",
+          "שבת",
+          "מדרש"
         ]
       }
     ],
@@ -249,15 +249,27 @@
     "readingMinutes": 87,
     "relatedChapters": [
       {
+        "bookId": 24,
+        "bookTitle": "קול המועד",
+        "chapterId": 23,
+        "chapterTitle": "הערות והרחבות",
+        "readingMinutes": 345,
+        "sharedTopics": [
+          "תשובה",
+          "תולדות",
+          "רש\"י"
+        ]
+      },
+      {
         "bookId": 9,
         "bookTitle": "סוד מדרש התולדות 7",
         "chapterId": 2,
         "chapterTitle": "יציאה לקראת העתיד",
         "readingMinutes": 143,
         "sharedTopics": [
+          "תשובה",
           "תולדות",
-          "מדרש",
-          "תשובה"
+          "רש\"י"
         ]
       },
       {
@@ -267,33 +279,21 @@
         "chapterTitle": "ה' קנני ראשית דרכו",
         "readingMinutes": 161,
         "sharedTopics": [
+          "תשובה",
           "תולדות",
-          "מדרש",
-          "תשובה"
+          "רש\"י"
         ]
       },
       {
-        "bookId": 9,
-        "bookTitle": "סוד מדרש התולדות 7",
-        "chapterId": 3,
-        "chapterTitle": "סולם יעקב",
-        "readingMinutes": 77,
+        "bookId": 12,
+        "bookTitle": "שערי דמעה 1",
+        "chapterId": 12,
+        "chapterTitle": "על קן ציפור יגיעו רחמיך",
+        "readingMinutes": 157,
         "sharedTopics": [
+          "תשובה",
           "תולדות",
-          "מדרש",
-          "תשובה"
-        ]
-      },
-      {
-        "bookId": 4,
-        "bookTitle": "סוד מדרש התולדות 2",
-        "chapterId": 6,
-        "chapterTitle": "ירידה לצורך עלייה",
-        "readingMinutes": 114,
-        "sharedTopics": [
-          "תולדות",
-          "מדרש",
-          "תשובה"
+          "רש\"י"
         ]
       }
     ],
@@ -309,51 +309,51 @@
     "readingMinutes": 85,
     "relatedChapters": [
       {
-        "bookId": 9,
-        "bookTitle": "סוד מדרש התולדות 7",
-        "chapterId": 2,
-        "chapterTitle": "יציאה לקראת העתיד",
-        "readingMinutes": 143,
-        "sharedTopics": [
-          "תולדות",
-          "מדרש",
-          "תשובה"
-        ]
-      },
-      {
-        "bookId": 6,
-        "bookTitle": "סוד מדרש התולדות 4",
+        "bookId": 17,
+        "bookTitle": "סוד העברי 1",
         "chapterId": 3,
-        "chapterTitle": "הביאו עלי כפרה על שמיעטתי את הירח",
-        "readingMinutes": 129,
+        "chapterTitle": "שער ראשון - הבריאה",
+        "readingMinutes": 173,
         "sharedTopics": [
+          "תשובה",
           "תולדות",
-          "מדרש",
-          "תשובה"
+          "שבת"
         ]
       },
       {
-        "bookId": 11,
-        "bookTitle": "סוד מדרש התולדות 9",
-        "chapterId": 1,
-        "chapterTitle": "ה' קנני ראשית דרכו",
-        "readingMinutes": 161,
+        "bookId": 17,
+        "bookTitle": "סוד העברי 1",
+        "chapterId": 4,
+        "chapterTitle": "שער שני - השושלות",
+        "readingMinutes": 119,
         "sharedTopics": [
+          "תשובה",
           "תולדות",
-          "מדרש",
-          "תשובה"
+          "קין"
         ]
       },
       {
-        "bookId": 6,
-        "bookTitle": "סוד מדרש התולדות 4",
-        "chapterId": 5,
-        "chapterTitle": "תיקון העולמות",
-        "readingMinutes": 104,
+        "bookId": 18,
+        "bookTitle": "סוד העברי 2",
+        "chapterId": 4,
+        "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
+        "readingMinutes": 200,
         "sharedTopics": [
-          "מדרש",
           "תולדות",
-          "תשובה"
+          "קין",
+          "מדרש"
+        ]
+      },
+      {
+        "bookId": 18,
+        "bookTitle": "סוד העברי 2",
+        "chapterId": 2,
+        "chapterTitle": "שער ראשון - שת עד נח",
+        "readingMinutes": 166,
+        "sharedTopics": [
+          "תשובה",
+          "תולדות",
+          "קין"
         ]
       }
     ],
@@ -369,39 +369,15 @@
     "readingMinutes": 52,
     "relatedChapters": [
       {
-        "bookId": 9,
-        "bookTitle": "סוד מדרש התולדות 7",
-        "chapterId": 2,
-        "chapterTitle": "יציאה לקראת העתיד",
-        "readingMinutes": 143,
+        "bookId": 17,
+        "bookTitle": "סוד העברי 1",
+        "chapterId": 3,
+        "chapterTitle": "שער ראשון - הבריאה",
+        "readingMinutes": 173,
         "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "תשובה"
-        ]
-      },
-      {
-        "bookId": 8,
-        "bookTitle": "סוד מדרש התולדות 6",
-        "chapterId": 1,
-        "chapterTitle": "העצם והנפש",
-        "readingMinutes": 81,
-        "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "תשובה"
-        ]
-      },
-      {
-        "bookId": 25,
-        "bookTitle": "סוד מדרש התולדות 10",
-        "chapterId": 4,
-        "chapterTitle": "מה עיקרי: חטא אדם הראשון או חטאו של קין?",
-        "readingMinutes": 71,
-        "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "תשובה"
+          "תשובה",
+          "קין",
+          "מדרש"
         ]
       },
       {
@@ -411,9 +387,33 @@
         "chapterTitle": "גילוי שם ה'",
         "readingMinutes": 62,
         "sharedTopics": [
+          "תשובה",
+          "קין",
+          "מדרש"
+        ]
+      },
+      {
+        "bookId": 12,
+        "bookTitle": "שערי דמעה 1",
+        "chapterId": 12,
+        "chapterTitle": "על קן ציפור יגיעו רחמיך",
+        "readingMinutes": 157,
+        "sharedTopics": [
+          "תשובה",
+          "קין",
+          "מדרש"
+        ]
+      },
+      {
+        "bookId": 8,
+        "bookTitle": "סוד מדרש התולדות 6",
+        "chapterId": 1,
+        "chapterTitle": "העצם והנפש",
+        "readingMinutes": 81,
+        "sharedTopics": [
+          "תשובה",
           "מדרש",
-          "תולדות",
-          "תשובה"
+          "תורה שבעל פה"
         ]
       }
     ],
@@ -429,27 +429,27 @@
     "readingMinutes": 72,
     "relatedChapters": [
       {
-        "bookId": 9,
-        "bookTitle": "סוד מדרש התולדות 7",
-        "chapterId": 2,
-        "chapterTitle": "יציאה לקראת העתיד",
-        "readingMinutes": 143,
+        "bookId": 17,
+        "bookTitle": "סוד העברי 1",
+        "chapterId": 3,
+        "chapterTitle": "שער ראשון - הבריאה",
+        "readingMinutes": 173,
         "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "עשו"
+          "קין",
+          "אדם הראשון",
+          "קדושה"
         ]
       },
       {
-        "bookId": 6,
-        "bookTitle": "סוד מדרש התולדות 4",
+        "bookId": 17,
+        "bookTitle": "סוד העברי 1",
         "chapterId": 5,
-        "chapterTitle": "תיקון העולמות",
-        "readingMinutes": 104,
+        "chapterTitle": "שער רביעי - שושלת שת",
+        "readingMinutes": 114,
         "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "עשו"
+          "קין",
+          "מוסר",
+          "אדם הראשון"
         ]
       },
       {
@@ -459,21 +459,21 @@
         "chapterTitle": "הערות והרחבות",
         "readingMinutes": 345,
         "sharedTopics": [
-          "תולדות",
-          "עשו",
-          "נח"
+          "מוסר",
+          "אדם הראשון",
+          "קדושה"
         ]
       },
       {
-        "bookId": 6,
-        "bookTitle": "סוד מדרש התולדות 4",
-        "chapterId": 10,
-        "chapterTitle": "לדמותו של תלמיד חכם",
-        "readingMinutes": 144,
+        "bookId": 18,
+        "bookTitle": "סוד העברי 2",
+        "chapterId": 2,
+        "chapterTitle": "שער ראשון - שת עד נח",
+        "readingMinutes": 166,
         "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "קין"
+          "קין",
+          "מוסר",
+          "אדם הראשון"
         ]
       }
     ],
@@ -489,51 +489,51 @@
     "readingMinutes": 52,
     "relatedChapters": [
       {
-        "bookId": 9,
-        "bookTitle": "סוד מדרש התולדות 7",
-        "chapterId": 2,
-        "chapterTitle": "יציאה לקראת העתיד",
-        "readingMinutes": 143,
-        "sharedTopics": [
-          "תולדות",
-          "מדרש",
-          "נח"
-        ]
-      },
-      {
         "bookId": 17,
         "bookTitle": "סוד העברי 1",
         "chapterId": 3,
         "chapterTitle": "שער ראשון - הבריאה",
         "readingMinutes": 173,
         "sharedTopics": [
-          "תולדות",
-          "נח",
-          "מוסר"
+          "מוסר",
+          "הבריאה",
+          "קדושה"
         ]
       },
       {
-        "bookId": 6,
-        "bookTitle": "סוד מדרש התולדות 4",
-        "chapterId": 3,
-        "chapterTitle": "הביאו עלי כפרה על שמיעטתי את הירח",
-        "readingMinutes": 129,
+        "bookId": 17,
+        "bookTitle": "סוד העברי 1",
+        "chapterId": 5,
+        "chapterTitle": "שער רביעי - שושלת שת",
+        "readingMinutes": 114,
         "sharedTopics": [
-          "תולדות",
-          "מדרש",
-          "נח"
+          "מוסר",
+          "קדושה",
+          "תשובה"
         ]
       },
       {
-        "bookId": 25,
-        "bookTitle": "סוד מדרש התולדות 10",
-        "chapterId": 1,
-        "chapterTitle": "הוא היה אומר",
-        "readingMinutes": 71,
+        "bookId": 18,
+        "bookTitle": "סוד העברי 2",
+        "chapterId": 2,
+        "chapterTitle": "שער ראשון - שת עד נח",
+        "readingMinutes": 166,
         "sharedTopics": [
-          "תולדות",
-          "מדרש",
-          "נח"
+          "מוסר",
+          "קדושה",
+          "תשובה"
+        ]
+      },
+      {
+        "bookId": 18,
+        "bookTitle": "סוד העברי 2",
+        "chapterId": 4,
+        "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
+        "readingMinutes": 200,
+        "sharedTopics": [
+          "מוסר",
+          "קדושה",
+          "תשובה"
         ]
       }
     ],
@@ -555,9 +555,9 @@
         "chapterTitle": "יציאה לקראת העתיד",
         "readingMinutes": 143,
         "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "תשובה"
+          "תשובה",
+          "נח",
+          "נבואה"
         ]
       },
       {
@@ -568,32 +568,32 @@
         "readingMinutes": 345,
         "sharedTopics": [
           "תשובה",
-          "תולדות",
-          "שרה"
+          "קדושה",
+          "נח"
         ]
       },
       {
-        "bookId": 11,
-        "bookTitle": "סוד מדרש התולדות 9",
-        "chapterId": 1,
-        "chapterTitle": "ה' קנני ראשית דרכו",
-        "readingMinutes": 161,
+        "bookId": 18,
+        "bookTitle": "סוד העברי 2",
+        "chapterId": 4,
+        "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
+        "readingMinutes": 200,
         "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "תשובה"
+          "קין",
+          "קדושה",
+          "נח"
         ]
       },
       {
-        "bookId": 4,
-        "bookTitle": "סוד מדרש התולדות 2",
-        "chapterId": 5,
-        "chapterTitle": "סיבת הגלות",
-        "readingMinutes": 115,
+        "bookId": 12,
+        "bookTitle": "שערי דמעה 1",
+        "chapterId": 6,
+        "chapterTitle": "מנין לנו הזכות להתפלל?",
+        "readingMinutes": 126,
         "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "תשובה"
+          "תשובה",
+          "קין",
+          "קדושה"
         ]
       }
     ],
@@ -609,30 +609,6 @@
     "readingMinutes": 165,
     "relatedChapters": [
       {
-        "bookId": 11,
-        "bookTitle": "סוד מדרש התולדות 9",
-        "chapterId": 1,
-        "chapterTitle": "ה' קנני ראשית דרכו",
-        "readingMinutes": 161,
-        "sharedTopics": [
-          "תולדות",
-          "מדרש",
-          "תשובה"
-        ]
-      },
-      {
-        "bookId": 9,
-        "bookTitle": "סוד מדרש התולדות 7",
-        "chapterId": 2,
-        "chapterTitle": "יציאה לקראת העתיד",
-        "readingMinutes": 143,
-        "sharedTopics": [
-          "תולדות",
-          "מדרש",
-          "תשובה"
-        ]
-      },
-      {
         "bookId": 24,
         "bookTitle": "קול המועד",
         "chapterId": 23,
@@ -641,7 +617,31 @@
         "sharedTopics": [
           "תשובה",
           "תולדות",
-          "שבת"
+          "קבלה"
+        ]
+      },
+      {
+        "bookId": 11,
+        "bookTitle": "סוד מדרש התולדות 9",
+        "chapterId": 1,
+        "chapterTitle": "ה' קנני ראשית דרכו",
+        "readingMinutes": 161,
+        "sharedTopics": [
+          "תשובה",
+          "תולדות",
+          "קבלה"
+        ]
+      },
+      {
+        "bookId": 17,
+        "bookTitle": "סוד העברי 1",
+        "chapterId": 3,
+        "chapterTitle": "שער ראשון - הבריאה",
+        "readingMinutes": 173,
+        "sharedTopics": [
+          "תשובה",
+          "תולדות",
+          "קבלה"
         ]
       },
       {
@@ -651,9 +651,9 @@
         "chapterTitle": "תיקון העולמות",
         "readingMinutes": 104,
         "sharedTopics": [
+          "תשובה",
           "מדרש",
-          "תולדות",
-          "תשובה"
+          "חכמה"
         ]
       }
     ],
@@ -669,14 +669,24 @@
     "readingMinutes": 7,
     "relatedChapters": [
       {
-        "bookId": 3,
-        "bookTitle": "סוד מדרש התולדות 1",
-        "chapterId": 1,
-        "chapterTitle": "מבוא מאת חיים רוטנברג",
-        "readingMinutes": 17,
+        "bookId": 2,
+        "bookTitle": "מספד למשיח",
+        "chapterId": 2,
+        "chapterTitle": "פרק 1: המספד בירושלים",
+        "readingMinutes": 188,
         "sharedTopics": [
           "תולדות",
-          "מדרש",
+          "שבת"
+        ]
+      },
+      {
+        "bookId": 2,
+        "bookTitle": "מספד למשיח",
+        "chapterId": 3,
+        "chapterTitle": "פרק 2: ויהי באחרית הימים",
+        "readingMinutes": 57,
+        "sharedTopics": [
+          "תולדות",
           "שבת"
         ]
       },
@@ -688,31 +698,17 @@
         "readingMinutes": 47,
         "sharedTopics": [
           "תולדות",
-          "מדרש",
           "שבת"
         ]
       },
       {
-        "bookId": 4,
-        "bookTitle": "סוד מדרש התולדות 2",
-        "chapterId": 1,
-        "chapterTitle": "ברית בין הבתרים",
-        "readingMinutes": 33,
+        "bookId": 3,
+        "bookTitle": "סוד מדרש התולדות 1",
+        "chapterId": 3,
+        "chapterTitle": "אברם הוא אברהם",
+        "readingMinutes": 42,
         "sharedTopics": [
           "תולדות",
-          "מדרש",
-          "שבת"
-        ]
-      },
-      {
-        "bookId": 4,
-        "bookTitle": "סוד מדרש התולדות 2",
-        "chapterId": 2,
-        "chapterTitle": "הן לי לא נתת זרע",
-        "readingMinutes": 34,
-        "sharedTopics": [
-          "תולדות",
-          "מדרש",
           "שבת"
         ]
       }
@@ -729,39 +725,27 @@
     "readingMinutes": 112,
     "relatedChapters": [
       {
-        "bookId": 6,
-        "bookTitle": "סוד מדרש התולדות 4",
-        "chapterId": 5,
-        "chapterTitle": "תיקון העולמות",
-        "readingMinutes": 104,
+        "bookId": 17,
+        "bookTitle": "סוד העברי 1",
+        "chapterId": 3,
+        "chapterTitle": "שער ראשון - הבריאה",
+        "readingMinutes": 173,
         "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "תשובה"
+          "תשובה",
+          "קדושה",
+          "קבלה"
         ]
       },
       {
-        "bookId": 9,
-        "bookTitle": "סוד מדרש התולדות 7",
-        "chapterId": 2,
-        "chapterTitle": "יציאה לקראת העתיד",
-        "readingMinutes": 143,
+        "bookId": 12,
+        "bookTitle": "שערי דמעה 1",
+        "chapterId": 12,
+        "chapterTitle": "על קן ציפור יגיעו רחמיך",
+        "readingMinutes": 157,
         "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "תשובה"
-        ]
-      },
-      {
-        "bookId": 11,
-        "bookTitle": "סוד מדרש התולדות 9",
-        "chapterId": 1,
-        "chapterTitle": "ה' קנני ראשית דרכו",
-        "readingMinutes": 161,
-        "sharedTopics": [
-          "מדרש",
-          "תולדות",
-          "תשובה"
+          "תשובה",
+          "קדושה",
+          "קבלה"
         ]
       },
       {
@@ -772,8 +756,20 @@
         "readingMinutes": 345,
         "sharedTopics": [
           "תשובה",
-          "תולדות",
-          "שבת"
+          "קדושה",
+          "קבלה"
+        ]
+      },
+      {
+        "bookId": 17,
+        "bookTitle": "סוד העברי 1",
+        "chapterId": 5,
+        "chapterTitle": "שער רביעי - שושלת שת",
+        "readingMinutes": 114,
+        "sharedTopics": [
+          "קדושה",
+          "מדרש",
+          "הבל"
         ]
       }
     ],

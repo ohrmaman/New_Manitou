@@ -9,35 +9,35 @@
     "readingMinutes": 55,
     "relatedChapters": [
       {
-        "bookId": 18,
-        "bookTitle": "סוד העברי 2",
-        "chapterId": 4,
-        "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
-        "readingMinutes": 200,
-        "sharedTopics": [
-          "העברי",
-          "גלות",
-          "תולדות"
-        ]
-      },
-      {
-        "bookId": 18,
-        "bookTitle": "סוד העברי 2",
-        "chapterId": 2,
-        "chapterTitle": "שער ראשון - שת עד נח",
-        "readingMinutes": 166,
-        "sharedTopics": [
-          "העברי",
-          "גלות",
-          "תולדות"
-        ]
-      },
-      {
         "bookId": 24,
         "bookTitle": "קול המועד",
         "chapterId": 23,
         "chapterTitle": "הערות והרחבות",
         "readingMinutes": 345,
+        "sharedTopics": [
+          "העברי",
+          "גלות",
+          "תולדות"
+        ]
+      },
+      {
+        "bookId": 9,
+        "bookTitle": "סוד מדרש התולדות 7",
+        "chapterId": 2,
+        "chapterTitle": "יציאה לקראת העתיד",
+        "readingMinutes": 143,
+        "sharedTopics": [
+          "העברי",
+          "גלות",
+          "תולדות"
+        ]
+      },
+      {
+        "bookId": 18,
+        "bookTitle": "סוד העברי 2",
+        "chapterId": 4,
+        "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
+        "readingMinutes": 200,
         "sharedTopics": [
           "העברי",
           "גלות",
@@ -53,7 +53,7 @@
         "sharedTopics": [
           "העברי",
           "גלות",
-          "שבת"
+          "יהודה"
         ]
       }
     ],
@@ -75,9 +75,9 @@
         "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
         "readingMinutes": 200,
         "sharedTopics": [
-          "העברי",
           "קין",
-          "נח"
+          "מדרש",
+          "רש\"י"
         ]
       },
       {
@@ -87,9 +87,9 @@
         "chapterTitle": "שער ראשון - שת עד נח",
         "readingMinutes": 166,
         "sharedTopics": [
-          "העברי",
           "קין",
-          "נח"
+          "מדרש",
+          "הבל"
         ]
       },
       {
@@ -100,8 +100,8 @@
         "readingMinutes": 71,
         "sharedTopics": [
           "קין",
-          "נח",
-          "מדרש"
+          "מדרש",
+          "הבל"
         ]
       },
       {
@@ -112,8 +112,8 @@
         "readingMinutes": 38,
         "sharedTopics": [
           "קין",
-          "נח",
-          "מדרש"
+          "מדרש",
+          "הבל"
         ]
       }
     ],
@@ -135,9 +135,9 @@
         "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
         "readingMinutes": 200,
         "sharedTopics": [
-          "העברי",
           "תולדות",
-          "שבת"
+          "רש\"י",
+          "קין"
         ]
       },
       {
@@ -147,9 +147,9 @@
         "chapterTitle": "שער ראשון - שת עד נח",
         "readingMinutes": 166,
         "sharedTopics": [
-          "העברי",
           "תשובה",
-          "תולדות"
+          "תולדות",
+          "רש\"י"
         ]
       },
       {
@@ -161,19 +161,19 @@
         "sharedTopics": [
           "תשובה",
           "תולדות",
-          "שרה"
+          "שבת"
         ]
       },
       {
-        "bookId": 9,
-        "bookTitle": "סוד מדרש התולדות 7",
-        "chapterId": 2,
-        "chapterTitle": "יציאה לקראת העתיד",
-        "readingMinutes": 143,
+        "bookId": 12,
+        "bookTitle": "שערי דמעה 1",
+        "chapterId": 5,
+        "chapterTitle": "לעבדה ולשמרה",
+        "readingMinutes": 175,
         "sharedTopics": [
           "תשובה",
           "תולדות",
-          "שרה"
+          "שבת"
         ]
       }
     ],
@@ -195,21 +195,21 @@
         "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
         "readingMinutes": 200,
         "sharedTopics": [
-          "העברי",
           "תולדות",
-          "שבת"
+          "רש\"י",
+          "קין"
         ]
       },
       {
         "bookId": 18,
         "bookTitle": "סוד העברי 2",
-        "chapterId": 2,
-        "chapterTitle": "שער ראשון - שת עד נח",
-        "readingMinutes": 166,
+        "chapterId": 3,
+        "chapterTitle": "שער שני - צדיק כנח",
+        "readingMinutes": 190,
         "sharedTopics": [
-          "העברי",
           "תשובה",
-          "תולדות"
+          "תולדות",
+          "רש\"י"
         ]
       },
       {
@@ -221,19 +221,19 @@
         "sharedTopics": [
           "תשובה",
           "תולדות",
-          "שבת"
+          "רש\"י"
         ]
       },
       {
-        "bookId": 11,
-        "bookTitle": "סוד מדרש התולדות 9",
+        "bookId": 9,
+        "bookTitle": "סוד מדרש התולדות 7",
         "chapterId": 2,
-        "chapterTitle": "מבוא לתורת התולדות - מאת חיים רוטנברג",
-        "readingMinutes": 134,
+        "chapterTitle": "יציאה לקראת העתיד",
+        "readingMinutes": 143,
         "sharedTopics": [
+          "תשובה",
           "תולדות",
-          "שבת",
-          "עשו"
+          "רש\"י"
         ]
       }
     ],
@@ -251,25 +251,25 @@
       {
         "bookId": 18,
         "bookTitle": "סוד העברי 2",
-        "chapterId": 4,
-        "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
-        "readingMinutes": 200,
+        "chapterId": 2,
+        "chapterTitle": "שער ראשון - שת עד נח",
+        "readingMinutes": 166,
         "sharedTopics": [
-          "העברי",
           "תולדות",
-          "שבת"
+          "רש\"י",
+          "קין"
         ]
       },
       {
         "bookId": 18,
         "bookTitle": "סוד העברי 2",
-        "chapterId": 2,
-        "chapterTitle": "שער ראשון - שת עד נח",
-        "readingMinutes": 166,
+        "chapterId": 4,
+        "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
+        "readingMinutes": 200,
         "sharedTopics": [
-          "העברי",
           "תולדות",
-          "רש\"י"
+          "רש\"י",
+          "קין"
         ]
       },
       {
@@ -280,8 +280,8 @@
         "readingMinutes": 345,
         "sharedTopics": [
           "תולדות",
-          "שבת",
-          "רש\"י"
+          "רש\"י",
+          "קדושה"
         ]
       },
       {
@@ -292,8 +292,8 @@
         "readingMinutes": 143,
         "sharedTopics": [
           "תולדות",
-          "קדושה",
-          "עשו"
+          "רש\"י",
+          "נח"
         ]
       }
     ],
@@ -309,14 +309,38 @@
     "readingMinutes": 30,
     "relatedChapters": [
       {
-        "bookId": 18,
-        "bookTitle": "סוד העברי 2",
-        "chapterId": 2,
-        "chapterTitle": "שער ראשון - שת עד נח",
-        "readingMinutes": 166,
+        "bookId": 24,
+        "bookTitle": "קול המועד",
+        "chapterId": 23,
+        "chapterTitle": "הערות והרחבות",
+        "readingMinutes": 345,
         "sharedTopics": [
-          "העברי",
-          "נח",
+          "קבלה",
+          "אדם הראשון",
+          "אברהם"
+        ]
+      },
+      {
+        "bookId": 6,
+        "bookTitle": "סוד מדרש התולדות 4",
+        "chapterId": 5,
+        "chapterTitle": "תיקון העולמות",
+        "readingMinutes": 104,
+        "sharedTopics": [
+          "אדם הראשון",
+          "קבלה",
+          "אברהם"
+        ]
+      },
+      {
+        "bookId": 11,
+        "bookTitle": "סוד מדרש התולדות 9",
+        "chapterId": 2,
+        "chapterTitle": "מבוא לתורת התולדות - מאת חיים רוטנברג",
+        "readingMinutes": 134,
+        "sharedTopics": [
+          "קבלה",
+          "אברהם",
           "אדם הראשון"
         ]
       },
@@ -327,33 +351,9 @@
         "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
         "readingMinutes": 200,
         "sharedTopics": [
-          "העברי",
           "קבלה",
-          "נח"
-        ]
-      },
-      {
-        "bookId": 24,
-        "bookTitle": "קול המועד",
-        "chapterId": 23,
-        "chapterTitle": "הערות והרחבות",
-        "readingMinutes": 345,
-        "sharedTopics": [
-          "קבלה",
-          "נח",
-          "העברי"
-        ]
-      },
-      {
-        "bookId": 6,
-        "bookTitle": "סוד מדרש התולדות 4",
-        "chapterId": 5,
-        "chapterTitle": "תיקון העולמות",
-        "readingMinutes": 104,
-        "sharedTopics": [
-          "נח",
-          "העברי",
-          "אדם הראשון"
+          "אדם הראשון",
+          "אברהם"
         ]
       }
     ],

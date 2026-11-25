@@ -9,17 +9,6 @@
     "readingMinutes": 1,
     "relatedChapters": [
       {
-        "bookId": 19,
-        "bookTitle": "כי מציון (FR)",
-        "chapterId": 2,
-        "chapterTitle": "על המועדים (צרפתית)",
-        "readingMinutes": 1,
-        "sharedTopics": [
-          "צרפתית",
-          "מציון"
-        ]
-      },
-      {
         "bookId": 22,
         "bookTitle": "מעיינות (FR)",
         "chapterId": 1,
@@ -34,6 +23,16 @@
         "bookTitle": "מעיינות (FR)",
         "chapterId": 2,
         "chapterTitle": "חוברת 3 (צרפתית)",
+        "readingMinutes": 1,
+        "sharedTopics": [
+          "צרפתית"
+        ]
+      },
+      {
+        "bookId": 19,
+        "bookTitle": "כי מציון (FR)",
+        "chapterId": 2,
+        "chapterTitle": "על המועדים (צרפתית)",
         "readingMinutes": 1,
         "sharedTopics": [
           "צרפתית"
@@ -52,17 +51,6 @@
     "readingMinutes": 1,
     "relatedChapters": [
       {
-        "bookId": 19,
-        "bookTitle": "כי מציון (FR)",
-        "chapterId": 1,
-        "chapterTitle": "על פרשות השבוע (צרפתית)",
-        "readingMinutes": 1,
-        "sharedTopics": [
-          "צרפתית",
-          "מציון"
-        ]
-      },
-      {
         "bookId": 22,
         "bookTitle": "מעיינות (FR)",
         "chapterId": 1,
@@ -77,6 +65,16 @@
         "bookTitle": "מעיינות (FR)",
         "chapterId": 2,
         "chapterTitle": "חוברת 3 (צרפתית)",
+        "readingMinutes": 1,
+        "sharedTopics": [
+          "צרפתית"
+        ]
+      },
+      {
+        "bookId": 19,
+        "bookTitle": "כי מציון (FR)",
+        "chapterId": 1,
+        "chapterTitle": "על פרשות השבוע (צרפתית)",
         "readingMinutes": 1,
         "sharedTopics": [
           "צרפתית"

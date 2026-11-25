@@ -33,27 +33,27 @@
         ]
       },
       {
-        "bookId": 2,
-        "bookTitle": "מספד למשיח",
+        "bookId": 9,
+        "bookTitle": "סוד מדרש התולדות 7",
         "chapterId": 2,
-        "chapterTitle": "פרק 1: המספד בירושלים",
-        "readingMinutes": 188,
+        "chapterTitle": "יציאה לקראת העתיד",
+        "readingMinutes": 143,
         "sharedTopics": [
           "תשובה",
-          "שבת",
+          "תולדות",
           "רש\"י"
         ]
       },
       {
-        "bookId": 18,
-        "bookTitle": "סוד העברי 2",
-        "chapterId": 4,
-        "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
-        "readingMinutes": 200,
+        "bookId": 4,
+        "bookTitle": "סוד מדרש התולדות 2",
+        "chapterId": 6,
+        "chapterTitle": "ירידה לצורך עלייה",
+        "readingMinutes": 114,
         "sharedTopics": [
+          "תשובה",
           "תולדות",
-          "שבת",
-          "רש\"י"
+          "עשו"
         ]
       }
     ],
@@ -69,18 +69,6 @@
     "readingMinutes": 62,
     "relatedChapters": [
       {
-        "bookId": 24,
-        "bookTitle": "קול המועד",
-        "chapterId": 23,
-        "chapterTitle": "הערות והרחבות",
-        "readingMinutes": 345,
-        "sharedTopics": [
-          "תולדות",
-          "שבת",
-          "קבלה"
-        ]
-      },
-      {
         "bookId": 11,
         "bookTitle": "סוד מדרש התולדות 9",
         "chapterId": 1,
@@ -93,11 +81,11 @@
         ]
       },
       {
-        "bookId": 17,
-        "bookTitle": "סוד העברי 1",
-        "chapterId": 3,
-        "chapterTitle": "שער ראשון - הבריאה",
-        "readingMinutes": 173,
+        "bookId": 24,
+        "bookTitle": "קול המועד",
+        "chapterId": 23,
+        "chapterTitle": "הערות והרחבות",
+        "readingMinutes": 345,
         "sharedTopics": [
           "תולדות",
           "שבת",
@@ -105,15 +93,27 @@
         ]
       },
       {
-        "bookId": 18,
-        "bookTitle": "סוד העברי 2",
-        "chapterId": 4,
-        "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
-        "readingMinutes": 200,
+        "bookId": 8,
+        "bookTitle": "סוד מדרש התולדות 6",
+        "chapterId": 9,
+        "chapterTitle": "תפילות אבות תקנום",
+        "readingMinutes": 125,
         "sharedTopics": [
           "תולדות",
           "שבת",
           "קבלה"
+        ]
+      },
+      {
+        "bookId": 12,
+        "bookTitle": "שערי דמעה 1",
+        "chapterId": 4,
+        "chapterTitle": "תפילות אבות תקנום",
+        "readingMinutes": 101,
+        "sharedTopics": [
+          "תולדות",
+          "קבלה",
+          "מדרש"
         ]
       }
     ],
@@ -129,18 +129,6 @@
     "readingMinutes": 47,
     "relatedChapters": [
       {
-        "bookId": 24,
-        "bookTitle": "קול המועד",
-        "chapterId": 23,
-        "chapterTitle": "הערות והרחבות",
-        "readingMinutes": 345,
-        "sharedTopics": [
-          "תשובה",
-          "נח",
-          "מוסר"
-        ]
-      },
-      {
         "bookId": 18,
         "bookTitle": "סוד העברי 2",
         "chapterId": 3,
@@ -148,8 +136,8 @@
         "readingMinutes": 190,
         "sharedTopics": [
           "תשובה",
-          "נח",
-          "מוסר"
+          "מדרש",
+          "צדיק"
         ]
       },
       {
@@ -160,20 +148,32 @@
         "readingMinutes": 161,
         "sharedTopics": [
           "תשובה",
-          "נח",
-          "מוסר"
+          "מדרש",
+          "תולדות"
         ]
       },
       {
-        "bookId": 17,
-        "bookTitle": "סוד העברי 1",
-        "chapterId": 3,
-        "chapterTitle": "שער ראשון - הבריאה",
-        "readingMinutes": 173,
+        "bookId": 12,
+        "bookTitle": "שערי דמעה 1",
+        "chapterId": 5,
+        "chapterTitle": "לעבדה ולשמרה",
+        "readingMinutes": 175,
         "sharedTopics": [
           "תשובה",
-          "נח",
-          "מוסר"
+          "מדרש",
+          "תולדות"
+        ]
+      },
+      {
+        "bookId": 12,
+        "bookTitle": "שערי דמעה 1",
+        "chapterId": 12,
+        "chapterTitle": "על קן ציפור יגיעו רחמיך",
+        "readingMinutes": 157,
+        "sharedTopics": [
+          "תשובה",
+          "מדרש",
+          "תולדות"
         ]
       }
     ],
@@ -201,11 +201,11 @@
         ]
       },
       {
-        "bookId": 18,
-        "bookTitle": "סוד העברי 2",
-        "chapterId": 4,
-        "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
-        "readingMinutes": 200,
+        "bookId": 9,
+        "bookTitle": "סוד מדרש התולדות 7",
+        "chapterId": 2,
+        "chapterTitle": "יציאה לקראת העתיד",
+        "readingMinutes": 143,
         "sharedTopics": [
           "תולדות",
           "רש\"י",
@@ -221,19 +221,19 @@
         "sharedTopics": [
           "רש\"י",
           "עשו",
-          "נח"
+          "מדרש"
         ]
       },
       {
-        "bookId": 9,
-        "bookTitle": "סוד מדרש התולדות 7",
-        "chapterId": 2,
-        "chapterTitle": "יציאה לקראת העתיד",
-        "readingMinutes": 143,
+        "bookId": 8,
+        "bookTitle": "סוד מדרש התולדות 6",
+        "chapterId": 7,
+        "chapterTitle": "הברכות",
+        "readingMinutes": 91,
         "sharedTopics": [
           "תולדות",
-          "עשו",
-          "נח"
+          "רש\"י",
+          "עשו"
         ]
       }
     ],
@@ -261,11 +261,23 @@
         ]
       },
       {
-        "bookId": 18,
-        "bookTitle": "סוד העברי 2",
-        "chapterId": 4,
-        "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
-        "readingMinutes": 200,
+        "bookId": 12,
+        "bookTitle": "שערי דמעה 1",
+        "chapterId": 5,
+        "chapterTitle": "לעבדה ולשמרה",
+        "readingMinutes": 175,
+        "sharedTopics": [
+          "שבת",
+          "קדושה",
+          "קבלה"
+        ]
+      },
+      {
+        "bookId": 17,
+        "bookTitle": "סוד העברי 1",
+        "chapterId": 3,
+        "chapterTitle": "שער ראשון - הבריאה",
+        "readingMinutes": 173,
         "sharedTopics": [
           "שבת",
           "קדושה",
@@ -281,19 +293,7 @@
         "sharedTopics": [
           "שבת",
           "קבלה",
-          "נח"
-        ]
-      },
-      {
-        "bookId": 17,
-        "bookTitle": "סוד העברי 1",
-        "chapterId": 3,
-        "chapterTitle": "שער ראשון - הבריאה",
-        "readingMinutes": 173,
-        "sharedTopics": [
-          "שבת",
-          "קדושה",
-          "קבלה"
+          "חכמה"
         ]
       }
     ],
@@ -309,18 +309,6 @@
     "readingMinutes": 36,
     "relatedChapters": [
       {
-        "bookId": 24,
-        "bookTitle": "קול המועד",
-        "chapterId": 23,
-        "chapterTitle": "הערות והרחבות",
-        "readingMinutes": 345,
-        "sharedTopics": [
-          "שבת",
-          "נח",
-          "חכמה"
-        ]
-      },
-      {
         "bookId": 11,
         "bookTitle": "סוד מדרש התולדות 9",
         "chapterId": 1,
@@ -329,31 +317,43 @@
         "sharedTopics": [
           "שבת",
           "סיני",
-          "נח"
+          "חכמה"
         ]
       },
       {
-        "bookId": 18,
-        "bookTitle": "סוד העברי 2",
-        "chapterId": 4,
-        "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
-        "readingMinutes": 200,
+        "bookId": 24,
+        "bookTitle": "קול המועד",
+        "chapterId": 23,
+        "chapterTitle": "הערות והרחבות",
+        "readingMinutes": 345,
         "sharedTopics": [
           "שבת",
-          "סיני",
-          "נח"
+          "חכמה",
+          "גלות"
+        ]
+      },
+      {
+        "bookId": 4,
+        "bookTitle": "סוד מדרש התולדות 2",
+        "chapterId": 6,
+        "chapterTitle": "ירידה לצורך עלייה",
+        "readingMinutes": 114,
+        "sharedTopics": [
+          "חכמה",
+          "גלות",
+          "גאולה"
         ]
       },
       {
         "bookId": 12,
         "bookTitle": "שערי דמעה 1",
-        "chapterId": 4,
-        "chapterTitle": "תפילות אבות תקנום",
-        "readingMinutes": 101,
+        "chapterId": 12,
+        "chapterTitle": "על קן ציפור יגיעו רחמיך",
+        "readingMinutes": 157,
         "sharedTopics": [
-          "שבת",
-          "נח",
-          "חכמה"
+          "סיני",
+          "חכמה",
+          "גלות"
         ]
       }
     ],
@@ -375,33 +375,9 @@
         "chapterTitle": "הערות והרחבות",
         "readingMinutes": 345,
         "sharedTopics": [
-          "יונה",
-          "נח",
-          "לשון הקודש"
-        ]
-      },
-      {
-        "bookId": 11,
-        "bookTitle": "סוד מדרש התולדות 9",
-        "chapterId": 1,
-        "chapterTitle": "ה' קנני ראשית דרכו",
-        "readingMinutes": 161,
-        "sharedTopics": [
-          "לשון הקודש",
-          "נח",
-          "מדרש"
-        ]
-      },
-      {
-        "bookId": 18,
-        "bookTitle": "סוד העברי 2",
-        "chapterId": 4,
-        "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
-        "readingMinutes": 200,
-        "sharedTopics": [
-          "לשון הקודש",
-          "נח",
-          "מדרש"
+          "מדרש",
+          "אדם הראשון",
+          "חכמה"
         ]
       },
       {
@@ -411,9 +387,33 @@
         "chapterTitle": "לעבדה ולשמרה",
         "readingMinutes": 175,
         "sharedTopics": [
-          "נח",
           "מדרש",
+          "אדם הראשון",
+          "חכמה"
+        ]
+      },
+      {
+        "bookId": 11,
+        "bookTitle": "סוד מדרש התולדות 9",
+        "chapterId": 1,
+        "chapterTitle": "ה' קנני ראשית דרכו",
+        "readingMinutes": 161,
+        "sharedTopics": [
+          "מדרש",
+          "חכמה",
           "אדם הראשון"
+        ]
+      },
+      {
+        "bookId": 18,
+        "bookTitle": "סוד העברי 2",
+        "chapterId": 4,
+        "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
+        "readingMinutes": 200,
+        "sharedTopics": [
+          "מדרש",
+          "אדם הראשון",
+          "תולדות"
         ]
       }
     ],
@@ -449,7 +449,19 @@
         "sharedTopics": [
           "תולדות",
           "שבת",
-          "קבלה"
+          "רש\"י"
+        ]
+      },
+      {
+        "bookId": 4,
+        "bookTitle": "סוד מדרש התולדות 2",
+        "chapterId": 6,
+        "chapterTitle": "ירידה לצורך עלייה",
+        "readingMinutes": 114,
+        "sharedTopics": [
+          "תולדות",
+          "מדרש",
+          "יצחק"
         ]
       },
       {
@@ -460,20 +472,8 @@
         "readingMinutes": 143,
         "sharedTopics": [
           "תולדות",
-          "נח",
-          "מוסר"
-        ]
-      },
-      {
-        "bookId": 18,
-        "bookTitle": "סוד העברי 2",
-        "chapterId": 4,
-        "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
-        "readingMinutes": 200,
-        "sharedTopics": [
-          "תולדות",
-          "שבת",
-          "רש\"י"
+          "רש\"י",
+          "מדרש"
         ]
       }
     ],
@@ -489,39 +489,39 @@
     "readingMinutes": 43,
     "relatedChapters": [
       {
-        "bookId": 24,
-        "bookTitle": "קול המועד",
-        "chapterId": 23,
-        "chapterTitle": "הערות והרחבות",
-        "readingMinutes": 345,
-        "sharedTopics": [
-          "נח",
-          "נבואה",
-          "יוסף"
-        ]
-      },
-      {
         "bookId": 11,
         "bookTitle": "סוד מדרש התולדות 9",
         "chapterId": 1,
         "chapterTitle": "ה' קנני ראשית דרכו",
         "readingMinutes": 161,
         "sharedTopics": [
-          "נח",
           "נבואה",
-          "לשון הקודש"
+          "יוסף",
+          "חכמה"
         ]
       },
       {
-        "bookId": 9,
-        "bookTitle": "סוד מדרש התולדות 7",
-        "chapterId": 2,
-        "chapterTitle": "יציאה לקראת העתיד",
-        "readingMinutes": 143,
+        "bookId": 24,
+        "bookTitle": "קול המועד",
+        "chapterId": 23,
+        "chapterTitle": "הערות והרחבות",
+        "readingMinutes": 345,
         "sharedTopics": [
-          "נח",
           "נבואה",
-          "יוסף"
+          "יוסף",
+          "חכמה"
+        ]
+      },
+      {
+        "bookId": 4,
+        "bookTitle": "סוד מדרש התולדות 2",
+        "chapterId": 6,
+        "chapterTitle": "ירידה לצורך עלייה",
+        "readingMinutes": 114,
+        "sharedTopics": [
+          "נבואה",
+          "יוסף",
+          "חכמה"
         ]
       },
       {
@@ -531,9 +531,9 @@
         "chapterTitle": "לשון הקודש",
         "readingMinutes": 51,
         "sharedTopics": [
-          "לשון הקודש",
-          "נח",
-          "נבואה"
+          "נבואה",
+          "חכמה",
+          "אברהם"
         ]
       }
     ],
@@ -556,20 +556,8 @@
         "readingMinutes": 345,
         "sharedTopics": [
           "תולדות",
-          "שבת",
-          "קבלה"
-        ]
-      },
-      {
-        "bookId": 2,
-        "bookTitle": "מספד למשיח",
-        "chapterId": 2,
-        "chapterTitle": "פרק 1: המספד בירושלים",
-        "readingMinutes": 188,
-        "sharedTopics": [
-          "שבת",
-          "עשו",
-          "נח"
+          "קבלה",
+          "נבואה"
         ]
       },
       {
@@ -580,8 +568,20 @@
         "readingMinutes": 143,
         "sharedTopics": [
           "תולדות",
-          "עשו",
-          "נח"
+          "נבואה",
+          "מדרש"
+        ]
+      },
+      {
+        "bookId": 2,
+        "bookTitle": "מספד למשיח",
+        "chapterId": 2,
+        "chapterTitle": "פרק 1: המספד בירושלים",
+        "readingMinutes": 188,
+        "sharedTopics": [
+          "נבואה",
+          "מדרש",
+          "יוסף"
         ]
       },
       {
@@ -592,8 +592,8 @@
         "readingMinutes": 200,
         "sharedTopics": [
           "תולדות",
-          "שבת",
-          "קבלה"
+          "קבלה",
+          "מדרש"
         ]
       }
     ],

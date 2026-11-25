@@ -52,6 +52,7 @@ function initApp() {
         const inlineBmBtn = document.getElementById('inlineBookmarkBtn');
         if (readerBmBtn) {
             readerBmBtn.classList.toggle('is-active', isBm);
+            readerBmBtn.setAttribute('data-tooltip', isBm ? 'הסר סימנייה' : 'שמור סימנייה');
             if (readerBmText) readerBmText.textContent = isBm ? 'שמור בסימניות ✓' : 'סימנייה';
         }
         if (inlineBmBtn) {
@@ -649,7 +650,7 @@ function initApp() {
                 }
                 return;
             }
-            window.location.hash = `#/book/${book.id}`;
+            window.location.hash = `#/reader/${book.id}`;
         });
         return bookEl;
     }
@@ -788,68 +789,11 @@ function initApp() {
         });
     }
 
-    // Open Modal
+    // Direct Reader Launcher (legacy openModal eliminated — clicking any book opens Reader directly!)
     function openModal(book) {
-        const bgStyle = book.imgUrl ? `style="background-image: url('${book.imgUrl}'); background-size: cover; background-position: center;"` : "";
-        const overlayContent = book.imgUrl ? '' : `
-            <div class="book-title-overlay" style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%;">
-                <h3 style="font-size: 2.5rem;">${book.title}</h3>
-                <div class="gold-line"></div>
-            </div>
-        `;
-
-        const { readCount, total, percent } = getBookProgress(book.id, book.chaptersCount || 0);
-
-        modalBody.innerHTML = `
-            <div class="modal-cover ${book.design}" ${bgStyle}>
-                <div class="book-spine-effect"></div>
-                ${overlayContent}
-            </div>
-            <div class="modal-info">
-                <div class="modal-category">${book.categoryLabel}${total > 0 ? ` • ${total} פרקים` : ''}</div>
-                <h2 class="modal-title">${book.title}</h2>
-                <p class="modal-desc">${book.description}</p>
-                
-                <div style="margin-bottom: 1.8rem;">
-                    <h4 style="color: var(--text-main); margin-bottom: 0.5rem; font-family: var(--font-sans);">פרטי הספר והתקדמות</h4>
-                    <ul style="color: var(--text-muted); list-style-position: inside; font-size: 0.95rem;">
-                        <li>מקור: ארכיון מכון מניטו</li>
-                        ${total > 0 ? `<li>מספר פרקים בספר: <strong>${total} פרקים</strong></li>` : ''}
-                        ${total > 0 ? `<li>התקדמות קריאה: <strong>${readCount} מתוך ${total} פרקים (${percent}%)</strong></li>` : ''}
-                    </ul>
-                </div>
-
-                <div class="modal-actions" style="flex-wrap: wrap;">
-                    <button class="btn btn-primary" id="openReaderBtn">${readCount > 0 ? 'המשך קריאה בספר' : 'קרא באתר המקומי (מצב קריאה)'}</button>
-                    <a href="${book.link}" target="_blank" class="btn btn-secondary" style="text-decoration: none; display: inline-block;">המשך לספר באתר המקורי</a>
-                </div>
-            </div>
-        `;
-        
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent scrolling
-
-        // Add event listener for the new Read Locally button
-        setTimeout(() => {
-            const openReaderBtn = document.getElementById('openReaderBtn');
-            if (openReaderBtn) {
-                openReaderBtn.addEventListener('click', () => {
-                    window.location.hash = `#/reader/${book.id}`;
-                });
-            }
-        }, 100);
+        if (!book) return;
+        window.location.hash = `#/reader/${book.id}`;
     }
-
-    // Close Modal
-    closeModal.addEventListener('click', () => {
-        window.location.hash = '#/';
-    });
-
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            window.location.hash = '#/';
-        }
-    });
 
     // Reader Mode Logic
     const readerMode = document.getElementById('readerMode');
@@ -871,9 +815,34 @@ function initApp() {
         // Reset sidebar filter search
         const sidebarSearch = document.getElementById('sidebarChapterSearch');
         if (sidebarSearch) sidebarSearch.value = '';
+
+        // Carry over active search bar query when entering a book/chapter from homepage or global search
+        const inChapBarEl = document.getElementById('inChapterSearchBar');
+        const inChapInputEl = document.getElementById('inChapterSearchInput');
+        const homeSearchVal = (advSearchInput && advSearchInput.value) ? advSearchInput.value.trim() : '';
+        const incomingQuery = (window.tempSearchQuery || '').trim() || homeSearchVal;
+        if (inChapBarEl && inChapInputEl && incomingQuery) {
+            const cleanIncoming = incomingQuery.replace(/^"|"$/g, '').trim();
+            if (cleanIncoming) {
+                inChapBarEl.style.display = 'flex';
+                inChapInputEl.value = cleanIncoming;
+            }
+        }
         
         activeBook = book;
         readerBookTitle.textContent = book.title;
+
+        // Update Original Site Link at the bottom of the Reader chapters sidebar
+        const sidebarOrigFooter = document.getElementById('sidebarOriginalSiteFooter');
+        const sidebarOrigLink = document.getElementById('sidebarOriginalSiteLink');
+        if (sidebarOrigFooter && sidebarOrigLink) {
+            if (book && book.link) {
+                sidebarOrigLink.href = book.link;
+                sidebarOrigFooter.style.display = 'block';
+            } else {
+                sidebarOrigFooter.style.display = 'none';
+            }
+        }
         chaptersList.innerHTML = '<li style="text-align:center; padding: 1rem;"><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text short"></div></li>';
         textContent.innerHTML = `
             <div class="skeleton skeleton-title"></div>
@@ -952,6 +921,13 @@ function initApp() {
                 if (targetChapterId) {
                     const found = chapters.find(c => Number(c.id) === Number(targetChapterId));
                     if (found) targetChap = found;
+                } else {
+                    // Automatically resume the last-read chapter in this book if one exists in reading history
+                    const lastInThisBook = (readingHistory || []).find(h => Number(h.bookId) === Number(book.id));
+                    if (lastInThisBook && lastInThisBook.chapterId) {
+                        const resumed = chapters.find(c => Number(c.id) === Number(lastInThisBook.chapterId));
+                        if (resumed) targetChap = resumed;
+                    }
                 }
                 try {
                     loadChapter(targetChap, book);
@@ -1696,6 +1672,13 @@ function initApp() {
         }
         Array.from(tempDiv.childNodes).forEach(processSmartSources);
 
+        // Decorate footnotes section at the bottom of the chapter with smart clickable internal & external hyperlinks!
+        tempDiv.querySelectorAll('.chapter-footnotes-section, .footnotes').forEach(fnRoot => {
+            if (typeof decorateFootnoteDomElement === 'function') {
+                decorateFootnoteDomElement(fnRoot);
+            }
+        });
+
         // --- Decorate Saved Highlights for this Chapter ---
         const chapterHighlights = savedHighlights.filter(hl =>
             (hl.bookId && String(hl.bookId) === String(book.id) && hl.chapterId && String(hl.chapterId) === String(chapter.id)) ||
@@ -1978,12 +1961,19 @@ function initApp() {
             });
         }
         
-        // Restore scroll position or jump to target paragraph (?p=X)
+        // If the in-chapter search bar is open with a query, automatically execute search on the newly loaded chapter!
+        const inChapBarActive = inChapterSearchBar && inChapterSearchBar.style.display !== 'none';
+        const activeChapterQuery = (inChapBarActive && inChapterSearchInput) ? inChapterSearchInput.value.trim() : '';
+
+        // Restore scroll position, jump to target paragraph (?p=X), or run active search on chapter change
         const savedScroll = localStorage.getItem(`scroll_${book.id}_${chapter.id}`);
         const readerContentArea = textContent.parentElement;
         if (window.pendingParagraphScroll) {
             const targetPNum = window.pendingParagraphScroll;
             window.pendingParagraphScroll = null;
+            if (activeChapterQuery && typeof performInChapterSearch === 'function') {
+                performInChapterSearch(false);
+            }
             setTimeout(() => {
                 const targetParaEl = textContent.querySelector(`#p-${CSS.escape(String(targetPNum))}`);
                 if (targetParaEl) {
@@ -1992,6 +1982,13 @@ function initApp() {
                     setTimeout(() => targetParaEl.classList.remove('para-flash-highlight'), 2800);
                 }
             }, 120);
+        } else if (activeChapterQuery && typeof performInChapterSearch === 'function') {
+            window.tempSearchQuery = null;
+            window.tempSearchMode = null;
+            performInChapterSearch(true);
+            if (chapterMatches.length === 0 && readerContentArea) {
+                readerContentArea.scrollTop = 0;
+            }
         } else if (savedScroll && !window.tempSearchQuery && readerContentArea) {
             setTimeout(() => {
                 readerContentArea.scrollTo({ top: parseInt(savedScroll, 10), behavior: 'smooth' });
@@ -2380,9 +2377,230 @@ function initApp() {
                textContent.querySelector(`[name="${CSS.escape(targetId)}"], [id="${CSS.escape(targetId)}"]`);
     }
 
-    // Interactive Footnote Popover & Smooth Anchor Scrolling inside the reader content
+    // Interactive Footnote Popover, Smart Citation Hyperlinker & Smooth Anchor Scrolling
     const footnotePopover = document.getElementById('footnotePopover');
     let footnoteHideTimeout = null;
+
+    const HEB_VOL_TO_NUM = { 'א': 1, 'ב': 2, 'ג': 3, 'ד': 4, 'ה': 5, 'ו': 6, 'ז': 7, 'ח': 8, 'ט': 9, 'י': 10 };
+    const MANITOU_SERIES_VOLUME_IDS = {
+        'סוד מדרש התולדות': { 1: 3, 2: 4, 3: 5, 4: 6, 5: 7, 6: 8, 7: 9, 8: 10, 9: 11, 10: 25, default: 3 },
+        'שערי דמעה': { 1: 12, 2: 13, 3: 14, default: 12 },
+        'סוד לשון הקודש': { 1: 15, 2: 16, default: 15 },
+        'סוד העברי': { 1: 17, 2: 18, default: 17 },
+        'מספד למשיח': { default: 2 },
+        'הדיבור והכתב': { default: 20 },
+        'מניטו על המועדים': { default: 23 },
+        'מועדי ישראל': { default: 23 },
+        'קול המועד': { default: 24 }
+    };
+
+    function resolveManitouBookIdFromCitation(seriesName, rawVol) {
+        const map = MANITOU_SERIES_VOLUME_IDS[seriesName];
+        if (!map) return null;
+        if (!rawVol) return map.default || null;
+        const cleanV = rawVol.replace(/['׳״"]/g, '').trim();
+        const num = /^\d+$/.test(cleanV) ? Number(cleanV) : (HEB_VOL_TO_NUM[cleanV] || null);
+        return (num && map[num]) ? map[num] : (map.default || null);
+    }
+
+    // Jump from a footnote Manitou reference (e.g. "סוד מדרש התולדות, חלק ג, עמ׳ 369") directly to the matching chapter & paragraph!
+    window.jumpToManitouFootnoteRef = async function(bookId, contextSentence = '') {
+        const targetBook = books.find(b => Number(b.id) === Number(bookId));
+        if (!targetBook) return;
+        if (footnotePopover) footnotePopover.style.display = 'none';
+
+        let chaps = chapterCache[bookId];
+        if (!chaps) {
+            try {
+                let res = await fetch(`data/book_${bookId}.json?v=19`);
+                if (!res.ok) res = await fetch(`data/book_${bookId}.json`);
+                if (res.ok) {
+                    chaps = await res.json();
+                    chapterCache[bookId] = chaps;
+                }
+            } catch (e) {}
+        }
+        if (!Array.isArray(chaps) || chaps.length === 0) {
+            window.location.hash = `#/reader/${bookId}`;
+            return;
+        }
+
+        // Ensure paragraph index exists on target book chapters
+        const parserDiv = document.createElement('div');
+        chaps.forEach(chap => {
+            if (chap.text && !Array.isArray(chap._paragraphs)) {
+                parserDiv.innerHTML = chap.text;
+                const cleanRoot = parserDiv.querySelector('[itemprop="description"]') || parserDiv;
+                cleanRoot.querySelectorAll('.mn-toc, .koowa_header, .vim-titleDate, .docman_download, [id^="komento"], [class*="komento"], script, style, #section-kmt, .kmt-list, .ddd').forEach(el => el.remove());
+                const paras = [];
+                let pNum = 0;
+                Array.from(cleanRoot.querySelectorAll('p, blockquote')).forEach(pEl => {
+                    if (pEl.closest('.footnotes, .chapter-footnotes-section')) return;
+                    const t = (pEl.textContent || '').replace(/\s+/g, ' ').trim();
+                    if (t.length < 35) return;
+                    pNum += 1;
+                    paras.push({ pNum, text: t, lower: stripNikkud(t.toLowerCase()) });
+                });
+                chap._paragraphs = paras;
+            }
+        });
+
+        const FN_IGNORE = new Set([
+            'על', 'אל', 'את', 'של', 'בין', 'עם', 'או', 'גם', 'ראו', 'ראה', 'עיינו', 'עיין', 'עי', 'שם', 'לעיל', 'להלן',
+            'סוד', 'מדרש', 'התולדות', 'שערי', 'דמעה', 'לשון', 'הקודש', 'העברי', 'מספד', 'למשיח', 'הדיבור', 'והכתב', 'קול', 'המועד',
+            'חלק', 'כרך', 'עמ', 'עמוד', 'עמודים', 'פרק', 'מאמר', 'שיעור', 'ספר', 'הערה', 'בהערה'
+        ]);
+
+        const normCtx = stripNikkud((contextSentence || '').toLowerCase())
+            .replace(/\[\d+\]/g, ' ')
+            .replace(/[^\u0590-\u05FFa-zA-Z0-9\s]/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+
+        const keywords = normCtx.split(' ').filter(w => w.length >= 2 && !/^\d+$/.test(w) && !FN_IGNORE.has(w));
+        let bestChap = chaps[0];
+        let bestPNum = 1;
+        let bestScore = 0;
+
+        if (keywords.length > 0) {
+            for (const c of chaps) {
+                const cTitleLower = stripNikkud((c.title || '').toLowerCase());
+                let cTitleBonus = 0;
+                keywords.forEach(kw => {
+                    if (kw.length >= 3 && cTitleLower.includes(kw)) cTitleBonus += 8;
+                });
+                for (const p of (c._paragraphs || [])) {
+                    let s = cTitleBonus;
+                    let matched = 0;
+                    for (const kw of keywords) {
+                        if (p.lower.includes(kw)) {
+                            matched += 1;
+                            s += kw.length >= 4 ? 7 : 5;
+                        }
+                    }
+                    if (matched >= 2) s += matched * 6;
+                    if (s > bestScore) {
+                        bestScore = s;
+                        bestChap = c;
+                        bestPNum = p.pNum;
+                    }
+                }
+            }
+        }
+
+        const cleanTargetTitle = formatChapterDisplayTitle(bestChap.title, targetBook);
+        showToast(`📖 פותח: ${targetBook.title} • ${cleanTargetTitle}${bestScore >= 10 ? ` (פסקה §${bestPNum})` : ''}`);
+        window.pendingParagraphScroll = bestScore >= 10 ? String(bestPNum) : '1';
+        window.location.hash = `#/reader/${targetBook.id}/chapter/${bestChap.id}?p=${window.pendingParagraphScroll}`;
+    };
+
+    // Convert plain footnote text into rich HTML with clickable hyperlinks to Manitou books, chapter footnotes, and Sefaria sources
+    function linkifyFootnotePlainText(rawText) {
+        if (!rawText) return '';
+        let safe = rawText
+            .replace(/\s*↗/g, '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+
+        const placeholders = [];
+        const putLink = (htmlStr) => {
+            const tok = `__FNLNK_${placeholders.length}__`;
+            placeholders.push(htmlStr);
+            return tok;
+        };
+
+        // 1. Internal Manitou Books & Volumes (e.g. "סוד מדרש התולדות, חלק ג, עמ׳ 369", "מספד למשיח, עמ׳ 42")
+        const manitouRegex = /(סוד מדרש התולדות|שערי דמעה|סוד לשון הקודש|סוד העברי|מספד למשיח|הדיבור והכתב|מניטו על המועדים|מועדי ישראל|קול המועד)(?:,?\s*(?:חלק|כרך)?\s*(10|[1-9]|[א-י])['׳]?)?(?:,?\s*(?:עמ['׳״"]?|עמוד(?:ים)?)\s*[\d\u05D0-\u05EA-]+)?/g;
+        safe = safe.replace(manitouRegex, (fullMatch, seriesName, volToken, offset, wholeStr) => {
+            const bookId = resolveManitouBookIdFromCitation(seriesName, volToken);
+            if (!bookId) return fullMatch;
+            // Extract surrounding sentence context (up to 110 chars before & 50 chars after) so we jump to the exact topic paragraph!
+            const sentStart = Math.max(0, wholeStr.lastIndexOf('.', offset - 1) + 1);
+            const sentEndDot = wholeStr.indexOf('.', offset + fullMatch.length);
+            const sentEnd = sentEndDot !== -1 ? Math.min(wholeStr.length, sentEndDot) : Math.min(wholeStr.length, offset + fullMatch.length + 55);
+            const ctxSentence = wholeStr.slice(sentStart, sentEnd).replace(/__FNLNK_\d+__/g, '').replace(/"/g, '&quot;').trim();
+            return putLink(`<a href="#/reader/${bookId}" class="fn-ref-link fn-manitou-link" data-fn-book-id="${bookId}" data-fn-context="${ctxSentence}" data-tooltip="פתח ישירות במקור המקביל בספריית מניטו">${fullMatch} ↗</a>`);
+        });
+
+        // 2. Same-Chapter Footnote References (e.g. "לעיל הערה 5", "ראו הערה 12")
+        const sameChapFnRegex = /(?:ראו\s+|עיינו\s+|עי['׳]\s+)?(?:לעיל\s+|להלן\s+)?הערה\s*(\d+)/g;
+        safe = safe.replace(sameChapFnRegex, (fullMatch, fnNum) => {
+            return putLink(`<a href="#_ftn${fnNum}" class="fn-ref-link fn-samechap-link" data-fn-num="${fnNum}" data-tooltip="קפוץ להערה [${fnNum}] בפרק זה">${fullMatch}</a>`);
+        });
+
+        // 3. Quoted Classic Sefarim after ראו / עיינו / עי' / בספר (e.g. ראו "אדיר במרום" לרמח"ל, ראו "פתחי שערים")
+        const quotedBookRegex = /(ראו|ראה|עיינו|עיין|עי['׳]|בספר|במאמר)\s+(["״][^"״]{2,42}["״])((?:\s+לרמח["״]?ל|\s+למהר["״]?ל|\s+לרבי\s+[\u0590-\u05FF"״׳']+(?:\s+[\u0590-\u05FF"״׳']+)?|\s*,?\s*(?:פרק|מאמר|שער|נתיב|חלק|אות|סימן|עמ['׳״"]?)\s+[\u0590-\u05FF\d'׳"״,-]+){0,3})/g;
+        safe = safe.replace(quotedBookRegex, (fullMatch, prefixWord, bookQuoted, suffixLoc) => {
+            const cleanTitle = bookQuoted.replace(/^["״]|["״]$/g, '').trim();
+            const query = `${cleanTitle} ${(suffixLoc || '').replace(/לרמח["״]?ל|למהר["״]?ל|לרבי\s+\S+/g, '').trim()}`.trim();
+            const url = `https://www.sefaria.org.il/search?q=${encodeURIComponent(query)}`;
+            return `${prefixWord} ` + putLink(`<a href="${url}" target="_blank" rel="noopener" class="fn-ref-link fn-external-link" data-tooltip="פתח מקור זה בספריא (לשונית חדשה)">${bookQuoted}${suffixLoc || ''} ↗</a>`);
+        });
+
+        // 4. Classic Tanakh, Bavli, Midrash, Zohar, Kuzari, Maharal, Ramchal & Kabbalah unquoted citations
+        const classicSourcesRegex = /((?:בראשית רבה|שמות רבה|ויקרא רבה|במדבר רבה|דברים רבה|שיר השירים רבה|רות רבה|איכה רבה|קהלת רבה|אסתר רבה|מדרש רבה|מדרש תנחומא|תנחומא|מדרש תהילים|ילקוט שמעוני|פרקי דרבי אליעזר|ספרא|ספרי|מכילתא|תיקוני זוהר|זוהר חדש|זוהר|ספר יצירה|בהיר|שערי אורה|פרדס רימונים|עץ חיים|נפש החיים|קול התור|ליקוטי אמרים|תניא|מסילת ישרים|דעת תבונות|דרך ה['׳]|אדיר במרום|פתחי שערים|נצח ישראל|תפארת ישראל|גבורות ה['׳]|באר הגולה|נתיבות עולם|דרך חיים|אור חדש|הכוזרי|כוזרי|מורה נבוכים|משנה תורה|שולחן ערוך|פרקי אבות|אבות|בראשית|שמות|ויקרא|במדבר|דברים|יהושע|שופטים|שמואל [אב]|מלכים [אב]|ישעיהו|ירמיהו|יחזקאל|הושע|יואל|עמוס|עובדיה|יונה|מיכה|נחום|חבקוק|צפניה|חגי|זכריה|מלאכי|תהילים|תהלים|משלי|איוב|שיר השירים|רות|איכה|קהלת|אסתר|דניאל|עזרא|נחמיה|דברי הימים [אב]|ברכות|שבת|עירובין|פסחים|יומא|סוכה|ביצה|ראש השנה|תענית|מגילה|מועד קטן|חגיגה|יבמות|כתובות|נדרים|נזיר|סוטה|גיטין|קידושין|בבא קמא|בבא מציעא|בבא בתרא|סנהדרין|מכות|שבועות|עבודה זרה|הוריות|זבחים|מנחות|חולין|בכורות|ערכין|תמורה|כריתות|מעילה|נדה)\s+(?:(?:פרשה|פרק|מאמר|חלק|שער|סימן|אות|דף|הלכות)\s+)?[\u05D0-\u05EA\d]{1,4}['׳]?(?:[\s,:]+(?:(?:ע["״]?[אב]|פרק|פסוק|אות|סימן|משנה|הלכה)\s*)?[\u05D0-\u05EA\d]{1,4}['׳:]?){0,3})/g;
+
+        safe = safe.replace(classicSourcesRegex, (fullMatch) => {
+            if (fullMatch.includes('__FNLNK_')) return fullMatch;
+            const cleanRef = fullMatch.trim().replace(/[.,;]+$/, '');
+            const trailingPunct = fullMatch.slice(cleanRef.length);
+            const url = `https://www.sefaria.org.il/search?q=${encodeURIComponent(cleanRef)}`;
+            return putLink(`<a href="${url}" target="_blank" rel="noopener" class="fn-ref-link fn-external-link" data-tooltip="פתח מראה מקום בספריא (לשונית חדשה)">${cleanRef} ↗</a>`) + trailingPunct;
+        });
+
+        placeholders.forEach((htmlLink, idx) => {
+            safe = safe.split(`__FNLNK_${idx}__`).join(htmlLink);
+        });
+        return safe;
+    }
+
+    function decorateFootnoteDomElement(rootEl) {
+        if (!rootEl) return;
+        const textNodes = [];
+        const walker = document.createTreeWalker(rootEl, NodeFilter.SHOW_TEXT, null, false);
+        let n;
+        while ((n = walker.nextNode())) {
+            const p = n.parentElement;
+            if (p && p.closest('a, button, script, style')) continue;
+            if (n.textContent && n.textContent.trim().length >= 4) {
+                textNodes.push(n);
+            }
+        }
+        textNodes.forEach(tNode => {
+            const orig = tNode.textContent;
+            const linked = linkifyFootnotePlainText(orig);
+            if (linked !== orig.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')) {
+                const wrap = document.createElement('span');
+                wrap.innerHTML = linked;
+                tNode.replaceWith(...wrap.childNodes);
+            }
+        });
+    }
+
+    function bindFootnoteRichLinks(containerEl) {
+        if (!containerEl) return;
+        containerEl.querySelectorAll('.fn-manitou-link').forEach(a => {
+            a.addEventListener('click', (ev) => {
+                if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button === 1) return;
+                ev.preventDefault();
+                ev.stopPropagation();
+                const bId = a.dataset.fnBookId;
+                const ctx = a.dataset.fnContext || '';
+                window.jumpToManitouFootnoteRef(bId, ctx);
+            });
+        });
+        containerEl.querySelectorAll('.fn-samechap-link').forEach(a => {
+            a.addEventListener('click', (ev) => {
+                ev.preventDefault();
+                ev.stopPropagation();
+                const fnNum = a.dataset.fnNum;
+                if (footnotePopover) footnotePopover.style.display = 'none';
+                const target = findInternalAnchorTarget(`_ftn${fnNum}`) || findInternalAnchorTarget(`fn${fnNum}`);
+                if (target) scrollToAndFlashElement(target);
+            });
+        });
+    }
 
     function showFootnotePreview(linkEl, targetEl, targetId) {
         if (!footnotePopover || !targetEl) return;
@@ -2393,16 +2611,18 @@ function initApp() {
 
         clearTimeout(footnoteHideTimeout);
         const labelMatch = linkEl.textContent.trim() || 'הערת שוליים';
+        const linkedBodyHtml = linkifyFootnotePlainText(rawText);
         footnotePopover.innerHTML = `
             <div class="footnote-popover-header">
                 <span>הערת שוליים ${labelMatch}</span>
                 <button id="closeFootnotePopoverBtn" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1.1rem;line-height:1;">&times;</button>
             </div>
-            <div class="footnote-popover-body">${rawText}</div>
+            <div class="footnote-popover-body">${linkedBodyHtml}</div>
             <div class="footnote-popover-footer">
                 <button class="footnote-popover-jump" id="jumpToFootnoteBtn">גלול למיקום ההערה בפרק ↓</button>
             </div>
         `;
+        bindFootnoteRichLinks(footnotePopover);
         footnotePopover.style.display = 'block';
 
         const rect = linkEl.getBoundingClientRect();
@@ -2547,6 +2767,21 @@ function initApp() {
         });
 
         textContent.addEventListener('click', (e) => {
+            const fnManitouEl = e.target.closest('.fn-manitou-link');
+            if (fnManitouEl) {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+                e.preventDefault();
+                window.jumpToManitouFootnoteRef(fnManitouEl.dataset.fnBookId, fnManitouEl.dataset.fnContext || '');
+                return;
+            }
+            const fnSameChapEl = e.target.closest('.fn-samechap-link');
+            if (fnSameChapEl) {
+                e.preventDefault();
+                const fnNum = fnSameChapEl.dataset.fnNum;
+                const target = findInternalAnchorTarget(`_ftn${fnNum}`) || findInternalAnchorTarget(`fn${fnNum}`);
+                if (target) scrollToAndFlashElement(target);
+                return;
+            }
             const sourceEl = e.target.closest('.smart-source-ref');
             if (sourceEl) {
                 e.preventDefault();
@@ -2643,6 +2878,7 @@ function initApp() {
                 if (zenIconEnter) zenIconEnter.style.display = 'none';
                 if (zenIconExit) zenIconExit.style.display = 'inline-block';
                 if (zenModeText) zenModeText.textContent = 'צא ממסך מלא';
+                zenModeBtn.setAttribute('data-tooltip', 'יציאה ממסך מלא');
                 zenModeBtn.classList.add('btn-primary');
                 zenModeBtn.classList.remove('btn-secondary');
             } else {
@@ -2650,6 +2886,7 @@ function initApp() {
                 if (zenIconEnter) zenIconEnter.style.display = 'inline-block';
                 if (zenIconExit) zenIconExit.style.display = 'none';
                 if (zenModeText) zenModeText.textContent = 'מסך מלא';
+                zenModeBtn.setAttribute('data-tooltip', 'מסך מלא');
                 zenModeBtn.classList.add('btn-secondary');
                 zenModeBtn.classList.remove('btn-primary');
             }
@@ -2715,44 +2952,59 @@ function initApp() {
         if (inChapterCount) inChapterCount.textContent = '0/0';
     }
     
-    function performInChapterSearch() {
+    function performInChapterSearch(autoScrollFirst = true) {
         clearChapterSearch();
         const query = inChapterSearchInput ? inChapterSearchInput.value.trim() : '';
         if (!query || !textContent) return;
-        
-        let regex;
+
+        const cleanQuery = query.replace(/^["״]|["״]$/g, '').replace(/\s+/g, ' ').trim();
+        if (!cleanQuery) return;
+
+        // Match ONLY the complete query/phrase as whole words (never split into partial single words, and never match mid-word like סוד inside יסוד!)
+        let combinedRe;
         try {
-            regex = makeHebrewNikkudRegex(query, false);
+            const phrasePat = makeHebrewNikkudPattern(cleanQuery);
+            combinedRe = new RegExp(`(?<=^|[^a-zA-Z0-9\\u0590-\\u05FF])([בהוכלמש]{0,2}${phrasePat})(?=$|[^a-zA-Z0-9\\u0590-\\u05FF])`, 'gi');
         } catch (e) {
-            const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            regex = new RegExp(`(${escaped})`, 'gi');
+            const esc = cleanQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            combinedRe = new RegExp(`(${esc})`, 'gi');
         }
-        const strippedQuery = stripNikkud(query.toLowerCase());
-        
+
         const textNodes = [];
         const walk = document.createTreeWalker(textContent, NodeFilter.SHOW_TEXT, null, false);
         let node;
-        while (node = walk.nextNode()) {
+        while ((node = walk.nextNode())) {
             const parent = node.parentNode;
-            if (parent && (parent.tagName === 'SCRIPT' || parent.tagName === 'STYLE' || parent.classList.contains('glossary-tooltip') || parent.classList.contains('para-anchor-btn'))) continue;
+            if (!parent) continue;
+            if (
+                parent.tagName === 'SCRIPT' ||
+                parent.tagName === 'STYLE' ||
+                parent.tagName === 'MARK' ||
+                parent.closest('.glossary-tooltip, .para-anchor-btn, .chapter-editorial-header, .chapter-bottom-nav, .related-chapters-section, .in-chapter-toc')
+            ) {
+                continue;
+            }
             textNodes.push(node);
         }
-        
+
         textNodes.forEach(tNode => {
             const text = tNode.textContent;
-            if (!regex.test(text)) return;
-            regex.lastIndex = 0;
-            
-            const parts = text.split(regex);
+            if (!combinedRe.test(text)) return;
+            combinedRe.lastIndex = 0;
+
+            // With a single outer capturing group in combinedRe, odd indices in split() are exact regex matches
+            const parts = text.split(combinedRe);
+            if (parts.length <= 1) return;
             const fragment = document.createDocumentFragment();
-            parts.forEach(part => {
-                if (part && stripNikkud(part.toLowerCase()) === strippedQuery) {
+            parts.forEach((part, idx) => {
+                if (!part) return;
+                if (idx % 2 === 1) {
                     const mark = document.createElement('mark');
                     mark.className = 'chapter-search-match';
                     mark.textContent = part;
                     fragment.appendChild(mark);
                     chapterMatches.push(mark);
-                } else if (part) {
+                } else {
                     fragment.appendChild(document.createTextNode(part));
                 }
             });
@@ -2760,9 +3012,15 @@ function initApp() {
                 tNode.parentNode.replaceChild(fragment, tNode);
             }
         });
-        
+
         if (chapterMatches.length > 0) {
-            goToMatch(0);
+            if (autoScrollFirst) {
+                goToMatch(0);
+            } else {
+                currentMatchIndex = 0;
+                chapterMatches[0].classList.add('chapter-search-match-active');
+                if (inChapterCount) inChapterCount.textContent = `1/${chapterMatches.length}`;
+            }
         } else {
             if (inChapterCount) inChapterCount.textContent = '0/0';
         }
@@ -3006,19 +3264,19 @@ function initApp() {
     const advSearchToolbarButtons = document.querySelectorAll('#advSearchToolbar .toolbar-btn');
     const advScopeBtns = document.querySelectorAll('#advSearchScopePills .scope-pill-btn');
 
-    let currentSearchMode = 'and'; // 'and', 'or', 'exact', 'exact_word'
-    let currentAdvSearchScope = 'both'; // 'both', 'books', 'transcripts'
+    let currentSearchMode = 'and'; // 'and', 'or', 'exact', 'substring'
+    let currentAdvSearchScope = 'books'; // 'books' (default), 'transcripts', 'both'
     let unifiedSearchDebounce = null;
     let unifiedSearchSeq = 0;
 
     // Warm up search indexes quietly in background so live search responds in milliseconds
     setTimeout(() => {
-        ensureTranscriptsArchiveLoaded().catch(() => {});
         ensureAllBooksLoaded().catch(() => {});
+        ensureTranscriptsArchiveLoaded().catch(() => {});
     }, 450);
 
     function setAdvSearchScopeUI(scope) {
-        currentAdvSearchScope = scope || 'both';
+        currentAdvSearchScope = scope || 'books';
         advScopeBtns.forEach(b => {
             b.classList.toggle('active', b.dataset.scope === currentAdvSearchScope);
         });
@@ -3161,8 +3419,9 @@ function initApp() {
         const searchMode = isManualExact ? 'exact' : currentSearchMode;
 
         let searchWords = [];
-        if (searchMode === 'exact' || searchMode === 'exact_word') {
-            searchWords = isManualExact ? [rawQuery.slice(1, -1).trim()] : [rawQuery];
+        if (searchMode === 'exact') {
+            const cleanPhrase = (isManualExact ? rawQuery.slice(1, -1) : rawQuery).replace(/\s+/g, ' ').trim();
+            searchWords = cleanPhrase ? [cleanPhrase] : [];
         } else {
             searchWords = rawQuery.split(/\s+/).filter(w => w.length > 0);
         }
@@ -3182,65 +3441,89 @@ function initApp() {
         const cleanSearchWords = searchWords.map(w => stripNikkud(w.toLowerCase()));
         let allResults = [];
 
+        // Helper: build regex pattern on stripped/normalized text according to searchMode
+        // - 'exact': strict word/phrase boundary (NO prefixes, NO mid-word substrings like פאי inside אירופאים!)
+        // - 'and' / 'or': whole Hebrew word allowing standard leading prefixes (ה, ו, ב, כ, ל, מ, ש), NEVER mid-word substrings!
+        // - 'substring': raw partial substring anywhere inside words
+        function buildNormalizedWordPattern(normWordOrPhrase, mode) {
+            const parts = normWordOrPhrase.trim().split(/\s+/).map(part => part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+            if (mode === 'substring') {
+                return parts.join('\\s+');
+            }
+            if (mode === 'exact') {
+                const phrasePat = parts.join('[^a-zA-Z0-9\\u0590-\\u05FF]+');
+                return `(?<=^|[^a-zA-Z0-9\\u0590-\\u05FF])${phrasePat}(?=$|[^a-zA-Z0-9\\u0590-\\u05FF])`;
+            }
+            // 'and' or 'or': whole word with optional 0-2 Hebrew prefix letters (ב,ה,ו,כ,ל,מ,ש)
+            const singleEsc = parts[0];
+            return `(?<=^|[^a-zA-Z0-9\\u0590-\\u05FF])[בהוכלמש]{0,2}${singleEsc}(?=$|[^a-zA-Z0-9\\u0590-\\u05FF])`;
+        }
+
         // Direct Book Title / Series Matches (for quick book opening)
         let matchedWholeBooks = [];
         if (currentAdvSearchScope !== 'transcripts') {
-            const qStripped = cleanSearchWords.join(' ');
             matchedWholeBooks = books.filter(b => {
                 if (categoryFilter !== 'all' && b.category !== categoryFilter) return false;
                 if (bookFilter !== 'all' && String(b.id) !== String(bookFilter)) return false;
                 const hay = stripNikkud(`${b.title || ''} ${b.series || ''} ${b.description || ''}`.toLowerCase());
-                return cleanSearchWords.every(w => hay.includes(w)) || hay.includes(qStripped);
+                if (searchMode === 'exact') {
+                    return new RegExp(buildNormalizedWordPattern(cleanSearchWords[0], 'exact'), 'i').test(hay);
+                }
+                if (searchMode === 'or') {
+                    return cleanSearchWords.some(w => new RegExp(buildNormalizedWordPattern(w, searchMode), 'i').test(hay));
+                }
+                return cleanSearchWords.every(w => new RegExp(buildNormalizedWordPattern(w, searchMode), 'i').test(hay));
             }).slice(0, 6);
         }
 
         function evaluateTextDocument(plainText, lowerText, lowerTitle = '') {
             const combinedSearchable = lowerTitle ? `${lowerTitle}\n${lowerText}` : lowerText;
+            const compiledWordRegexes = cleanSearchWords.map(w => ({
+                word: w,
+                testRe: new RegExp(buildNormalizedWordPattern(w, searchMode), 'i'),
+                globalPattern: buildNormalizedWordPattern(w, searchMode)
+            }));
+
             let isMatch = false;
             if (searchMode === 'exact') {
-                isMatch = combinedSearchable.includes(cleanSearchWords[0]);
-            } else if (searchMode === 'exact_word') {
-                const escapedWord = cleanSearchWords[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                const regex = new RegExp(`(?<=^|[^a-zA-Z0-9\\u0590-\\u05FF])[בהוכלמש]{0,2}${escapedWord}(?=$|[^a-zA-Z0-9\\u0590-\\u05FF])`, 'i');
-                isMatch = regex.test(combinedSearchable);
-            } else if (searchMode === 'and') {
-                isMatch = cleanSearchWords.every(word => combinedSearchable.includes(word));
+                isMatch = compiledWordRegexes[0].testRe.test(combinedSearchable);
+            } else if (searchMode === 'and' || searchMode === 'substring') {
+                // In 'substring' with multiple words, require all fragments; in 'and', require all whole words
+                isMatch = compiledWordRegexes.every(item => item.testRe.test(combinedSearchable));
             } else if (searchMode === 'or') {
-                isMatch = cleanSearchWords.some(word => combinedSearchable.includes(word));
+                isMatch = compiledWordRegexes.some(item => item.testRe.test(combinedSearchable));
             }
             if (!isMatch) return null;
 
             let matchScore = 0;
-            cleanSearchWords.forEach(word => {
-                const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                const regexPattern = searchMode === 'exact_word'
-                    ? `(?<=^|[^a-zA-Z0-9\\u0590-\\u05FF])[בהוכלמש]{0,2}${escapedWord}(?=$|[^a-zA-Z0-9\\u0590-\\u05FF])`
-                    : escapedWord;
-                const occurrences = (lowerText.match(new RegExp(regexPattern, 'gi')) || []).length;
-                const titleHits = lowerTitle ? (lowerTitle.match(new RegExp(regexPattern, 'gi')) || []).length : 0;
+            compiledWordRegexes.forEach(item => {
+                const gRe = new RegExp(item.globalPattern, 'gi');
+                const occurrences = (lowerText.match(gRe) || []).length;
+                const titleHits = lowerTitle ? (lowerTitle.match(gRe) || []).length : 0;
                 matchScore += occurrences + (titleHits * 6);
             });
 
             const snippets = [];
-            let index = -1;
-            let firstFoundWord = '';
-            if (searchMode === 'exact_word') {
-                const escapedWord = cleanSearchWords[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                const regex = new RegExp(`(?<=^|[^a-zA-Z0-9\\u0590-\\u05FF])[בהוכלמש]{0,2}${escapedWord}(?=$|[^a-zA-Z0-9\\u0590-\\u05FF])`, 'i');
-                const match = regex.exec(lowerText);
-                if (match) index = match.index;
-            } else {
-                firstFoundWord = cleanSearchWords.find(word => lowerText.includes(word)) || '';
-                if (firstFoundWord) index = lowerText.indexOf(firstFoundWord);
+            let firstMatchObj = null;
+            let activeGlobalPattern = compiledWordRegexes[0].globalPattern;
+            for (const item of compiledWordRegexes) {
+                const m = item.testRe.exec(lowerText);
+                if (m && (!firstMatchObj || m.index < firstMatchObj.index)) {
+                    firstMatchObj = m;
+                    activeGlobalPattern = item.globalPattern;
+                }
             }
 
-            if (index === -1 && plainText) {
+            if (!firstMatchObj && plainText) {
                 let snippet = plainText.substring(0, 190);
                 if (plainText.length > 190) snippet += '...';
                 snippets.push(snippet);
-            } else {
+            } else if (firstMatchObj) {
+                let index = firstMatchObj.index;
                 let occurrences = 0;
-                const maxSnippets = (searchMode === 'exact' || searchMode === 'exact_word') ? 2 : 1;
+                const maxSnippets = searchMode === 'exact' ? 2 : 1;
+                const iterRe = new RegExp(activeGlobalPattern, 'gi');
+
                 while (index !== -1 && occurrences < maxSnippets) {
                     const origIndex = getOriginalIndex(plainText, index);
                     const start = Math.max(0, origIndex - 70);
@@ -3251,7 +3534,7 @@ function initApp() {
 
                     searchWords.forEach(word => {
                         try {
-                            const regex = makeHebrewNikkudRegex(word, searchMode === 'exact_word');
+                            const regex = makeHebrewNikkudRegex(word, searchMode);
                             snippet = snippet.replace(regex, '%%MARK%%$1%%ENDMARK%%');
                         } catch (e) {}
                     });
@@ -3259,17 +3542,9 @@ function initApp() {
                     snippet = snippet.replace(/%%ENDMARK%%/g, '</mark>');
                     snippets.push(snippet);
 
-                    if (searchMode === 'exact_word') {
-                        const escapedWord = cleanSearchWords[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                        const regex = new RegExp(`(?<=^|[^a-zA-Z0-9\\u0590-\\u05FF])[בהוכלמש]{0,2}${escapedWord}(?=$|[^a-zA-Z0-9\\u0590-\\u05FF])`, 'gi');
-                        regex.lastIndex = index + cleanSearchWords[0].length + 2;
-                        const nextMatch = regex.exec(lowerText);
-                        index = nextMatch ? nextMatch.index : -1;
-                    } else if (firstFoundWord) {
-                        index = lowerText.indexOf(firstFoundWord, index + firstFoundWord.length);
-                    } else {
-                        index = -1;
-                    }
+                    iterRe.lastIndex = index + Math.max(1, firstMatchObj[0].length);
+                    const nextMatch = iterRe.exec(lowerText);
+                    index = nextMatch ? nextMatch.index : -1;
                     occurrences++;
                 }
             }
@@ -3309,8 +3584,15 @@ function initApp() {
         }
 
         let transcriptResultsCount = 0;
+        const seenTranscriptTextFingerprints = new Set();
         if (currentAdvSearchScope !== 'books') {
-            for (const tr of transcriptsArchiveItems) {
+            // Prefer properly titled transcripts before generic "קישור" table entries
+            const sortedTranscripts = [...transcriptsArchiveItems].sort((a, b) => {
+                const aGeneric = (a.title || '').trim() === 'קישור' ? 1 : 0;
+                const bGeneric = (b.title || '').trim() === 'קישור' ? 1 : 0;
+                return aGeneric - bGeneric;
+            });
+            for (const tr of sortedTranscripts) {
                 if (categoryFilter !== 'all' && categoryFilter !== 'lessons') {
                     const catAndTitle = `${tr._lowerCategory || ''} ${tr._lowerTitle || ''}`;
                     if (categoryFilter === 'history' && !/(תולדות|בראשית|שמות|ויקרא|במדבר|דברים|נביאים|מגיל|היסטור|זהות)/.test(catAndTitle)) continue;
@@ -3319,8 +3601,12 @@ function initApp() {
                 const plainText = tr.plainText || '';
                 const lowerText = tr._lowerText || '';
                 if (!plainText && !tr._lowerTitle) continue;
+                const fp = plainText.length > 80 ? plainText.slice(0, 180) : `${tr.url || tr.id}`;
+                if (seenTranscriptTextFingerprints.has(fp)) continue;
+
                 const evaluated = evaluateTextDocument(plainText, lowerText, tr._lowerTitle || '');
                 if (!evaluated) continue;
+                seenTranscriptTextFingerprints.add(fp);
 
                 evaluated.snippets.forEach(snippet => {
                     transcriptResultsCount++;
@@ -3725,6 +4011,21 @@ function initApp() {
         if (readerThemeText) readerThemeText.textContent = label;
         if (navThemeText) navThemeText.textContent = label;
         if (drawerThemeText) drawerThemeText.textContent = label;
+
+        const readerThemeBtnEl = document.getElementById('toggleTheme');
+        const navThemeBtnEl = document.getElementById('navThemeToggle');
+        [readerThemeBtnEl, navThemeBtnEl].forEach(btnEl => {
+            if (btnEl) {
+                btnEl.removeAttribute('title');
+                btnEl.setAttribute('data-tooltip', label);
+                btnEl.setAttribute('aria-label', label);
+            }
+        });
+        const liveTooltipEl = document.getElementById('uiHoverTooltip');
+        if (liveTooltipEl && liveTooltipEl.classList.contains('is-visible') &&
+            (liveTooltipEl._anchorEl === readerThemeBtnEl || liveTooltipEl._anchorEl === navThemeBtnEl)) {
+            liveTooltipEl.textContent = label;
+        }
 
         [readerThemeIcon, navThemeIcon, drawerThemeIcon].forEach(iconEl => {
             if (iconEl) {
@@ -4433,12 +4734,15 @@ function initApp() {
         let pattern = "";
         for (let i = 0; i < escaped.length; i++) {
             const char = escaped[i];
+            const nextChar = escaped[i + 1] || '';
+            const isNextHeb = nextChar && nextChar.charCodeAt(0) >= 0x0590 && nextChar.charCodeAt(0) <= 0x05FF;
             if (char.charCodeAt(0) >= 0x0590 && char.charCodeAt(0) <= 0x05FF) {
-                pattern += char + "[\u0591-\u05C7]*";
+                // Allow nikkud + optional internal geresh/gershayim between Hebrew letters (so "סוד הדלת" matches "סוד הדל״ת" and "שדי" matches "שד״י"!)
+                pattern += char + (isNextHeb ? '[\\u0591-\\u05C7"״”\'׳’]*' : '[\\u0591-\\u05C7]*');
             } else if (['"', '״', '”', '“'].includes(char)) {
-                pattern += '["״”“”]';
+                pattern += '["״”“”]?';
             } else if (["'", '׳', '’', '‘'].includes(char)) {
-                pattern += "['׳’’‘]";
+                pattern += "['׳’’‘]?";
             } else if (['-', '־'].includes(char)) {
                 pattern += '[-־\\s]*'; // Match any hyphen variation or space
             } else if (char === ' ') {
@@ -4450,9 +4754,11 @@ function initApp() {
         return pattern;
     }
 
-    function makeHebrewNikkudRegex(word, isExactWord) {
+    function makeHebrewNikkudRegex(word, modeOrExactBool) {
         const pattern = makeHebrewNikkudPattern(word);
-        if (isExactWord) {
+        if (modeOrExactBool === 'exact') {
+            return new RegExp(`(?<=^|[^a-zA-Z0-9\\u0590-\\u05FF])(${pattern})(?=$|[^a-zA-Z0-9\\u0590-\\u05FF])`, 'gi');
+        } else if (modeOrExactBool === true || modeOrExactBool === 'exact_word' || modeOrExactBool === 'and' || modeOrExactBool === 'or') {
             return new RegExp(`(?<=^|[^a-zA-Z0-9\\u0590-\\u05FF])([בהוכלמש]{0,2}${pattern})(?=$|[^a-zA-Z0-9\\u0590-\\u05FF])`, 'gi');
         } else {
             return new RegExp(`(${pattern})`, 'gi');
@@ -4664,7 +4970,7 @@ function initApp() {
                 });
 
                 el.addEventListener('click', () => {
-                    window.location.hash = `#/book/${book.id}`;
+                    window.location.hash = `#/reader/${book.id}`;
                 });
                 favoritesGrid.appendChild(el);
             });
@@ -5136,10 +5442,10 @@ function initApp() {
         if (!rawQuery) return;
         
         const isExactMatch = rawQuery.startsWith('"') && rawQuery.endsWith('"');
-        let searchWords = isExactMatch ? [rawQuery.slice(1, -1).trim()] : rawQuery.split(/\s+/).filter(w => w.length > 0);
-        if (searchMode === 'exact_word') {
-            searchWords = [rawQuery];
-        }
+        const effectiveMode = isExactMatch ? 'exact' : (searchMode || 'and');
+        let searchWords = (effectiveMode === 'exact' || effectiveMode === 'exact_word')
+            ? [(isExactMatch ? rawQuery.slice(1, -1) : rawQuery).trim()]
+            : rawQuery.split(/\s+/).filter(w => w.length > 0);
         
         if (searchWords.length === 0) return;
         
@@ -5280,7 +5586,7 @@ function initApp() {
         const hash = window.location.hash || '#/';
         
         // Close modal and reader modes by default
-        modal.classList.remove('active');
+        if (modal) modal.classList.remove('active');
         profileModal.classList.remove('active');
         readerMode.style.display = 'none';
         document.body.classList.remove('reader-open');
@@ -5309,8 +5615,8 @@ function initApp() {
             const bookId = Number(hash.split('#/book/')[1]);
             const book = books.find(b => b.id === bookId);
             if (book) {
-                filterBooks('all', searchInput ? searchInput.value.toLowerCase() : '');
-                openModal(book);
+                try { history.replaceState(null, '', `#/reader/${book.id}`); } catch (e) {}
+                await openReader(book, null);
             } else {
                 window.location.hash = '#/';
             }
@@ -5577,8 +5883,8 @@ function initApp() {
                         const advBtn = document.getElementById('advSearchBtn');
                         const advSection = document.getElementById('advancedSearchSection');
                         
-                        // Select exact_word mode
-                        const exactWordBtn = document.querySelector('#advSearchToolbar button[data-mode="exact_word"]');
+                        // Select exact mode
+                        const exactWordBtn = document.querySelector('#advSearchToolbar button[data-mode="exact"]');
                         if (exactWordBtn) exactWordBtn.click();
 
                         if (advInput) advInput.value = item.term;
@@ -6923,7 +7229,7 @@ function initApp() {
                 .replace(/^(תגיד לי|אפשר לדעת|רציתי לדעת|בבקשה)\s+/g, '')
                 .replace(/^(איפה|היכן|באיזה ספר|באיזה פרק|באילו ספרים|באילו פרקים|מתי)\s+/g, '')
                 .replace(/^(נמצא|נמצאת|נמצאים|מופיע|מופיעה|מופיעים|כתוב|מוזכר|מדובר על|מדובר ב|נאמר)\s+/g, '')
-                .replace(/^(הביטוי|המושג|הנושא|הפסוק|המאמר|הפרק|הספר|השיעור|עניין)\s+/g, '')
+                .replace(/^(?:ה)?(ביטוי|מושג|נושא|פסוק|מאמר|פרק|ספר|שיעור|תמלול|עניין|סיפור|פירוש)\s+/g, '')
                 .replace(/^(מה זה|מהו|מהי|מהם|מהן|מה המשמעות של|מה הפירוש של|איך מניטו מסביר את|כיצד מניטו מבאר את|הסבר על|ספר לי על)\s+/g, '')
                 .replace(/\s+(במשנת מניטו|בתורת מניטו|אצל מניטו|לפי מניטו|בספרי מניטו|בספרייה|באתר)$/g, '')
                 .replace(/^["'״׳]+|["'״׳]+$/g, '')
@@ -7190,7 +7496,13 @@ function initApp() {
             if (highlightTerms.length === 0) return snippet;
 
             highlightTerms.sort((a, b) => b.length - a.length);
-            const pattern = highlightTerms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+            const pattern = highlightTerms.map(term => {
+                return Array.from(term).map(ch => {
+                    if (/\s/.test(ch)) return '\\s+';
+                    const esc = ch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    return /[\u05D0-\u05EA]/.test(ch) ? `${esc}[\\u0591-\\u05C7]*` : esc;
+                }).join('');
+            }).join('|');
             try {
                 const re = new RegExp(`(${pattern})`, 'gi');
                 return snippet.replace(re, '<mark>$1</mark>');
@@ -7199,28 +7511,144 @@ function initApp() {
             }
         }
 
+        function makeReaderHref(bookId, chapId, pNum = 1) {
+            return `#/reader/${bookId}/chapter/${chapId}?p=${pNum || 1}`;
+        }
+
+        // Convert plain text mentions of Book titles, Chapter titles, and Paragraph § numbers in Gemini HTML into direct hyperlinks!
+        function linkifyLocationsInHtml(html, topPassages, exactTitleHits, distributionList) {
+            if (!html) return html;
+
+            // Build lookup maps for matched books, chapters, and paragraphs
+            const bookTargetMap = new Map(); // bookTitle -> { bookId, chapId, pNum }
+            const chapterTargetMap = new Map(); // chapTitle -> { bookId, chapId, pNum }
+            const paraTargetMap = new Map(); // pNum -> { bookId, chapId, pNum }
+
+            (exactTitleHits || []).forEach(h => {
+                if (h.type === 'book_chapter') {
+                    if (!bookTargetMap.has(h.bookTitle)) {
+                        bookTargetMap.set(h.bookTitle, { bookId: h.bookId, chapId: h.chapterId, pNum: 1 });
+                    }
+                    if (h.chapterTitle && h.chapterTitle.length >= 3) {
+                        chapterTargetMap.set(h.chapterTitle, { bookId: h.bookId, chapId: h.chapterId, pNum: 1 });
+                    }
+                }
+            });
+
+            (topPassages || []).forEach(p => {
+                if (p.type === 'book') {
+                    if (!bookTargetMap.has(p.book.title)) {
+                        bookTargetMap.set(p.book.title, { bookId: p.book.id, chapId: p.chapter.id, pNum: p.pNum });
+                    }
+                    if (p.chapTitle && p.chapTitle.length >= 3 && !chapterTargetMap.has(p.chapTitle)) {
+                        chapterTargetMap.set(p.chapTitle, { bookId: p.book.id, chapId: p.chapter.id, pNum: p.pNum });
+                    }
+                    if (p.pNum && !paraTargetMap.has(String(p.pNum))) {
+                        paraTargetMap.set(String(p.pNum), { bookId: p.book.id, chapId: p.chapter.id, pNum: p.pNum });
+                    }
+                }
+            });
+
+            (distributionList || []).forEach(d => {
+                if (!bookTargetMap.has(d.bookTitle)) {
+                    bookTargetMap.set(d.bookTitle, { bookId: d.bookId, chapId: d.firstChapId, pNum: 1 });
+                }
+            });
+
+            // Also add all 24 catalog books as fallback links (sorted longest title first so "סוד מדרש התולדות 10" matches before "... 1")
+            const allBookEntries = books.map(b => {
+                const known = bookTargetMap.get(b.title);
+                const firstChap = (chapterCache[b.id] && chapterCache[b.id][0]) ? chapterCache[b.id][0].id : 1;
+                return {
+                    title: b.title,
+                    bookId: b.id,
+                    chapId: known ? known.chapId : firstChap,
+                    pNum: known ? known.pNum : 1
+                };
+            }).sort((a, b) => b.title.length - a.title.length);
+
+            // Protect existing HTML tags by splitting on tags and only transforming text nodes
+            const parts = html.split(/(<[^>]+>)/g);
+            let insideAnchor = 0;
+            for (let i = 0; i < parts.length; i++) {
+                const seg = parts[i];
+                if (seg.startsWith('<')) {
+                    if (/^<a\b/i.test(seg)) insideAnchor++;
+                    else if (/^<\/a>/i.test(seg)) insideAnchor = Math.max(0, insideAnchor - 1);
+                    continue;
+                }
+                if (insideAnchor > 0 || !seg.trim()) continue;
+
+                let updated = seg;
+
+                // 1. Linkify Book Titles (longest first using placeholders to avoid nested replacements)
+                const placeholders = [];
+                allBookEntries.forEach((entry) => {
+                    const esc = entry.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    const re = new RegExp(esc, 'g');
+                    updated = updated.replace(re, (m) => {
+                        const tok = `__AILINK_${placeholders.length}__`;
+                        const href = makeReaderHref(entry.bookId, entry.chapId, entry.pNum);
+                        placeholders.push(`<a href="${href}" class="ai-inline-link" data-book-id="${entry.bookId}" data-chap-id="${entry.chapId}" data-p-num="${entry.pNum}">${m}</a>`);
+                        return tok;
+                    });
+                });
+
+                // 2. Linkify matched Chapter Titles (longest first)
+                Array.from(chapterTargetMap.entries())
+                    .sort((a, b) => b[0].length - a[0].length)
+                    .forEach(([cTitle, target]) => {
+                        const esc = cTitle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                        const re = new RegExp(esc, 'g');
+                        updated = updated.replace(re, (m) => {
+                            const tok = `__AILINK_${placeholders.length}__`;
+                            const href = makeReaderHref(target.bookId, target.chapId, target.pNum);
+                            placeholders.push(`<a href="${href}" class="ai-inline-link" data-book-id="${target.bookId}" data-chap-id="${target.chapId}" data-p-num="${target.pNum}">${m}</a>`);
+                            return tok;
+                        });
+                    });
+
+                // 3. Linkify Paragraph mentions (e.g. "פסקה §54" or "§54")
+                updated = updated.replace(/(?:פסקה\s*)?§(\d+)/g, (full, numStr) => {
+                    const target = paraTargetMap.get(numStr) || (topPassages[0] && topPassages[0].type === 'book' ? { bookId: topPassages[0].book.id, chapId: topPassages[0].chapter.id, pNum: Number(numStr) } : null);
+                    if (!target) return full;
+                    const tok = `__AILINK_${placeholders.length}__`;
+                    const href = makeReaderHref(target.bookId, target.chapId, numStr);
+                    placeholders.push(`<a href="${href}" class="ai-inline-link" data-book-id="${target.bookId}" data-chap-id="${target.chapId}" data-p-num="${numStr}">${full}</a>`);
+                    return tok;
+                });
+
+                placeholders.forEach((htmlLink, idx) => {
+                    updated = updated.split(`__AILINK_${idx}__`).join(htmlLink);
+                });
+                parts[i] = updated;
+            }
+            return parts.join('');
+        }
+
         function buildTitleBannerAndLocationMap(exactTitleHits, distributionList, coreSubject) {
             let extraHtml = '';
 
             if (exactTitleHits.length > 0) {
                 const topHit = exactTitleHits[0];
                 if (topHit.type === 'book_chapter') {
+                    const chapHref = makeReaderHref(topHit.bookId, topHit.chapterId, 1);
                     extraHtml += `
                         <div class="ai-exact-title-banner">
                             <div class="ai-exact-title-info">
-                                <strong>נמצא פרק ייעודי בנושא: "${topHit.chapterTitle}"</strong>
-                                <span>מתוך הספר <strong>${topHit.bookTitle}</strong>${exactTitleHits.length > 1 ? ` (ועוד ${exactTitleHits.length - 1} כותרות תואמות)` : ''}</span>
+                                <strong>נמצא פרק ייעודי בנושא: <a href="${chapHref}" class="ai-inline-link" data-book-id="${topHit.bookId}" data-chap-id="${topHit.chapterId}" data-p-num="1">"${topHit.chapterTitle}"</a></strong>
+                                <span>מתוך הספר <a href="${chapHref}" class="ai-inline-link" data-book-id="${topHit.bookId}" data-chap-id="${topHit.chapterId}" data-p-num="1">${topHit.bookTitle}</a>${exactTitleHits.length > 1 ? ` (ועוד ${exactTitleHits.length - 1} כותרות תואמות)` : ''}</span>
                             </div>
-                            <button type="button" class="ai-source-jump-btn" data-book-id="${topHit.bookId}" data-chap-id="${topHit.chapterId}" data-p-num="1">
+                            <a href="${chapHref}" class="ai-source-jump-btn" data-book-id="${topHit.bookId}" data-chap-id="${topHit.chapterId}" data-p-num="1">
                                 פתח את הפרק המלא ↗
-                            </button>
+                            </a>
                         </div>
                     `;
                 } else {
                     extraHtml += `
                         <div class="ai-exact-title-banner">
                             <div class="ai-exact-title-info">
-                                <strong>נמצא שיעור/תמלול בנושא: "${topHit.title}"</strong>
+                                <strong>נמצא שיעור/תמלול בנושא: <a href="#/transcripts" class="ai-inline-link ai-open-transcript-btn" data-tr-id="${topHit.trId}">"${topHit.title}"</a></strong>
                                 <span>קטגוריה: ${topHit.category}</span>
                             </div>
                             <button type="button" class="ai-source-jump-btn ai-open-transcript-btn" data-tr-id="${topHit.trId}">
@@ -7234,15 +7662,18 @@ function initApp() {
             if (distributionList.length > 0) {
                 const totalChaps = distributionList.reduce((acc, d) => acc + d.chaptersCount, 0);
                 const totalOccs = distributionList.reduce((acc, d) => acc + d.occurrences, 0);
-                const pills = distributionList.slice(0, 8).map(d => `
-                    <button type="button" class="ai-loc-pill ai-source-jump-btn" data-book-id="${d.bookId}" data-chap-id="${d.firstChapId}" data-p-num="1" title="פתח ב-${d.bookTitle} (${d.firstChapTitle})">
-                        <span>${d.bookTitle}</span>
-                        <span class="ai-loc-pill-count">${d.chaptersCount} פרקים (${d.occurrences})</span>
-                    </button>
-                `).join('');
+                const pills = distributionList.slice(0, 8).map(d => {
+                    const href = makeReaderHref(d.bookId, d.firstChapId, 1);
+                    return `
+                        <a href="${href}" class="ai-loc-pill ai-source-jump-btn" data-book-id="${d.bookId}" data-chap-id="${d.firstChapId}" data-p-num="1" title="פתח ב-${d.bookTitle} (${d.firstChapTitle})" style="text-decoration: none;">
+                            <span>${d.bookTitle}</span>
+                            <span class="ai-loc-pill-count">${d.chaptersCount} פרקים (${d.occurrences})</span>
+                        </a>
+                    `;
+                }).join('');
                 extraHtml += `
                     <div class="ai-location-map">
-                        <div class="ai-location-map-label">מפת הופעות של "${coreSubject}" בספרייה: סה״כ ${totalOccs} מופעים ב-${totalChaps} פרקים על פני ${distributionList.length} ספרים:</div>
+                        <div class="ai-location-map-label">מפת הופעות של "${coreSubject}" בספרייה: סה״כ ${totalOccs} מופעים ב-${totalChaps} פרקים על פני ${distributionList.length} ספרים (לחץ למעבר ישיר):</div>
                         <div class="ai-location-pills">${pills}</div>
                     </div>
                 `;
@@ -7281,19 +7712,24 @@ function initApp() {
             let bodyParagraphHtml = '';
 
             if (best) {
-                const bestLoc = best.type === 'book'
-                    ? `בספר <strong>"${best.book.title}"</strong> (פרק <em>"${best.chapTitle}"</em>, פסקה §${best.pNum})`
-                    : `בתמלול <strong>"${best.chapTitle}"</strong>`;
                 const snippet = highlightCenteredSnippet(best.text, coreSubject, tokens);
+                if (best.type === 'book') {
+                    const directHref = makeReaderHref(best.book.id, best.chapter.id, best.pNum);
+                    const chapHref = makeReaderHref(best.book.id, best.chapter.id, 1);
+                    const bestLoc = `בספר <a href="${chapHref}" class="ai-inline-link" data-book-id="${best.book.id}" data-chap-id="${best.chapter.id}" data-p-num="1">"${best.book.title}"</a> (פרק <a href="${chapHref}" class="ai-inline-link" data-book-id="${best.book.id}" data-chap-id="${best.chapter.id}" data-p-num="1">"${best.chapTitle}"</a>, <a href="${directHref}" class="ai-inline-link" data-book-id="${best.book.id}" data-chap-id="${best.chapter.id}" data-p-num="${best.pNum}">פסקה §${best.pNum} ↗</a>)`;
 
-                if (isLocationQuery) {
+                    const introLine = isLocationQuery
+                        ? `הנושא/הביטוי <strong>"${coreSubject}"</strong> מופיע במקור המרכזי ${bestLoc}:`
+                        : `בכתבי הרב אשכנזי (מניטו), הנושא מבואר בהרחבה ${bestLoc}:`;
+
                     bodyParagraphHtml = `
-                        <p>הנושא/הביטוי <strong>"${coreSubject}"</strong> מופיע במקור המרכזי ${bestLoc}:</p>
-                        <p style="font-family: var(--font-serif); font-size: 1.05rem; padding: 0.7rem 1rem; background: var(--secondary-bg); border-right: 3px solid var(--accent); border-radius: 8px;">"${snippet}"</p>
+                        <p>${introLine}</p>
+                        <a href="${directHref}" class="ai-inline-excerpt-link" data-book-id="${best.book.id}" data-chap-id="${best.chapter.id}" data-p-num="${best.pNum}" title="לחץ לפתיחת הפסקה המלאה בספר" style="font-family: var(--font-serif); font-size: 1.05rem; padding: 0.7rem 1rem; background: var(--secondary-bg); border-right: 3px solid var(--accent); border-radius: 8px; margin: 0.45rem 0;">"${snippet}"</a>
                     `;
                 } else {
+                    const bestLoc = `בתמלול <a href="#/transcripts" class="ai-inline-link ai-open-transcript-btn" data-tr-id="${best.transcript.id}">"${best.chapTitle}" ↗</a>`;
                     bodyParagraphHtml = `
-                        <p>בכתבי הרב אשכנזי (מניטו), הנושא מבואר בהרחבה ${bestLoc}:</p>
+                        <p>${isLocationQuery ? `הנושא/הביטוי <strong>"${coreSubject}"</strong> מופיע` : 'הנושא מבואר'} ${bestLoc}:</p>
                         <p style="font-family: var(--font-serif); font-size: 1.05rem; padding: 0.7rem 1rem; background: var(--secondary-bg); border-right: 3px solid var(--accent); border-radius: 8px;">"${snippet}"</p>
                     `;
                 }
@@ -7415,13 +7851,14 @@ function initApp() {
                         const geminiText = await generateGeminiAnswer(apiKey, question, parsed, topPassages, glossaryHits, exactTitleHits, distributionList);
                         if (geminiText) {
                             const bannerAndMapHtml = buildTitleBannerAndLocationMap(exactTitleHits, distributionList, parsed.coreSubject);
+                            const linkedGeminiHtml = linkifyLocationsInHtml(formatSimpleMarkdown(geminiText), topPassages, exactTitleHits, distributionList);
                             answerInnerHtml = `
                                 <div class="ai-answer-header-row">
                                     <h4>✨ תשובה מבוססת מקורות</h4>
                                     <button type="button" class="ai-copy-answer-btn" title="העתק תשובה ומקורות">📋 העתק</button>
                                 </div>
                                 ${bannerAndMapHtml}
-                                <div class="ai-answer-body">${formatSimpleMarkdown(geminiText)}</div>
+                                <div class="ai-answer-body">${linkedGeminiHtml}</div>
                             `;
                         }
                     } catch (apiErr) {}
@@ -7435,20 +7872,22 @@ function initApp() {
                 if (topPassages.length > 0) {
                     const cards = topPassages.map((item, idx) => {
                         if (item.type === 'book') {
+                            const directHref = makeReaderHref(item.book.id, item.chapter.id, item.pNum);
+                            const chapHref = makeReaderHref(item.book.id, item.chapter.id, 1);
                             return `
                                 <div class="ai-source-card">
                                     <div class="ai-source-header">
                                         <div class="ai-source-location">
                                             <span class="ai-source-num-badge">${idx + 1}</span>
-                                            <span>${item.book.title}</span>
+                                            <a href="${chapHref}" class="ai-inline-link" data-book-id="${item.book.id}" data-chap-id="${item.chapter.id}" data-p-num="1">${item.book.title}</a>
                                             <span>•</span>
-                                            <span>${item.chapTitle}</span>
-                                            <span class="ai-source-para-pill">(§${item.pNum})</span>
+                                            <a href="${chapHref}" class="ai-inline-link" data-book-id="${item.book.id}" data-chap-id="${item.chapter.id}" data-p-num="1">${item.chapTitle}</a>
+                                            <a href="${directHref}" class="ai-inline-link ai-source-para-pill" data-book-id="${item.book.id}" data-chap-id="${item.chapter.id}" data-p-num="${item.pNum}">(§${item.pNum})</a>
                                         </div>
                                         <div class="ai-source-actions">
-                                            <button type="button" class="ai-source-jump-btn" data-book-id="${item.book.id}" data-chap-id="${item.chapter.id}" data-p-num="${item.pNum}">
+                                            <a href="${directHref}" class="ai-source-jump-btn" data-book-id="${item.book.id}" data-chap-id="${item.chapter.id}" data-p-num="${item.pNum}">
                                                 פתח בפסקה §${item.pNum} ↗
-                                            </button>
+                                            </a>
                                         </div>
                                     </div>
                                     <p class="ai-source-excerpt">"${highlightCenteredSnippet(item.text, parsed.coreSubject, parsed.tokens)}"</p>
@@ -7461,7 +7900,7 @@ function initApp() {
                                 <div class="ai-source-header">
                                     <div class="ai-source-location">
                                         <span class="ai-source-num-badge">${idx + 1}</span>
-                                        <span>🎙️ תמלול: ${tr.title}</span>
+                                        <a href="#/transcripts" class="ai-inline-link ai-open-transcript-btn" data-tr-id="${tr.id}">🎙️ תמלול: ${tr.title}</a>
                                     </div>
                                     <div class="ai-source-actions">
                                         <button type="button" class="ai-source-jump-btn ai-open-transcript-btn" data-tr-id="${tr.id}">
@@ -7485,18 +7924,21 @@ function initApp() {
                 if (contentEl) {
                     contentEl.innerHTML = `<div class="ai-answer-card">${answerInnerHtml}</div>${sourcesHtml}`;
 
-                    contentEl.querySelectorAll('.ai-source-jump-btn[data-book-id]').forEach(btn => {
-                        btn.addEventListener('click', () => {
-                            const bId = btn.dataset.bookId;
-                            const cId = btn.dataset.chapId;
-                            const pNum = btn.dataset.pNum || '1';
+                    contentEl.querySelectorAll('[data-book-id]').forEach(el => {
+                        el.addEventListener('click', (ev) => {
+                            if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button === 1) return; // allow Cmd+Click in new tab!
+                            ev.preventDefault();
+                            const bId = el.dataset.bookId;
+                            const cId = el.dataset.chapId;
+                            const pNum = el.dataset.pNum || '1';
                             window.pendingParagraphScroll = pNum;
-                            window.location.hash = `#/reader/${bId}/chapter/${cId}?p=${pNum}`;
+                            window.location.hash = makeReaderHref(bId, cId, pNum);
                         });
                     });
 
                     contentEl.querySelectorAll('.ai-open-transcript-btn').forEach(btn => {
-                        btn.addEventListener('click', () => {
+                        btn.addEventListener('click', (ev) => {
+                            ev.preventDefault();
                             const trId = btn.dataset.trId;
                             const trSec = document.getElementById('transcriptsSection');
                             if (trSec) trSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -7852,7 +8294,9 @@ function initApp() {
                 }
                 trPreviewBody.scrollTop = 0;
 
-                const cleanHq = (highlightQuery || '').trim();
+                const activeTrInputEl = document.getElementById('transcriptsSearchInput');
+                const fallbackTrQuery = (activeTrInputEl && activeTrInputEl.value.trim()) || (advSearchInput && advSearchInput.value.trim()) || '';
+                const cleanHq = (highlightQuery || fallbackTrQuery).trim();
                 if (cleanHq.length >= 2) {
                     const words = cleanHq.replace(/^"|"$/g, '').split(/\s+/).filter(Boolean);
                     let firstMark = null;
@@ -8297,6 +8741,90 @@ async function startApp() {
         books = books.filter(b => !(Number(b.id) === 1 && b.title === 'ספרים מקוונים'));
     }
     initApp();
+
+    // Instant Crisp Hover Tooltips for all toolbar icons & buttons (replaces slow OS title tooltips)
+    (function setupInstantTooltips() {
+        const tipEl = document.getElementById('uiHoverTooltip');
+        if (!tipEl || window.matchMedia('(hover: none)').matches) return;
+
+        let showTimer = null;
+        let currentAnchor = null;
+
+        function positionTooltip(anchor) {
+            if (!anchor || !tipEl.textContent) return;
+            const rect = anchor.getBoundingClientRect();
+            if (rect.width === 0 && rect.height === 0) return;
+
+            tipEl.style.left = '0px';
+            tipEl.style.top = '0px';
+            const tipRect = tipEl.getBoundingClientRect();
+
+            let left = rect.left + (rect.width / 2) - (tipRect.width / 2);
+            left = Math.max(8, Math.min(window.innerWidth - tipRect.width - 8, left));
+
+            let top = rect.bottom + 8;
+            if (top + tipRect.height > window.innerHeight - 8) {
+                top = Math.max(8, rect.top - tipRect.height - 8);
+            }
+
+            tipEl.style.left = `${Math.round(left)}px`;
+            tipEl.style.top = `${Math.round(top)}px`;
+        }
+
+        function hideTooltip() {
+            clearTimeout(showTimer);
+            currentAnchor = null;
+            tipEl._anchorEl = null;
+            tipEl.classList.remove('is-visible');
+            tipEl.setAttribute('aria-hidden', 'true');
+        }
+
+        document.addEventListener('mouseover', (e) => {
+            const target = e.target.closest('button, a, [data-tooltip], [title]');
+            if (!target) {
+                if (currentAnchor) hideTooltip();
+                return;
+            }
+            if (target.hasAttribute('title')) {
+                const rawTitle = (target.getAttribute('title') || '').trim();
+                if (rawTitle && !target.hasAttribute('data-tooltip')) {
+                    target.setAttribute('data-tooltip', rawTitle);
+                    if (!target.hasAttribute('aria-label')) target.setAttribute('aria-label', rawTitle);
+                }
+                target.removeAttribute('title');
+            }
+            const label = (target.getAttribute('data-tooltip') || '').trim();
+            if (!label) {
+                if (currentAnchor) hideTooltip();
+                return;
+            }
+            if (currentAnchor === target) return;
+            clearTimeout(showTimer);
+            currentAnchor = target;
+            showTimer = setTimeout(() => {
+                if (currentAnchor !== target) return;
+                tipEl.textContent = label;
+                tipEl._anchorEl = target;
+                positionTooltip(target);
+                tipEl.classList.add('is-visible');
+                tipEl.setAttribute('aria-hidden', 'false');
+            }, 65);
+        });
+
+        document.addEventListener('mouseout', (e) => {
+            if (!currentAnchor) return;
+            const related = e.relatedTarget;
+            if (related && currentAnchor.contains(related)) return;
+            hideTooltip();
+        });
+
+        window.addEventListener('scroll', hideTooltip, { passive: true, capture: true });
+        document.addEventListener('mousedown', (e) => {
+            // Keep theme button tooltip alive so user sees it flip between מצב יום / מצב לילה, hide on other clicks
+            const t = e.target.closest('#toggleTheme, #navThemeToggle');
+            if (!t) hideTooltip();
+        });
+    })();
 
     // Central Runtime Configuration (populated by /config.js from config.json, with static fallback)
     const runtimeConfig = Object.assign(

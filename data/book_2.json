@@ -9,27 +9,15 @@
     "readingMinutes": 18,
     "relatedChapters": [
       {
-        "bookId": 10,
-        "bookTitle": "סוד מדרש התולדות 8",
-        "chapterId": 6,
-        "chapterTitle": "אורו של מלך המשיח",
-        "readingMinutes": 96,
+        "bookId": 9,
+        "bookTitle": "סוד מדרש התולדות 7",
+        "chapterId": 13,
+        "chapterTitle": "קהל עמים",
+        "readingMinutes": 34,
         "sharedTopics": [
           "יוסף",
           "יהודה",
           "גאולה"
-        ]
-      },
-      {
-        "bookId": 10,
-        "bookTitle": "סוד מדרש התולדות 8",
-        "chapterId": 5,
-        "chapterTitle": "רוגזו של יוסף",
-        "readingMinutes": 71,
-        "sharedTopics": [
-          "יוסף",
-          "גאולה",
-          "יהודה"
         ]
       },
       {
@@ -45,15 +33,27 @@
         ]
       },
       {
-        "bookId": 9,
-        "bookTitle": "סוד מדרש התולדות 7",
-        "chapterId": 13,
-        "chapterTitle": "קהל עמים",
-        "readingMinutes": 34,
+        "bookId": 11,
+        "bookTitle": "סוד מדרש התולדות 9",
+        "chapterId": 2,
+        "chapterTitle": "מבוא לתורת התולדות - מאת חיים רוטנברג",
+        "readingMinutes": 134,
         "sharedTopics": [
           "יוסף",
           "יהודה",
-          "משיח בן יוסף"
+          "מאת"
+        ]
+      },
+      {
+        "bookId": 10,
+        "bookTitle": "סוד מדרש התולדות 8",
+        "chapterId": 5,
+        "chapterTitle": "רוגזו של יוסף",
+        "readingMinutes": 71,
+        "sharedTopics": [
+          "יוסף",
+          "גאולה",
+          "יהודה"
         ]
       }
     ],
@@ -76,8 +76,8 @@
         "readingMinutes": 345,
         "sharedTopics": [
           "תשובה",
-          "שבת",
-          "רש\"י"
+          "רש\"י",
+          "קדושה"
         ]
       },
       {
@@ -88,19 +88,19 @@
         "readingMinutes": 143,
         "sharedTopics": [
           "תשובה",
-          "קדושה",
+          "רש\"י",
           "עשו"
         ]
       },
       {
-        "bookId": 18,
-        "bookTitle": "סוד העברי 2",
-        "chapterId": 2,
-        "chapterTitle": "שער ראשון - שת עד נח",
-        "readingMinutes": 166,
+        "bookId": 4,
+        "bookTitle": "סוד מדרש התולדות 2",
+        "chapterId": 6,
+        "chapterTitle": "ירידה לצורך עלייה",
+        "readingMinutes": 114,
         "sharedTopics": [
           "תשובה",
-          "רש\"י",
+          "קדושה",
           "פרעה"
         ]
       },
@@ -111,9 +111,9 @@
         "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
         "readingMinutes": 200,
         "sharedTopics": [
-          "שבת",
           "רש\"י",
-          "קדושה"
+          "קדושה",
+          "מדרש"
         ]
       }
     ],
@@ -137,7 +137,19 @@
         "sharedTopics": [
           "תולדות",
           "שבת",
-          "נח"
+          "ירושלים"
+        ]
+      },
+      {
+        "bookId": 4,
+        "bookTitle": "סוד מדרש התולדות 2",
+        "chapterId": 6,
+        "chapterTitle": "ירידה לצורך עלייה",
+        "readingMinutes": 114,
+        "sharedTopics": [
+          "תולדות",
+          "גלות",
+          "אברהם"
         ]
       },
       {
@@ -149,31 +161,19 @@
         "sharedTopics": [
           "תולדות",
           "שבת",
-          "נח"
+          "ירושלים"
         ]
       },
       {
-        "bookId": 17,
-        "bookTitle": "סוד העברי 1",
-        "chapterId": 5,
-        "chapterTitle": "שער רביעי - שושלת שת",
-        "readingMinutes": 114,
+        "bookId": 9,
+        "bookTitle": "סוד מדרש התולדות 7",
+        "chapterId": 2,
+        "chapterTitle": "יציאה לקראת העתיד",
+        "readingMinutes": 143,
         "sharedTopics": [
           "תולדות",
-          "שבת",
-          "נח"
-        ]
-      },
-      {
-        "bookId": 18,
-        "bookTitle": "סוד העברי 2",
-        "chapterId": 4,
-        "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
-        "readingMinutes": 200,
-        "sharedTopics": [
-          "תולדות",
-          "שבת",
-          "נח"
+          "גלות",
+          "אברהם"
         ]
       }
     ],
@@ -196,32 +196,20 @@
         "readingMinutes": 345,
         "sharedTopics": [
           "תולדות",
-          "פסח",
-          "נח"
+          "שבת",
+          "פסח"
         ]
       },
       {
-        "bookId": 17,
-        "bookTitle": "סוד העברי 1",
-        "chapterId": 5,
-        "chapterTitle": "שער רביעי - שושלת שת",
+        "bookId": 4,
+        "bookTitle": "סוד מדרש התולדות 2",
+        "chapterId": 6,
+        "chapterTitle": "ירידה לצורך עלייה",
         "readingMinutes": 114,
         "sharedTopics": [
           "תולדות",
-          "נח",
-          "מדרש"
-        ]
-      },
-      {
-        "bookId": 18,
-        "bookTitle": "סוד העברי 2",
-        "chapterId": 2,
-        "chapterTitle": "שער ראשון - שת עד נח",
-        "readingMinutes": 166,
-        "sharedTopics": [
-          "תולדות",
-          "נח",
-          "מדרש"
+          "מדרש",
+          "יוסף"
         ]
       },
       {
@@ -232,8 +220,20 @@
         "readingMinutes": 173,
         "sharedTopics": [
           "תולדות",
-          "נח",
+          "שבת",
           "מדרש"
+        ]
+      },
+      {
+        "bookId": 17,
+        "bookTitle": "סוד העברי 1",
+        "chapterId": 5,
+        "chapterTitle": "שער רביעי - שושלת שת",
+        "readingMinutes": 114,
+        "sharedTopics": [
+          "תולדות",
+          "מדרש",
+          "יוסף"
         ]
       }
     ],

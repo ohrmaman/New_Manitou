@@ -5756,6 +5756,35 @@ input, select, textarea {
     margin-bottom: 0.3rem;
 }
 
+/* Direct Clickable Source Hyperlinks Inside AI Answers & Cards */
+.ai-inline-link {
+    color: var(--accent);
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: rgba(212, 175, 55, 0.55);
+    text-underline-offset: 3px;
+    border-radius: 4px;
+    padding: 0 2px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, text-decoration-color 0.15s ease;
+}
+
+.ai-inline-link:hover {
+    background: rgba(212, 175, 55, 0.16);
+    text-decoration-color: var(--accent);
+}
+
+.ai-inline-excerpt-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 0.16s ease, background-color 0.16s ease;
+}
+
+.ai-inline-excerpt-link:hover {
+    background: rgba(212, 175, 55, 0.08) !important;
+}
+
 .ai-glossary-match-box {
     background: rgba(212, 175, 55, 0.07);
     border: 1px solid rgba(212, 175, 55, 0.28);
@@ -8199,6 +8228,104 @@ body.reader-open .home-scroll-progress-wrap {
         flex: 1;
         justify-content: center;
     }
+}
+
+/* Instant Crisp Hover Tooltip Pill across Icons & Buttons */
+.ui-hover-tooltip {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2600;
+    pointer-events: none;
+    background: rgba(15, 23, 42, 0.96);
+    color: #f8fafc;
+    border: 1px solid rgba(212, 175, 55, 0.45);
+    border-radius: 8px;
+    padding: 0.32rem 0.68rem;
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.3;
+    white-space: nowrap;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    transform: translateY(-3px);
+    transition: opacity 0.12s ease, transform 0.12s ease;
+    direction: rtl;
+}
+
+.ui-hover-tooltip.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Smart Hyperlinks Inside Footnote Popovers & Bottom Chapter Footnotes */
+.fn-ref-link {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: rgba(212, 175, 55, 0.55);
+    text-underline-offset: 3px;
+    border-radius: 4px;
+    padding: 0 2px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, text-decoration-color 0.15s ease;
+}
+
+.fn-ref-link:hover {
+    background: rgba(212, 175, 55, 0.18);
+    text-decoration-color: var(--accent);
+}
+
+.fn-ref-link.fn-manitou-link {
+    font-weight: 700;
+    background: rgba(212, 175, 55, 0.1);
+    padding: 1px 5px;
+}
+
+.fn-ref-link.fn-external-link {
+    color: #93c5fd;
+    text-decoration-color: rgba(147, 197, 253, 0.48);
+}
+
+[data-theme="light"] .fn-ref-link.fn-external-link,
+body:not([data-theme="dark"]) .fn-ref-link.fn-external-link {
+    color: #2563eb;
+    text-decoration-color: rgba(37, 99, 235, 0.4);
+}
+
+.fn-ref-link.fn-external-link:hover {
+    background: rgba(59, 130, 246, 0.14);
+}
+
+/* Original Site Link at Bottom of Reader Chapters Sidebar */
+.sidebar-original-site-footer {
+    margin-top: 1.15rem;
+    padding-top: 0.95rem;
+    border-top: 1px solid var(--border);
+}
+
+.sidebar-original-site-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.62rem 0.95rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--primary-bg);
+    color: var(--text-muted);
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
+}
+
+.sidebar-original-site-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(212, 175, 55, 0.08);
 }
 
 

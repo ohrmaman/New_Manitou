@@ -20,13 +20,28 @@ HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
 }
 
-BASE_DIR = '/Users/ormaman/New_Manitou'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, 'data')
 TRANSCRIPTS_DIR = os.path.join(DATA_DIR, 'transcripts')
 PDFS_CACHE_DIR = os.path.join(TRANSCRIPTS_DIR, 'pdfs')
 LIB_INNER_CACHE_PATH = os.path.join(TRANSCRIPTS_DIR, 'library_inner_cache.json')
 PDF_TEXT_CACHE_PATH = os.path.join(TRANSCRIPTS_DIR, 'pdf_text_cache.json')
 EXTRACTOR_JS = os.path.join(BASE_DIR, 'extract_pdf_text.js')
+
+
+def _load_env():
+    env_p = os.path.join(BASE_DIR, '.env')
+    if os.path.exists(env_p):
+        with open(env_p, 'r', encoding='utf-8') as ef:
+            for ln in ef:
+                if '=' in ln and not ln.strip().startswith('#'):
+                    k, v = ln.strip().split('=', 1)
+                    os.environ.setdefault(k.strip(), v.strip().strip('\'"'))
+
+
+_load_env()
+SITE_USER = os.environ.get('MANITOU_SITE_USER', '')
+SITE_PASS = os.environ.get('MANITOU_SITE_PASSWORD', '')
 
 os.makedirs(PDFS_CACHE_DIR, exist_ok=True)
 
@@ -91,9 +106,9 @@ def create_manitou_opener():
                 if not name:
                     continue
                 if 'username' in name.lower():
-                    payload[name] = '0507682931'
+                    payload[name] = SITE_USER
                 elif 'password' in name.lower():
-                    payload[name] = '0507682931'
+                    payload[name] = SITE_PASS
                 else:
                     payload[name] = inp.get('value', '')
             action = urllib.parse.urljoin("https://manitou.org.il/arcive/sfarim", form.get('action') or '')
@@ -367,8 +382,10 @@ def scrape_manitou_org_articles_and_booklets(opener, existing_manitou_items):
                         await page.goto("https://manitou.org.il/arcive/sfarim", timeout=30000, wait_until='domcontentloaded')
                         for inp in await page.query_selector_all('input'):
                             nm = (await inp.get_attribute('name') or '').lower()
-                            if 'username' in nm or 'password' in nm:
-                                await inp.fill('0507682931')
+                            if 'username' in nm and SITE_USER:
+                                await inp.fill(SITE_USER)
+                            elif 'password' in nm and SITE_PASS:
+                                await inp.fill(SITE_PASS)
                         for btn in await page.query_selector_all('button, input[type="submit"]'):
                             txt = (await btn.inner_text() if await btn.evaluate('el => el.tagName') == 'BUTTON' else '') or (await btn.get_attribute('value') or '')
                             if 'כניסה' in txt:
@@ -629,8 +646,11 @@ def main():
     if not lib_items and existing_lib_items:
         lib_items = existing_lib_items
 
-    # Deduplicate items that share identical extracted content (e.g. multiple Joomla URLs pointing to same PDF)
+    # Deduplicate items that share identical extracted content and prefer properly titled records over generic "קישור" links
+    GENERIC_TITLES = {'קישור', 'להורדה', 'קובץ', 'pdf', 'הורדה', 'לצפייה'}
     raw_combined = man_items + lib_items
+    raw_combined.sort(key=lambda x: (1 if (x.get('title') or '').strip().lower() in GENERIC_TITLES else 0))
+
     seen_fingerprints = set()
     all_items = []
     for r in raw_combined:
@@ -638,10 +658,19 @@ def main():
         r['plainText'] = plain
         if r.get('html'):
             r['html'] = r['html'].replace('\u00aa', 'נ')
-        # Omit redundant bulky HTML when plainText already holds the full extracted PDF paragraphs (rendered cleanly in UI)
+
+        # Upgrade generic "קישור" title from first meaningful heading line of extracted text if available
+        cur_title = (r.get('title') or '').strip()
+        if cur_title.lower() in GENERIC_TITLES and plain:
+            first_lines = [ln.strip() for ln in plain.splitlines() if 4 <= len(ln.strip()) <= 95]
+            if first_lines:
+                r['title'] = first_lines[0]
+
         if r.get('localPdf') and len(plain) > 1000:
             r['html'] = ''
-        fp = hashlib.md5(plain[:2500].encode('utf-8')).hexdigest() if len(plain) >= 600 else f"url:{r.get('id')}:{r.get('sourceUrl')}"
+
+        norm_body = re.sub(r'\s+', ' ', plain)
+        fp = hashlib.md5(norm_body[80:1800].encode('utf-8')).hexdigest() if len(norm_body) >= 400 else f"url:{r.get('id')}:{r.get('sourceUrl')}"
         if fp in seen_fingerprints:
             continue
         seen_fingerprints.add(fp)

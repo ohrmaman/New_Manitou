@@ -9,51 +9,51 @@
     "readingMinutes": 6,
     "relatedChapters": [
       {
-        "bookId": 17,
-        "bookTitle": "סוד העברי 1",
-        "chapterId": 3,
-        "chapterTitle": "שער ראשון - הבריאה",
-        "readingMinutes": 173,
-        "sharedTopics": [
-          "העברי",
-          "נח",
-          "מוסר"
-        ]
-      },
-      {
-        "bookId": 17,
-        "bookTitle": "סוד העברי 1",
-        "chapterId": 5,
-        "chapterTitle": "שער רביעי - שושלת שת",
-        "readingMinutes": 114,
-        "sharedTopics": [
-          "העברי",
-          "נח",
-          "מוסר"
-        ]
-      },
-      {
-        "bookId": 25,
-        "bookTitle": "סוד מדרש התולדות 10",
-        "chapterId": 20,
-        "chapterTitle": "התהוות הזהות העברית",
-        "readingMinutes": 31,
-        "sharedTopics": [
-          "העברי",
-          "נח",
-          "מוסר"
-        ]
-      },
-      {
-        "bookId": 24,
-        "bookTitle": "קול המועד",
+        "bookId": 2,
+        "bookTitle": "מספד למשיח",
         "chapterId": 2,
-        "chapterTitle": "הרב שרקי על שיעורי מניטו בשפה העברית",
-        "readingMinutes": 14,
+        "chapterTitle": "פרק 1: המספד בירושלים",
+        "readingMinutes": 188,
         "sharedTopics": [
           "העברי",
-          "נח",
-          "מוסר"
+          "תולדות",
+          "נח"
+        ]
+      },
+      {
+        "bookId": 5,
+        "bookTitle": "סוד מדרש התולדות 3",
+        "chapterId": 11,
+        "chapterTitle": "נאצלים ונבראים",
+        "readingMinutes": 165,
+        "sharedTopics": [
+          "העברי",
+          "תולדות",
+          "נח"
+        ]
+      },
+      {
+        "bookId": 6,
+        "bookTitle": "סוד מדרש התולדות 4",
+        "chapterId": 2,
+        "chapterTitle": "התפתחות או אבולוציה אקראית?",
+        "readingMinutes": 124,
+        "sharedTopics": [
+          "העברי",
+          "תולדות",
+          "נח"
+        ]
+      },
+      {
+        "bookId": 6,
+        "bookTitle": "סוד מדרש התולדות 4",
+        "chapterId": 3,
+        "chapterTitle": "הביאו עלי כפרה על שמיעטתי את הירח",
+        "readingMinutes": 129,
+        "sharedTopics": [
+          "העברי",
+          "תולדות",
+          "נח"
         ]
       }
     ],
@@ -71,23 +71,23 @@
       {
         "bookId": 17,
         "bookTitle": "סוד העברי 1",
-        "chapterId": 3,
-        "chapterTitle": "שער ראשון - הבריאה",
-        "readingMinutes": 173,
+        "chapterId": 5,
+        "chapterTitle": "שער רביעי - שושלת שת",
+        "readingMinutes": 114,
         "sharedTopics": [
-          "העברי",
-          "תשובה",
-          "תולדות"
+          "תולדות",
+          "רש\"י",
+          "קין"
         ]
       },
       {
         "bookId": 17,
         "bookTitle": "סוד העברי 1",
-        "chapterId": 5,
-        "chapterTitle": "שער רביעי - שושלת שת",
-        "readingMinutes": 114,
+        "chapterId": 3,
+        "chapterTitle": "שער ראשון - הבריאה",
+        "readingMinutes": 173,
         "sharedTopics": [
-          "העברי",
+          "תשובה",
           "תולדות",
           "רש\"י"
         ]
@@ -101,7 +101,7 @@
         "sharedTopics": [
           "תשובה",
           "תולדות",
-          "שרה"
+          "רש\"י"
         ]
       },
       {
@@ -113,7 +113,7 @@
         "sharedTopics": [
           "תשובה",
           "תולדות",
-          "שרה"
+          "רש\"י"
         ]
       }
     ],
@@ -141,15 +141,15 @@
         ]
       },
       {
-        "bookId": 17,
-        "bookTitle": "סוד העברי 1",
-        "chapterId": 5,
-        "chapterTitle": "שער רביעי - שושלת שת",
-        "readingMinutes": 114,
+        "bookId": 12,
+        "bookTitle": "שערי דמעה 1",
+        "chapterId": 6,
+        "chapterTitle": "מנין לנו הזכות להתפלל?",
+        "readingMinutes": 126,
         "sharedTopics": [
-          "העברי",
+          "תשובה",
           "תולדות",
-          "שבת"
+          "רש\"י"
         ]
       },
       {
@@ -159,9 +159,9 @@
         "chapterTitle": "שער ראשון - הבריאה",
         "readingMinutes": 173,
         "sharedTopics": [
-          "העברי",
           "תשובה",
-          "תולדות"
+          "תולדות",
+          "שבת"
         ]
       },
       {
@@ -173,7 +173,7 @@
         "sharedTopics": [
           "תשובה",
           "תולדות",
-          "עשו"
+          "רש\"י"
         ]
       }
     ],
@@ -196,8 +196,8 @@
         "readingMinutes": 345,
         "sharedTopics": [
           "תולדות",
-          "שבת",
-          "רש\"י"
+          "רש\"י",
+          "קדושה"
         ]
       },
       {
@@ -207,9 +207,9 @@
         "chapterTitle": "שער ראשון - הבריאה",
         "readingMinutes": 173,
         "sharedTopics": [
-          "העברי",
           "תולדות",
-          "שבת"
+          "רש\"י",
+          "קין"
         ]
       },
       {
@@ -219,9 +219,9 @@
         "chapterTitle": "שער רביעי - שושלת שת",
         "readingMinutes": 114,
         "sharedTopics": [
-          "העברי",
           "תולדות",
-          "שבת"
+          "רש\"י",
+          "קין"
         ]
       },
       {
@@ -232,8 +232,8 @@
         "readingMinutes": 143,
         "sharedTopics": [
           "תולדות",
-          "קדושה",
-          "עשו"
+          "רש\"י",
+          "נח"
         ]
       }
     ],
@@ -249,18 +249,6 @@
     "readingMinutes": 22,
     "relatedChapters": [
       {
-        "bookId": 17,
-        "bookTitle": "סוד העברי 1",
-        "chapterId": 5,
-        "chapterTitle": "שער רביעי - שושלת שת",
-        "readingMinutes": 114,
-        "sharedTopics": [
-          "העברי",
-          "יוסף",
-          "אברהם"
-        ]
-      },
-      {
         "bookId": 11,
         "bookTitle": "סוד מדרש התולדות 9",
         "chapterId": 1,
@@ -269,31 +257,43 @@
         "sharedTopics": [
           "סיני",
           "יוסף",
-          "העברי"
+          "אברהם"
         ]
       },
       {
         "bookId": 17,
         "bookTitle": "סוד העברי 1",
-        "chapterId": 3,
-        "chapterTitle": "שער ראשון - הבריאה",
-        "readingMinutes": 173,
+        "chapterId": 5,
+        "chapterTitle": "שער רביעי - שושלת שת",
+        "readingMinutes": 114,
         "sharedTopics": [
+          "יוסף",
           "העברי",
-          "אברהם",
-          "עשו"
+          "אברהם"
         ]
       },
       {
-        "bookId": 25,
-        "bookTitle": "סוד מדרש התולדות 10",
-        "chapterId": 23,
-        "chapterTitle": "יהדות ומהפכה?",
-        "readingMinutes": 41,
+        "bookId": 6,
+        "bookTitle": "סוד מדרש התולדות 4",
+        "chapterId": 5,
+        "chapterTitle": "תיקון העולמות",
+        "readingMinutes": 104,
         "sharedTopics": [
           "סיני",
           "יוסף",
-          "העברי"
+          "אברהם"
+        ]
+      },
+      {
+        "bookId": 24,
+        "bookTitle": "קול המועד",
+        "chapterId": 23,
+        "chapterTitle": "הערות והרחבות",
+        "readingMinutes": 345,
+        "sharedTopics": [
+          "יוסף",
+          "העברי",
+          "אברהם"
         ]
       }
     ],
@@ -315,21 +315,9 @@
         "chapterTitle": "שער רביעי - שושלת שת",
         "readingMinutes": 114,
         "sharedTopics": [
-          "העברי",
           "נח",
-          "מוסר"
-        ]
-      },
-      {
-        "bookId": 17,
-        "bookTitle": "סוד העברי 1",
-        "chapterId": 3,
-        "chapterTitle": "שער ראשון - הבריאה",
-        "readingMinutes": 173,
-        "sharedTopics": [
-          "העברי",
-          "נח",
-          "מוסר"
+          "מוסר",
+          "יצחק"
         ]
       },
       {
@@ -338,6 +326,18 @@
         "chapterId": 2,
         "chapterTitle": "יציאה לקראת העתיד",
         "readingMinutes": 143,
+        "sharedTopics": [
+          "נח",
+          "יצחק",
+          "אברהם"
+        ]
+      },
+      {
+        "bookId": 24,
+        "bookTitle": "קול המועד",
+        "chapterId": 23,
+        "chapterTitle": "הערות והרחבות",
+        "readingMinutes": 345,
         "sharedTopics": [
           "נח",
           "מוסר",
@@ -376,44 +376,44 @@
         "readingMinutes": 8,
         "sharedTopics": [
           "נח",
-          "מצא",
-          "ונח"
+          "רש\"י",
+          "מצא"
         ]
       },
       {
-        "bookId": 2,
-        "bookTitle": "מספד למשיח",
+        "bookId": 25,
+        "bookTitle": "סוד מדרש התולדות 10",
+        "chapterId": 13,
+        "chapterTitle": "צדיק כנח וצדיק כאברהם",
+        "readingMinutes": 51,
+        "sharedTopics": [
+          "נח",
+          "רש\"י",
+          "ברכה"
+        ]
+      },
+      {
+        "bookId": 9,
+        "bookTitle": "סוד מדרש התולדות 7",
         "chapterId": 2,
-        "chapterTitle": "פרק 1: המספד בירושלים",
-        "readingMinutes": 188,
+        "chapterTitle": "יציאה לקראת העתיד",
+        "readingMinutes": 143,
         "sharedTopics": [
           "רש\"י",
           "נח",
-          "העברי"
+          "מהר\"ל"
         ]
       },
       {
-        "bookId": 17,
-        "bookTitle": "סוד העברי 1",
-        "chapterId": 3,
-        "chapterTitle": "שער ראשון - הבריאה",
-        "readingMinutes": 173,
+        "bookId": 12,
+        "bookTitle": "שערי דמעה 1",
+        "chapterId": 2,
+        "chapterTitle": "על שערי דמעה",
+        "readingMinutes": 38,
         "sharedTopics": [
-          "העברי",
           "רש\"י",
-          "נח"
-        ]
-      },
-      {
-        "bookId": 17,
-        "bookTitle": "סוד העברי 1",
-        "chapterId": 5,
-        "chapterTitle": "שער רביעי - שושלת שת",
-        "readingMinutes": 114,
-        "sharedTopics": [
-          "העברי",
-          "רש\"י",
-          "נח"
+          "נח",
+          "מהר\"ל"
         ]
       }
     ],
@@ -441,15 +441,15 @@
         ]
       },
       {
-        "bookId": 17,
-        "bookTitle": "סוד העברי 1",
-        "chapterId": 5,
-        "chapterTitle": "שער רביעי - שושלת שת",
-        "readingMinutes": 114,
+        "bookId": 16,
+        "bookTitle": "סוד לשון הקודש 2",
+        "chapterId": 1,
+        "chapterTitle": "מבוא",
+        "readingMinutes": 189,
         "sharedTopics": [
-          "העברי",
           "שבת",
-          "רש\"י"
+          "רש\"י",
+          "קבלה"
         ]
       },
       {
@@ -459,21 +459,21 @@
         "chapterTitle": "שער ראשון - הבריאה",
         "readingMinutes": 173,
         "sharedTopics": [
-          "העברי",
           "שבת",
-          "רש\"י"
+          "רש\"י",
+          "קבלה"
         ]
       },
       {
-        "bookId": 2,
-        "bookTitle": "מספד למשיח",
-        "chapterId": 2,
-        "chapterTitle": "פרק 1: המספד בירושלים",
-        "readingMinutes": 188,
+        "bookId": 8,
+        "bookTitle": "סוד מדרש התולדות 6",
+        "chapterId": 9,
+        "chapterTitle": "תפילות אבות תקנום",
+        "readingMinutes": 125,
         "sharedTopics": [
           "שבת",
           "רש\"י",
-          "עשו"
+          "קבלה"
         ]
       }
     ],

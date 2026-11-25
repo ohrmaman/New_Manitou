@@ -29,31 +29,31 @@
         "sharedTopics": [
           "תשובה",
           "תולדות",
-          "שרה"
+          "עשו"
         ]
       },
       {
-        "bookId": 2,
-        "bookTitle": "מספד למשיח",
-        "chapterId": 2,
-        "chapterTitle": "פרק 1: המספד בירושלים",
-        "readingMinutes": 188,
+        "bookId": 4,
+        "bookTitle": "סוד מדרש התולדות 2",
+        "chapterId": 6,
+        "chapterTitle": "ירידה לצורך עלייה",
+        "readingMinutes": 114,
         "sharedTopics": [
           "תשובה",
-          "שבת",
+          "תולדות",
           "קדושה"
         ]
       },
       {
-        "bookId": 18,
-        "bookTitle": "סוד העברי 2",
-        "chapterId": 2,
-        "chapterTitle": "שער ראשון - שת עד נח",
-        "readingMinutes": 166,
+        "bookId": 24,
+        "bookTitle": "קול המועד",
+        "chapterId": 21,
+        "chapterTitle": "קווים לאפיון זהותו של ישמעאל במשנת מניטו",
+        "readingMinutes": 48,
         "sharedTopics": [
-          "תשובה",
-          "תולדות",
-          "שרה"
+          "ישמעאל",
+          "מוסר",
+          "מהר\"ל"
         ]
       }
     ],

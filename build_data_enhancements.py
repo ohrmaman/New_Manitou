@@ -78,11 +78,78 @@ def detect_series(book):
         return ("כתבים בצרפתית", book["id"])
     return ("ספרי יסוד ושיעורים", book["id"])
 
+def normalize_pdf_footnotes_in_html(raw_html):
+    """Convert plain-text [1]..[99] footnote markers (e.g. from PDF-extracted chapters) into real hoverable HTML #_ftn anchors."""
+    if not raw_html or '_ftn' in raw_html or 'id="fn' in raw_html:
+        return raw_html
+    # Detect bottom footnote definitions starting a paragraph like <p>[1] ... </p>
+    fn_defs = set(re.findall(r'<p[^>]*>\s*\[(\d{1,3})\]\s+', raw_html))
+    if len(fn_defs) < 2:
+        return raw_html
+
+    def replace_def(m):
+        num = m.group(1)
+        if num not in fn_defs:
+            return m.group(0)
+        return f'<p><a id="_ftn{num}" href="#_ftnref{num}">[{num}]</a> '
+
+    # Replace bottom definitions first (last occurrence of <p>[N] in document)
+    parts = raw_html.rsplit('<p', len(fn_defs) + 6)
+    if len(parts) > 2:
+        head = parts[0]
+        tail = '<p' + '<p'.join(parts[1:])
+        tail = re.sub(r'<p[^>]*>\s*\[(\d{1,3})\]\s+', replace_def, tail)
+        seen_refs = set()
+
+        def replace_inline_ref(m):
+            num = m.group(1)
+            if num not in fn_defs or num in seen_refs:
+                return m.group(0)
+            seen_refs.add(num)
+            return f'<sup><a id="_ftnref{num}" href="#_ftn{num}">[{num}]</a></sup>'
+
+        head = re.sub(r'\[(\d{1,3})\]', replace_inline_ref, head)
+        return head + tail
+    return raw_html
+
+
+def normalize_hebrew_for_index(s):
+    """Strip Hebrew nikkud and unify internal gershayim/geresh so 'מהרל', 'מהר\"ל', 'מהר״ל' and 'סוד הדל״ת' match cleanly."""
+    if not s:
+        return ""
+    # Strip nikkud/cantillation
+    no_nikkud = re.sub(r'[\u0591-\u05C7]', '', s)
+    # Remove internal acronym quotes between two Hebrew letters (e.g. דל"ת -> דלת, מהר״ל -> מהרל)
+    unified = re.sub(r'(?<=[\u05D0-\u05EA])["״”\'׳’](?=[\u05D0-\u05EA])', '', no_nikkud)
+    return unified.lower()
+
+
+_KW_REGEX_CACHE = {}
+
+
+def count_whole_phrase_occurrences(norm_haystack, raw_kw):
+    """Count whole-word/phrase matches (never matching mid-word fragments like 'נח' inside 'אנחנו' or 'סוד' inside 'יסוד')."""
+    norm_kw = normalize_hebrew_for_index(raw_kw).strip()
+    if not norm_kw:
+        return 0
+    rx = _KW_REGEX_CACHE.get(norm_kw)
+    if rx is None:
+        parts = [re.escape(p) for p in re.split(r'[\s\-־]+', norm_kw) if p]
+        phrase_pat = r'[\s\-־]+'.join(parts)
+        # Short 2-3 letter words allow at most 1 prefix (ו/ב/ל/כ/ה); longer words/phrases allow 0-2 prefixes
+        prefix_pat = r'[והבכל]?' if len(norm_kw) <= 3 else r'[בהוכלמש]{0,2}'
+        rx = re.compile(rf'(?<![a-zA-Z0-9\u05D0-\u05EA]){prefix_pat}{phrase_pat}(?![a-zA-Z0-9\u05D0-\u05EA])')
+        _KW_REGEX_CACHE[norm_kw] = rx
+    return len(rx.findall(norm_haystack))
+
+
 for b in cat:
     bid = b["id"]
     series_name, series_vol = detect_series(b)
     b["series"] = series_name
     b["seriesVol"] = series_vol
+    if not b.get("link"):
+        b["link"] = "https://manitou.org.il/arcive/sfarim"
 
     # Check cover
     remote_url = b.get("remoteImgUrl") or (b.get("imgUrl") if b.get("imgUrl", "").startswith("http") else "")
@@ -118,7 +185,9 @@ for b in cat:
     if os.path.exists(bf):
         chaps = json.load(open(bf, encoding="utf-8"))
         for ch in chaps:
-            raw_html = ch.get("text", "")
+            raw_html = (ch.get("text", "") or "").replace('\u00aa', 'נ').replace('↗', '')
+            raw_html = normalize_pdf_footnotes_in_html(raw_html)
+            ch["text"] = raw_html
             clean_txt = re.sub(r'<[^>]+>', ' ', raw_html)
             words = [w for w in clean_txt.split() if w.strip()]
             wc = len(words)
@@ -188,14 +257,16 @@ for topic in TOPICS_DEFINITIONS:
             title_txt = ch.get("title", "")
             raw_html = ch.get("text", "")
             clean_txt = re.sub(r'<[^>]+>', ' ', raw_html)
+            norm_title = normalize_hebrew_for_index(title_txt)
+            norm_body = normalize_hebrew_for_index(clean_txt)
             score = 0
             matched_kws = []
             for kw in topic["keywords"]:
-                if kw in title_txt:
+                if count_whole_phrase_occurrences(norm_title, kw) > 0:
                     score += 10
                     matched_kws.append(kw)
                 else:
-                    cnt = clean_txt.count(kw)
+                    cnt = count_whole_phrase_occurrences(norm_body, kw)
                     if cnt >= 2:
                         score += min(cnt, 8)
                         matched_kws.append(kw)
@@ -252,12 +323,14 @@ for b in cat:
         title_txt = ch.get("title", "")
         raw_html = ch.get("text", "")
         clean_txt = re.sub(r'<[^>]+>', ' ', raw_html)
+        norm_title = normalize_hebrew_for_index(title_txt)
+        norm_body = normalize_hebrew_for_index(clean_txt)
         
-        # Extract concept weights for this chapter
+        # Extract concept weights for this chapter using whole-phrase & gershayim-aware matching
         concept_scores = {}
         for kw in CONCEPT_LEXICON:
-            in_title = kw in title_txt
-            cnt = clean_txt.count(kw)
+            in_title = count_whole_phrase_occurrences(norm_title, kw) > 0
+            cnt = count_whole_phrase_occurrences(norm_body, kw)
             if in_title or cnt >= 2:
                 concept_scores[kw] = (12 if in_title else 0) + min(cnt, 10)
         
@@ -349,6 +422,45 @@ for bid, chaps in books_chapters_map.items():
     bf = f"data/book_{bid}.json"
     json.dump(chaps, open(bf, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
 
-print(f"Enriched all {len(all_chapters_records)} chapters with smart relatedChapters.")
+print(f"Enriched all {len(all_chapters_records)} chapters with smart relatedChapters & normalized footnote anchors.")
+
+# Also clean & deduplicate existing transcripts_archive.json (removing generic "קישור" duplicates and OCR artifacts)
+tr_archive_path = "data/transcripts_archive.json"
+if os.path.exists(tr_archive_path):
+    try:
+        tr_data = json.load(open(tr_archive_path, encoding="utf-8"))
+        items = tr_data.get("items", [])
+        GENERIC_TITLES = {"קישור", "להורדה", "קובץ", "pdf", "הורדה", "לצפייה"}
+        items.sort(key=lambda x: (1 if (x.get("title") or "").strip().lower() in GENERIC_TITLES else 0))
+        seen_fp = set()
+        cleaned_items = []
+        for r in items:
+            plain = (r.get("plainText") or "").replace("\u00aa", "נ").strip()
+            r["plainText"] = plain
+            cur_t = (r.get("title") or "").strip()
+            if cur_t.lower() in GENERIC_TITLES and plain:
+                lines = [ln.strip() for ln in plain.splitlines() if 4 <= len(ln.strip()) <= 95]
+                if lines:
+                    r["title"] = lines[0]
+            norm_b = re.sub(r"\s+", " ", plain)
+            fp = re.sub(r"[^a-zA-Z0-9\u0590-\u05FF]", "", norm_b[80:1600]) if len(norm_b) >= 400 else f"u:{r.get('id')}:{r.get('sourceUrl')}"
+            if fp in seen_fp:
+                continue
+            seen_fp.add(fp)
+            cleaned_items.append(r)
+
+        cleaned_items.sort(key=lambda r: (
+            1 if r.get("hasFullText") else 0,
+            1 if r.get("language", "he") == "he" else 0,
+            min(r.get("wordCount", 0), 50000)
+        ), reverse=True)
+        tr_data["items"] = cleaned_items
+        tr_data["totalCount"] = len(cleaned_items)
+        tr_data["fullTextCount"] = sum(1 for r in cleaned_items if r.get("hasFullText"))
+        json.dump(tr_data, open(tr_archive_path, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
+        print(f"Cleaned transcripts_archive.json: {len(items)} -> {len(cleaned_items)} unique records.")
+    except Exception as e:
+        print(f"Warning cleaning transcripts_archive.json: {e}")
+
 
 

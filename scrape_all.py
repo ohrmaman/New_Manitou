@@ -5,9 +5,25 @@ import subprocess
 from bs4 import BeautifulSoup
 from playwright.async_api import async_playwright
 
-BASE_DIR = '/Users/ormaman/New_Manitou'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 catalog_path = os.path.join(BASE_DIR, 'data/catalog.json')
 extractor_js = os.path.join(BASE_DIR, 'extract_pdf_text.js')
+
+
+def load_local_env():
+    env_file = os.path.join(BASE_DIR, '.env')
+    if os.path.exists(env_file):
+        with open(env_file, 'r', encoding='utf-8') as ef:
+            for line in ef:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    k, v = line.split('=', 1)
+                    os.environ.setdefault(k.strip(), v.strip().strip('\'"'))
+
+
+load_local_env()
+SITE_USER = os.environ.get('MANITOU_SITE_USER', '')
+SITE_PASS = os.environ.get('MANITOU_SITE_PASSWORD', '')
 
 with open(catalog_path, 'r', encoding='utf-8') as f:
     catalog = json.load(f)
@@ -71,10 +87,10 @@ async def main():
             inputs = await page.query_selector_all('input')
             for i in inputs:
                 name = await i.get_attribute('name')
-                if name and 'username' in name.lower():
-                    await i.fill('0507682931')
-                elif name and 'password' in name.lower():
-                    await i.fill('0507682931')
+                if name and 'username' in name.lower() and SITE_USER:
+                    await i.fill(SITE_USER)
+                elif name and 'password' in name.lower() and SITE_PASS:
+                    await i.fill(SITE_PASS)
 
             buttons = await page.query_selector_all('button, input[type="submit"]')
             for b in buttons:
@@ -206,6 +222,10 @@ async def main():
                         text_content = extracted['html']
                         print(f"    Extracted {extracted['wordCount']} words of free text from PDF!")
 
+                # Clean legacy PDF OCR artifacts (ª -> נ) and strip any stray external-link arrows so UI decorators stay idempotent
+                if text_content:
+                    text_content = text_content.replace('\u00aa', 'נ').replace('↗', '')
+
                 if not text_content:
                     text_content = "<p>לא ניתן היה לחלץ את הטקסט באופן אוטומטי.</p>"
 
@@ -213,7 +233,8 @@ async def main():
                     "id": chap_num,
                     "title": title,
                     "text": text_content,
-                    "pdf_url": pdf
+                    "pdf_url": pdf,
+                    "source_url": chap_url
                 }
                 if os.path.exists(abs_pdf_path):
                     chap_obj["local_pdf"] = local_pdf_path
@@ -233,10 +254,15 @@ async def main():
 
         await browser.close()
 
-        # Also refresh all transcripts, articles & booklets (with full PDF & inner lesson text extraction)
+        # 1. Refresh all transcripts, articles & booklets (with full PDF & inner lesson text extraction + deduplication)
         print("\n==========================================")
         print("Syncing all transcripts, articles & PDF booklets via fetch_transcripts.py...")
         subprocess.run(['python3', os.path.join(BASE_DIR, 'fetch_transcripts.py')], check=False)
+
+        # 2. Run post-scrape indexer (footnote anchors, pre-resolved Manitou/Sefaria citations, topics, relatedChapters)
+        print("\n==========================================")
+        print("Running build_data_enhancements.py to index footnotes, cross-refs, topics & related chapters...")
+        subprocess.run(['python3', os.path.join(BASE_DIR, 'build_data_enhancements.py')], cwd=BASE_DIR, check=False)
 
 
 if __name__ == "__main__":

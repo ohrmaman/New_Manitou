@@ -9,27 +9,6 @@
     "readingMinutes": 4,
     "relatedChapters": [
       {
-        "bookId": 20,
-        "bookTitle": "הדיבור והכתב",
-        "chapterId": 4,
-        "chapterTitle": "הגעגועים לאלוהים",
-        "readingMinutes": 32,
-        "sharedTopics": [
-          "הדיבור והכתב",
-          "חכמה"
-        ]
-      },
-      {
-        "bookId": 20,
-        "bookTitle": "הדיבור והכתב",
-        "chapterId": 5,
-        "chapterTitle": "סגולתו של המשך האנושי",
-        "readingMinutes": 23,
-        "sharedTopics": [
-          "הדיבור והכתב"
-        ]
-      },
-      {
         "bookId": 23,
         "bookTitle": "מניטו על המועדים",
         "chapterId": 1,
@@ -49,6 +28,26 @@
         "sharedTopics": [
           "חכמה",
           "הדיבור והכתב"
+        ]
+      },
+      {
+        "bookId": 2,
+        "bookTitle": "מספד למשיח",
+        "chapterId": 2,
+        "chapterTitle": "פרק 1: המספד בירושלים",
+        "readingMinutes": 188,
+        "sharedTopics": [
+          "חכמה"
+        ]
+      },
+      {
+        "bookId": 3,
+        "bookTitle": "סוד מדרש התולדות 1",
+        "chapterId": 2,
+        "chapterTitle": "מבוא ללימוד המדרש",
+        "readingMinutes": 47,
+        "sharedTopics": [
+          "חכמה"
         ]
       }
     ],
@@ -64,48 +63,46 @@
     "readingMinutes": 3,
     "relatedChapters": [
       {
-        "bookId": 20,
-        "bookTitle": "הדיבור והכתב",
-        "chapterId": 4,
-        "chapterTitle": "הגעגועים לאלוהים",
-        "readingMinutes": 32,
-        "sharedTopics": [
-          "הדיבור והכתב",
-          "גלות"
-        ]
-      },
-      {
-        "bookId": 20,
-        "bookTitle": "הדיבור והכתב",
-        "chapterId": 6,
-        "chapterTitle": "מסירה",
-        "readingMinutes": 27,
-        "sharedTopics": [
-          "הדיבור והכתב",
-          "גלות"
-        ]
-      },
-      {
-        "bookId": 23,
-        "bookTitle": "מניטו על המועדים",
-        "chapterId": 1,
-        "chapterTitle": "קווים לאפיון זהותו של ישמעאל במשנת מניטו - מקורות",
-        "readingMinutes": 140,
+        "bookId": 2,
+        "bookTitle": "מספד למשיח",
+        "chapterId": 2,
+        "chapterTitle": "פרק 1: המספד בירושלים",
+        "readingMinutes": 188,
         "sharedTopics": [
           "גלות",
-          "הדיבור והכתב",
           "אברהם"
         ]
       },
       {
-        "bookId": 24,
-        "bookTitle": "קול המועד",
-        "chapterId": 23,
-        "chapterTitle": "הערות והרחבות",
-        "readingMinutes": 345,
+        "bookId": 2,
+        "bookTitle": "מספד למשיח",
+        "chapterId": 3,
+        "chapterTitle": "פרק 2: ויהי באחרית הימים",
+        "readingMinutes": 57,
         "sharedTopics": [
           "גלות",
-          "הדיבור והכתב",
+          "אברהם"
+        ]
+      },
+      {
+        "bookId": 3,
+        "bookTitle": "סוד מדרש התולדות 1",
+        "chapterId": 1,
+        "chapterTitle": "מבוא מאת חיים רוטנברג",
+        "readingMinutes": 17,
+        "sharedTopics": [
+          "גלות",
+          "אברהם"
+        ]
+      },
+      {
+        "bookId": 3,
+        "bookTitle": "סוד מדרש התולדות 1",
+        "chapterId": 2,
+        "chapterTitle": "מבוא ללימוד המדרש",
+        "readingMinutes": 47,
+        "sharedTopics": [
+          "גלות",
           "אברהם"
         ]
       }
@@ -122,51 +119,43 @@
     "readingMinutes": 5,
     "relatedChapters": [
       {
-        "bookId": 20,
-        "bookTitle": "הדיבור והכתב",
-        "chapterId": 4,
-        "chapterTitle": "הגעגועים לאלוהים",
+        "bookId": 2,
+        "bookTitle": "מספד למשיח",
+        "chapterId": 2,
+        "chapterTitle": "פרק 1: המספד בירושלים",
+        "readingMinutes": 188,
+        "sharedTopics": [
+          "דינה"
+        ]
+      },
+      {
+        "bookId": 2,
+        "bookTitle": "מספד למשיח",
+        "chapterId": 3,
+        "chapterTitle": "פרק 2: ויהי באחרית הימים",
+        "readingMinutes": 57,
+        "sharedTopics": [
+          "דינה"
+        ]
+      },
+      {
+        "bookId": 3,
+        "bookTitle": "סוד מדרש התולדות 1",
+        "chapterId": 2,
+        "chapterTitle": "מבוא ללימוד המדרש",
+        "readingMinutes": 47,
+        "sharedTopics": [
+          "דינה"
+        ]
+      },
+      {
+        "bookId": 5,
+        "bookTitle": "סוד מדרש התולדות 3",
+        "chapterId": 1,
+        "chapterTitle": "מבוא מאת חיים רוטנברג",
         "readingMinutes": 32,
         "sharedTopics": [
-          "הדיבור והכתב",
-          "נח",
-          "גלות"
-        ]
-      },
-      {
-        "bookId": 20,
-        "bookTitle": "הדיבור והכתב",
-        "chapterId": 5,
-        "chapterTitle": "סגולתו של המשך האנושי",
-        "readingMinutes": 23,
-        "sharedTopics": [
-          "הדיבור והכתב",
-          "נח",
-          "גלות"
-        ]
-      },
-      {
-        "bookId": 24,
-        "bookTitle": "קול המועד",
-        "chapterId": 23,
-        "chapterTitle": "הערות והרחבות",
-        "readingMinutes": 345,
-        "sharedTopics": [
-          "דינה",
-          "הדיבור והכתב",
-          "נח"
-        ]
-      },
-      {
-        "bookId": 23,
-        "bookTitle": "מניטו על המועדים",
-        "chapterId": 1,
-        "chapterTitle": "קווים לאפיון זהותו של ישמעאל במשנת מניטו - מקורות",
-        "readingMinutes": 140,
-        "sharedTopics": [
-          "הדיבור והכתב",
-          "דינה",
-          "נח"
+          "דינה"
         ]
       }
     ],
@@ -188,9 +177,9 @@
         "chapterTitle": "הערות והרחבות",
         "readingMinutes": 345,
         "sharedTopics": [
-          "שבת",
-          "נח",
-          "נבואה"
+          "נבואה",
+          "חכמה",
+          "שבת"
         ]
       },
       {
@@ -200,33 +189,33 @@
         "chapterTitle": "לשון הקודש",
         "readingMinutes": 51,
         "sharedTopics": [
-          "שבת",
-          "נח",
-          "נבואה"
+          "נבואה",
+          "חכמה",
+          "שבת"
         ]
       },
       {
-        "bookId": 11,
-        "bookTitle": "סוד מדרש התולדות 9",
-        "chapterId": 1,
-        "chapterTitle": "ה' קנני ראשית דרכו",
-        "readingMinutes": 161,
+        "bookId": 4,
+        "bookTitle": "סוד מדרש התולדות 2",
+        "chapterId": 6,
+        "chapterTitle": "ירידה לצורך עלייה",
+        "readingMinutes": 114,
         "sharedTopics": [
-          "שבת",
-          "נח",
-          "נבואה"
+          "נבואה",
+          "חכמה",
+          "שבת"
         ]
       },
       {
-        "bookId": 13,
-        "bookTitle": "שערי דמעה 2",
-        "chapterId": 3,
-        "chapterTitle": "שיויתי ה' לנגדי תמיד",
-        "readingMinutes": 109,
+        "bookId": 6,
+        "bookTitle": "סוד מדרש התולדות 4",
+        "chapterId": 2,
+        "chapterTitle": "התפתחות או אבולוציה אקראית?",
+        "readingMinutes": 124,
         "sharedTopics": [
-          "שבת",
-          "נח",
-          "נבואה"
+          "נבואה",
+          "חכמה",
+          "שבת"
         ]
       }
     ],
@@ -248,9 +237,9 @@
         "chapterTitle": "קווים לאפיון זהותו של ישמעאל במשנת מניטו - מקורות",
         "readingMinutes": 140,
         "sharedTopics": [
-          "נח",
           "מדרש",
-          "תולדות"
+          "תולדות",
+          "יוסף"
         ]
       },
       {
@@ -260,9 +249,21 @@
         "chapterTitle": "הערות והרחבות",
         "readingMinutes": 345,
         "sharedTopics": [
-          "נח",
           "מדרש",
-          "תולדות"
+          "תולדות",
+          "יוסף"
+        ]
+      },
+      {
+        "bookId": 2,
+        "bookTitle": "מספד למשיח",
+        "chapterId": 2,
+        "chapterTitle": "פרק 1: המספד בירושלים",
+        "readingMinutes": 188,
+        "sharedTopics": [
+          "מדרש",
+          "תולדות",
+          "יוסף"
         ]
       },
       {
@@ -272,21 +273,9 @@
         "chapterTitle": "פרק 3: תקופת העומר",
         "readingMinutes": 52,
         "sharedTopics": [
-          "נח",
           "מדרש",
-          "תולדות"
-        ]
-      },
-      {
-        "bookId": 3,
-        "bookTitle": "סוד מדרש התולדות 1",
-        "chapterId": 6,
-        "chapterTitle": "אחותי היא",
-        "readingMinutes": 58,
-        "sharedTopics": [
-          "נח",
-          "מדרש",
-          "תולדות"
+          "תולדות",
+          "יוסף"
         ]
       }
     ],
@@ -302,15 +291,27 @@
     "readingMinutes": 27,
     "relatedChapters": [
       {
-        "bookId": 24,
-        "bookTitle": "קול המועד",
-        "chapterId": 23,
-        "chapterTitle": "הערות והרחבות",
-        "readingMinutes": 345,
+        "bookId": 9,
+        "bookTitle": "סוד מדרש התולדות 7",
+        "chapterId": 2,
+        "chapterTitle": "יציאה לקראת העתיד",
+        "readingMinutes": 143,
         "sharedTopics": [
-          "נח",
-          "גלות",
-          "רש\"י"
+          "רש\"י",
+          "תולדות",
+          "מוסר"
+        ]
+      },
+      {
+        "bookId": 11,
+        "bookTitle": "סוד מדרש התולדות 9",
+        "chapterId": 1,
+        "chapterTitle": "ה' קנני ראשית דרכו",
+        "readingMinutes": 161,
+        "sharedTopics": [
+          "רש\"י",
+          "תולדות",
+          "מוסר"
         ]
       },
       {
@@ -320,9 +321,9 @@
         "chapterTitle": "שער ראשון - הבריאה",
         "readingMinutes": 173,
         "sharedTopics": [
-          "נח",
-          "גלות",
-          "רש\"י"
+          "רש\"י",
+          "תולדות",
+          "מוסר"
         ]
       },
       {
@@ -332,21 +333,9 @@
         "chapterTitle": "שער שלישי - שם חם ויפת: האנושות שאחרי המבול",
         "readingMinutes": 200,
         "sharedTopics": [
-          "נח",
-          "גלות",
-          "רש\"י"
-        ]
-      },
-      {
-        "bookId": 17,
-        "bookTitle": "סוד העברי 1",
-        "chapterId": 5,
-        "chapterTitle": "שער רביעי - שושלת שת",
-        "readingMinutes": 114,
-        "sharedTopics": [
-          "נח",
-          "גלות",
-          "רש\"י"
+          "רש\"י",
+          "תולדות",
+          "מוסר"
         ]
       }
     ],

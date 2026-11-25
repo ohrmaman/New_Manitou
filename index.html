@@ -84,13 +84,13 @@
                         <span class="top-search-leading-icon" aria-hidden="true">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         </span>
-                        <input type="text" id="advSearchInput" class="top-search-input" placeholder="חפש מילה, ביטוי או נושא בכל הספרים והתמלולים..." autocomplete="off" aria-label="הקלד מילות חיפוש">
+                        <input type="text" id="advSearchInput" class="top-search-input" placeholder="חפש מילה, משפט או נושא בכל 24 ספרי מניטו..." autocomplete="off" aria-label="הקלד מילות חיפוש">
                         <button type="button" id="clearAdvSearchBtn" class="top-search-clear-btn" style="display: none;" title="נקה חיפוש">✕</button>
 
                         <div class="top-search-scope-seg" id="advSearchScopePills" role="group" aria-label="בחירת מאגר חיפוש">
-                            <button type="button" class="scope-pill-btn active" data-scope="both">הכל</button>
-                            <button type="button" class="scope-pill-btn" data-scope="books">ספרים</button>
+                            <button type="button" class="scope-pill-btn active" data-scope="books">ספרים</button>
                             <button type="button" class="scope-pill-btn" data-scope="transcripts">תמלולים</button>
+                            <button type="button" class="scope-pill-btn" data-scope="both">הכל</button>
                         </div>
 
                         <button type="button" id="advSearchBtn" class="top-search-submit-btn">חפש</button>
@@ -100,11 +100,11 @@
                     <div class="top-search-subbar">
                         <div class="top-search-modes" id="advSearchToolbar" role="group" aria-label="אופן התאמת המילים">
                             <span class="subbar-label">דיוק:</span>
-                            <button type="button" class="toolbar-btn active" data-mode="and">כל המילים</button>
-                            <button type="button" class="toolbar-btn" data-mode="or">לפחות מילה</button>
-                            <button type="button" class="toolbar-btn" data-mode="exact">ביטוי מדויק</button>
-                            <button type="button" class="toolbar-btn" data-mode="exact_word">מילה שלמה</button>
-                            <button type="button" id="toggleAdvFiltersBtn" class="top-filter-toggle-btn" aria-expanded="false">סינון לפי ספר ▾</button>
+                            <button type="button" class="toolbar-btn active" data-mode="and" data-tooltip="כל המילים שהקלדת חייבות להופיע בטקסט כמילים שלמות (בכל סדר, כולל אותיות יחס וכל״ב)">כל המילים</button>
+                            <button type="button" class="toolbar-btn" data-mode="or" data-tooltip="מספיק שלפחות אחת מהמילים שהקלדת תופיע בטקסט (שימושי כשמחפשים כמה מילים)">לפחות מילה אחת</button>
+                            <button type="button" class="toolbar-btn" data-mode="exact" data-tooltip="התאמה מדויקת בלבד של המילה או הביטוי כפי שנכתבו — ללא חלקי מילים (פאי לא ימצא אירופאים)">ביטוי מדויק</button>
+                            <button type="button" class="toolbar-btn" data-mode="substring" data-tooltip="חיפוש חופשי גם בתוך אמצע מילה או שורש (למשל: פאי ימצא גם אירופאים)">גם חלק ממילה</button>
+                            <button type="button" id="toggleAdvFiltersBtn" class="top-filter-toggle-btn" aria-expanded="false" data-tooltip="סנן את תוצאות החיפוש לפי קטגוריה או ספר מסוים">סינון לפי ספר ▾</button>
                         </div>
 
                         <div class="top-search-quick-links">
@@ -505,29 +505,29 @@
                 </div>
 
                 <div class="reader-pill-group">
-                    <button class="reader-pill-btn" id="splitChapterViewBtn" title="לימוד בחברותא: פתיחת פרק נוסף במקביל">
+                    <button class="reader-pill-btn" id="splitChapterViewBtn" data-tooltip="לימוד בחברותא (מסך מפוצל)" aria-label="לימוד בחברותא">
                         <span>◫</span>
                         <span id="splitChapterViewText">חברותא</span>
                     </button>
-                    <button class="reader-pill-btn" id="readerBookmarkBtn" title="שמור סימנייה בפרק הנוכחי">
+                    <button class="reader-pill-btn" id="readerBookmarkBtn" data-tooltip="שמור סימנייה" aria-label="שמור סימנייה">
                         <span>🔖</span>
                         <span id="readerBookmarkText" style="display: none;">סימנייה</span>
                     </button>
-                    <button class="reader-pill-btn" id="toggleTextSettingsBtn" title="הגדרות תצוגה, גודל גופן וערכת צבעים">
+                    <button class="reader-pill-btn" id="toggleTextSettingsBtn" data-tooltip="גודל ועיצוב גופן" aria-label="גודל ועיצוב גופן">
                         <span>Aa</span>
                     </button>
-                    <button class="reader-pill-btn" id="readerGlossaryBtn" title="מילון מושגים במשנת מניטו">
+                    <button class="reader-pill-btn" id="readerGlossaryBtn" data-tooltip="מילון מושגים" aria-label="מילון מושגים">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
                     </button>
-                    <button class="reader-pill-btn" id="printChapterBtn" title="הדפסת פרק נקייה">
+                    <button class="reader-pill-btn" id="printChapterBtn" data-tooltip="הדפסה" aria-label="הדפסה">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
                     </button>
-                    <button class="reader-pill-btn" id="zenModeBtn" title="מצב מסך מלא וממוקד">
+                    <button class="reader-pill-btn" id="zenModeBtn" data-tooltip="מסך מלא" aria-label="מסך מלא">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="zen-icon-enter"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="zen-icon-exit" style="display: none;"><path d="M4 14h6m0 0v6m0-6L3 21m17-7h-6m0 0v6m0-6l7 7M4 10h6m0 0V4m0 6L3 3m17 7h-6m0 0V4m0 6l7-7"></path></svg>
                         <span id="zenModeText" style="display: none;">מסך מלא</span>
                     </button>
-                    <button class="reader-pill-btn" id="toggleTheme" title="החלפת מצב יום / ספיה / לילה">
+                    <button class="reader-pill-btn" id="toggleTheme" data-tooltip="מצב לילה" aria-label="מצב תצוגה">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="readerThemeIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                         <span id="readerThemeText" style="display: none;">מצב לילה</span>
                     </button>
@@ -679,6 +679,12 @@
                 <ul class="chapters-list" id="chaptersList">
                     <!-- Chapters injected via JS -->
                 </ul>
+                <div class="sidebar-original-site-footer" id="sidebarOriginalSiteFooter" style="display: none;">
+                    <a id="sidebarOriginalSiteLink" href="#" target="_blank" rel="noopener" class="sidebar-original-site-btn" data-tooltip="פתיחת עמוד הספר באתר המקורי של מכון מניטו (לשונית חדשה)">
+                        <span>הספר באתר המקורי</span>
+                        <span>↗</span>
+                    </a>
+                </div>
             </aside>
             <article class="reader-content-area">
                 <div class="text-content" id="textContent">
@@ -740,16 +746,6 @@
         <button id="scrollToTopBtn" class="scroll-to-top-btn" title="חזור למעלה" style="display: none;">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
         </button>
-    </div>
-
-    <!-- Book Detail Modal -->
-    <div class="modal-overlay" id="bookModal">
-        <div class="modal-content">
-            <button class="close-modal" id="closeModal">&times;</button>
-            <div class="modal-body" id="modalBody">
-                <!-- Injected via JS -->
-            </div>
-        </div>
     </div>
 
     <!-- Profile Modal -->
@@ -1258,6 +1254,7 @@
 
     <div id="footnotePopover" class="footnote-popover" style="display: none;"></div>
     <div id="toastNotification" class="toast-notification" style="display: none;"></div>
+    <div id="uiHoverTooltip" class="ui-hover-tooltip" role="tooltip" aria-hidden="true"></div>
 
     <script src="config.js"></script>
     <script src="script.js"></script>

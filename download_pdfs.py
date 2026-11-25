@@ -7,6 +7,16 @@ from playwright.async_api import async_playwright
 
 os.makedirs('data/pdfs', exist_ok=True)
 
+env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
+if os.path.exists(env_path):
+    with open(env_path, 'r', encoding='utf-8') as ef:
+        for line in ef:
+            if '=' in line and not line.strip().startswith('#'):
+                k, v = line.strip().split('=', 1)
+                os.environ.setdefault(k.strip(), v.strip().strip('\'"'))
+SITE_USER = os.environ.get('MANITOU_SITE_USER', '')
+SITE_PASS = os.environ.get('MANITOU_SITE_PASSWORD', '')
+
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
@@ -20,10 +30,10 @@ async def main():
             inputs = await page.query_selector_all('input')
             for i in inputs:
                 name = await i.get_attribute('name')
-                if name and 'username' in name.lower():
-                    await i.fill('0507682931')
-                elif name and 'password' in name.lower():
-                    await i.fill('0507682931')
+                if name and 'username' in name.lower() and SITE_USER:
+                    await i.fill(SITE_USER)
+                elif name and 'password' in name.lower() and SITE_PASS:
+                    await i.fill(SITE_PASS)
             
             buttons = await page.query_selector_all('button, input[type="submit"]')
             for b in buttons:
