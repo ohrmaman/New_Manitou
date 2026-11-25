@@ -37,6 +37,7 @@
 
             <div class="nav-links" id="mainNavLinks">
                 <a href="#/" class="active" id="navLibraryLink" data-spy-zone="booksSection">ספרים</a>
+                <a href="#/ai" id="navAiSectionLink" data-spy-zone="aiSection">שאל את מניטו</a>
                 <a href="#/transcripts" id="navTranscriptsLink" data-spy-zone="transcriptsSection">תמלולים</a>
                 <span class="nav-links-sep" aria-hidden="true"></span>
                 <button type="button" id="navTopicsBtn" class="nav-link-btn">פרשה ומועד</button>
@@ -144,6 +145,10 @@
                 <span class="rail-dot-pip"></span>
                 <span class="rail-dot-label">ספרים וסדרות</span>
             </button>
+            <button type="button" class="side-rail-dot" data-zone-target="aiSection" title="שאל את מניטו (AI)">
+                <span class="rail-dot-pip"></span>
+                <span class="rail-dot-label">שאל את מניטו</span>
+            </button>
             <button type="button" class="side-rail-dot" data-zone-target="transcriptsSection" title="ארכיון התמלולים">
                 <span class="rail-dot-pip"></span>
                 <span class="rail-dot-label">ארכיון התמלולים</span>
@@ -236,7 +241,85 @@
             </div>
         </main>
 
-        <!-- Inline Transcripts & Full Archive Section (Directly Below Books) -->
+        <!-- Standalone Clean AI Study & Source Locator Section ("שאל את מניטו") -->
+        <section class="ai-home-section" id="aiSection" aria-label="שאל את מניטו — חיפוש ואיתור מקורות חכם">
+            <div class="ai-home-container">
+                <div class="ai-workspace-card" id="aiWorkspaceCard">
+                    <div class="ai-section-header">
+                        <div class="ai-section-title-group">
+                            <span class="ai-section-kicker">מנוע מחקר ואיתור מקורות חכם</span>
+                            <h2>שאל את מניטו</h2>
+                            <p>שאל שאלה פתוחה או חפש היכן מופיע ביטוי, פסוק או מושג — בכל 24 הספרים ו-2,242 התמלולים והמאמרים</p>
+                        </div>
+                        <div class="ai-section-actions">
+                            <button type="button" class="ai-top-util-btn" id="aiBackToReaderBtn" style="display: none;" title="חזור לפרק שהיית באמצע קריאתו">
+                                <span>📖 חזרה לפרק הקריאה</span>
+                            </button>
+                            <button type="button" class="ai-top-util-btn" id="aiClearHistoryBtn" style="display: none;" title="נקה את התשובות והתחל שאלה חדשה">
+                                <span>נקה שיחה</span>
+                            </button>
+                            <button type="button" class="ai-top-util-btn" id="aiToggleApiSettingsBtn" title="הגדרת מפתח Gemini API (אופציונלי)">
+                                <span>⚙ מפתח AI</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Optional Collapsible Gemini API Key Settings -->
+                    <div id="aiApiSettingsDrawer" class="ai-api-settings-drawer" style="display: none;">
+                        <div class="ai-api-drawer-inner">
+                            <div class="ai-api-drawer-info">
+                                <strong>הגדרת מפתח Google Gemini API (אופציונלי):</strong>
+                                <p>מנוע איתור המקורות עובד באופן מלא ומיידי גם ללא מפתח חיצוני. להוספת ניסוח AI חופשי מ-<a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Google AI Studio ↗</a>:</p>
+                            </div>
+                            <div class="ai-api-input-row">
+                                <input type="password" id="aiGeminiKeyInput" placeholder="הדבק מפתח AIza... מ-Google AI Studio" autocomplete="off">
+                                <button type="button" id="saveAiGeminiKeyBtn" class="btn btn-primary btn-sm">שמור</button>
+                                <button type="button" id="clearAiGeminiKeyBtn" class="btn btn-secondary btn-sm">נקה</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Clean Top Prompt Composer -->
+                    <form class="ai-composer-form" id="aiChatForm">
+                        <div class="ai-composer-box">
+                            <textarea id="aiChatInput" rows="2" placeholder="שאל שאלה או בדוק איפה מופיע נושא — למשל: איפה נמצא ויהי כן? מה ההבדל בין עברי ליהודי?"></textarea>
+                            <div class="ai-composer-footer">
+                                <div class="ai-scope-pills" id="aiScopePills" role="group" aria-label="טווח חיפוש">
+                                    <button type="button" class="ai-scope-pill active" data-scope="all">הכל (ספרים + תמלולים)</button>
+                                    <button type="button" class="ai-scope-pill" data-scope="books">ספרים בלבד</button>
+                                    <button type="button" class="ai-scope-pill" data-scope="transcripts">תמלולים בלבד</button>
+                                    <button type="button" class="ai-scope-pill" data-scope="book" id="aiScopeBookBtn" style="display: none;">הספר הנוכחי</button>
+                                    <button type="button" class="ai-scope-pill" data-scope="chapter" id="aiScopeChapterBtn" style="display: none;">הפרק הנוכחי</button>
+                                </div>
+                                <div class="ai-composer-submit-group">
+                                    <span class="ai-index-status" id="aiIndexStatusText">24 ספרים • ארכיון תמלולים</span>
+                                    <button type="submit" id="aiChatSendBtn" class="ai-send-btn">
+                                        <span>שאל</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Clean Starter Questions -->
+                        <div class="ai-suggestions-row" id="aiSuggestionsBar">
+                            <span class="ai-suggestions-label">דוגמאות לשאלות:</span>
+                            <button type="button" class="ai-chip-btn" data-question="איפה נמצא ויהי כן?">איפה נמצא "ויהי כן"?</button>
+                            <button type="button" class="ai-chip-btn" data-question="מה ההבדל בין עברי, ישראלי ויהודי במשנת מניטו?">עברי, ישראלי ויהודי</button>
+                            <button type="button" class="ai-chip-btn" data-question="מה תפקידם של משיח בן יוסף ומשיח בן דוד בגאולה?">משיח בן יוסף ובן דוד</button>
+                            <button type="button" class="ai-chip-btn" data-question="כיצד מניטו מבאר את סיפור קין והבל?">קין והבל</button>
+                            <button type="button" class="ai-chip-btn" data-question="מהו סוד מדרש התולדות?">סוד מדרש התולדות</button>
+                            <button type="button" class="ai-chip-btn" id="aiSummarizeChapterChip" data-question="סכם לי את הנקודות המרכזיות בפרק הנוכחי" style="display: none;">📑 סכם את הפרק הנוכחי</button>
+                        </div>
+                    </form>
+
+                    <!-- Clean Results Thread (Hidden when empty — zero visual clutter!) -->
+                    <div class="ai-results-stream" id="aiChatMessages" style="display: none;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Inline Transcripts & Full Archive Section (Directly Below AI Section) -->
         <section class="transcripts-home-section" id="transcriptsSection" aria-label="מרכז התמלולים וההורדות">
             <div class="transcripts-home-container">
                 <div class="transcripts-inline-panel" id="transcriptsInlinePanel">
@@ -1175,106 +1258,6 @@
 
     <div id="footnotePopover" class="footnote-popover" style="display: none;"></div>
     <div id="toastNotification" class="toast-notification" style="display: none;"></div>
-
-    <!-- Floating Global AI Assistant Launcher Button -->
-    <button id="floatingAiAssistantFab" class="ai-assistant-fab" type="button" title="שאל את מניטו (AI) — חיפוש ולימוד חכם בכל 24 הספרים (⌘J)">
-        <span class="ai-fab-sparkle">✨</span>
-        <span class="ai-fab-label">שאל את מניטו AI</span>
-    </button>
-
-    <!-- Manitou AI Study Assistant Modal ("החברותא של מניטו") -->
-    <div id="aiAssistantModal" class="ai-modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-label="החברותא של מניטו - עוזר בינה מלאכותית על כל ספריית מניטו">
-        <div class="ai-modal-backdrop" id="aiModalBackdrop"></div>
-        <div class="ai-modal-panel" id="aiModalPanel">
-            <!-- Header -->
-            <div class="ai-modal-header">
-                <div class="ai-header-brand">
-                    <div class="ai-brand-avatar">✨</div>
-                    <div>
-                        <div class="ai-title-row">
-                            <h2 class="ai-modal-title">החברותא של מניטו • AI</h2>
-                            <span class="ai-engine-badge" id="aiEngineStatusBadge">מנוע מקורות חכם (24 ספרים • 271 פרקים)</span>
-                        </div>
-                        <p class="ai-modal-subtitle">מחקר, סיכום ומראי מקומות מדויקים מתוך כלל ספרי ושיעורי הרב יהודא לאון אשכנזי זצ״ל</p>
-                    </div>
-                </div>
-                <div class="ai-header-actions">
-                    <div class="ai-font-stepper" title="התאם גודל גופן בחלון ה-AI">
-                        <button type="button" id="aiFontDecBtn" class="ai-font-step-btn" title="הקטן טקסט">A-</button>
-                        <button type="button" id="aiFontIncBtn" class="ai-font-step-btn" title="הגדל טקסט">A+</button>
-                    </div>
-                    <button type="button" class="ai-icon-action-btn" id="aiExpandSizeBtn" title="הגדל / הקטן חלון (מצב לימוד רחב)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-                        <span id="aiExpandSizeText">חלון רחב</span>
-                    </button>
-                    <button type="button" class="ai-icon-action-btn" id="aiToggleApiSettingsBtn" title="הגדרת מפתח Gemini API לתשובות מנוסחות ב-AI">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                        <span>הגדרות</span>
-                    </button>
-                    <button type="button" class="ai-icon-action-btn" id="aiClearHistoryBtn" title="נקה שיחה והתחל מחדש">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                        <span>נקה</span>
-                    </button>
-                    <button type="button" class="ai-close-btn" id="closeAiModalBtn" title="סגור חלונית (ESC)">&times;</button>
-                </div>
-            </div>
-
-            <!-- Collapsible Gemini API Key Settings Drawer -->
-            <div id="aiApiSettingsDrawer" class="ai-api-settings-drawer" style="display: none;">
-                <div class="ai-api-drawer-inner">
-                    <div class="ai-api-drawer-info">
-                        <strong>🤖 הגדרות מפתח Google Gemini AI:</strong>
-                        <p>מפתח ה-Gemini מוגדר ופעיל במערכת לצורך סיכום וניסוח תשובות מעמיקות מתוך 24 הספרים. ניתן לעדכן או להחליף מפתח מ-<a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Google AI Studio ↗</a> בכל עת:</p>
-                    </div>
-                    <div class="ai-api-input-row">
-                        <input type="password" id="aiGeminiKeyInput" placeholder="הדבק מפתח Gemini API..." autocomplete="off">
-                        <button type="button" id="saveAiGeminiKeyBtn" class="btn btn-primary btn-sm">שמור מפתח</button>
-                        <button type="button" id="clearAiGeminiKeyBtn" class="btn btn-secondary btn-sm">איפוס</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Scope Selector Bar (All Site vs Current Book vs Current Chapter) -->
-            <div class="ai-scope-bar">
-                <span class="ai-scope-label">טווח חיפוש:</span>
-                <div class="ai-scope-pills" id="aiScopePills">
-                    <button type="button" class="ai-scope-pill active" data-scope="all">🌐 כל הספרייה (24 ספרים • 271 פרקים)</button>
-                    <button type="button" class="ai-scope-pill" data-scope="book" id="aiScopeBookBtn" style="display: none;">📚 הספר הנוכחי בלבד</button>
-                    <button type="button" class="ai-scope-pill" data-scope="chapter" id="aiScopeChapterBtn" style="display: none;">📄 הפרק הנוכחי בלבד</button>
-                </div>
-                <span class="ai-index-status" id="aiIndexStatusText">⚡ 24 ספרים מאונדקסים</span>
-            </div>
-
-            <!-- Chat Messages Stream -->
-            <div class="ai-chat-messages" id="aiChatMessages">
-                <!-- Populated dynamically via JS -->
-            </div>
-
-            <!-- Suggested Starter Questions Bar -->
-            <div class="ai-suggestions-bar" id="aiSuggestionsBar">
-                <span class="ai-suggestions-label">נושאים מומלצים:</span>
-                <div class="ai-suggestion-chips">
-                    <button type="button" class="ai-chip-btn" data-question="מה ההבדל בין עברי, ישראלי ויהודי במשנת מניטו?">עברי, ישראלי ויהודי</button>
-                    <button type="button" class="ai-chip-btn" data-question="מה תפקידם של משיח בן יוסף ומשיח בן דוד בגאולה?">משיח בן יוסף ובן דוד</button>
-                    <button type="button" class="ai-chip-btn" data-question="כיצד מניטו מבאר את סיפור קין והבל והשלכותיו על ההיסטוריה?">קין והבל ומוסר התולדות</button>
-                    <button type="button" class="ai-chip-btn" data-question="מהו סוד מדרש התולדות ומה משמעות המושג תולדות?">סוד מדרש התולדות</button>
-                    <button type="button" class="ai-chip-btn" data-question="מה ההבדל בין אוניברסליות לקוסמופוליטיות לפי הרב אשכנזי?">אוניברסליות מול קוסמופוליטיות</button>
-                    <button type="button" class="ai-chip-btn" id="aiSummarizeChapterChip" data-question="סכם לי את הנקודות והחידושים המרכזיים בפרק הנוכחי" style="display: none; border-color: var(--accent); color: var(--accent); font-weight: 700;">📑 סכם את הפרק הנוכחי</button>
-                </div>
-            </div>
-
-            <!-- Input Form -->
-            <form class="ai-chat-input-area" id="aiChatForm">
-                <div class="ai-input-wrap">
-                    <textarea id="aiChatInput" rows="1" placeholder="שאל כל שאלה על תורת הרב אשכנזי (מניטו) בכל 24 הספרים... (Enter לשליחה, Shift+Enter לשורה חדשה)"></textarea>
-                    <button type="submit" id="aiChatSendBtn" class="ai-send-btn" title="שלח שאלה">
-                        <span>שאל את מניטו</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <script src="config.js"></script>
     <script src="script.js"></script>

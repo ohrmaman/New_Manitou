@@ -9,6 +9,17 @@ const cors = require('cors');
 const app = express();
 const configPath = path.join(__dirname, 'config.json');
 
+// Load local .env early if present (gitignored)
+const envPath = path.join(__dirname, '.env');
+if (fs.existsSync(envPath)) {
+    fs.readFileSync(envPath, 'utf8').split(/\r?\n/).forEach(line => {
+        const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
+        if (match && !process.env[match[1]]) {
+            process.env[match[1]] = (match[2] || '').replace(/^['"]|['"]$/g, '');
+        }
+    });
+}
+
 function loadAppConfig() {
     const defaults = { port: 3090, host: 'localhost', version: 'v34', cachePrefix: 'manitou-library' };
     try {
@@ -46,9 +57,12 @@ if (!fs.existsSync(catalogPath)) {
 // Multer setup for PDF uploads
 const upload = multer({ dest: 'uploads/' });
 
-// Protect /admin routes with Basic Auth (challenge disabled to prevent browser popup)
+// Protect /admin routes with Basic Auth (credentials loaded from .env)
+const adminUser = process.env.ADMIN_USER || 'admin';
+const adminPass = process.env.ADMIN_PASSWORD || '';
+const adminUsersMap = adminPass ? { [adminUser]: adminPass } : {};
 const adminAuth = basicAuth({
-    users: { 'admin': 'manitou2026' },
+    users: adminUsersMap,
     challenge: false
 });
 
@@ -61,17 +75,6 @@ app.get('/api/auth/verify', adminAuth, (req, res) => {
 });
 
 // --- API ROUTES ---
-
-// Load local .env if present (gitignored)
-const envPath = path.join(__dirname, '.env');
-if (fs.existsSync(envPath)) {
-    fs.readFileSync(envPath, 'utf8').split(/\r?\n/).forEach(line => {
-        const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
-        if (match && !process.env[match[1]]) {
-            process.env[match[1]] = (match[2] || '').replace(/^['"]|['"]$/g, '');
-        }
-    });
-}
 
 // Health check & dynamic runtime config endpoints (single source of truth from config.json)
 const DEFAULT_GEMINI_KEY = process.env.GEMINI_API_KEY || '';

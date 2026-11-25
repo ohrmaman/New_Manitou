@@ -7,21 +7,50 @@
 ehthumbs.db
 Thumbs.db
 
+# Environment, Secrets, API Keys & Tokens (NEVER COMMIT)
+.env
+.env.*
+*.env
+!.env.example
+*token*
+*secret*
+*credentials*
+*apikey*
+*api_key*
+*.key
+*.pem
+*.p12
+*.pfx
+*.cer
+*.crt
+cookies.txt
+*session*
+
 # Python
 __pycache__/
 *.py[cod]
 *$py.class
 venv/
-.env
 
-# Large scraped data
+# Large scraped data & volatile caches
 data/pdfs/
 data/audio/
 data/transcripts/
+book_index.html
+*_cache.json
 
 # Dependency directories
 node_modules/
 
-# Local/temp files
+# Local/temp/log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+*.tmp
+*.bak
+*.swp
+*~
 temp.js
+test_*.py
+test_*.js
 uploads/
